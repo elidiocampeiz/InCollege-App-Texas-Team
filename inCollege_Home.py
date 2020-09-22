@@ -35,11 +35,39 @@ def mainMenuIntroMessage():
 
     print("Would you like to know more?")
     sel = -1
-    sel = int(input("Input 1 to view the video. Input any other number to skip: "))
-    if (sel == 1):
-        print("Video is now playing.")
+    done = False
+    while (sel != 0):
+        sel = int(input("Input 1 to view the video. Input 0 to skip: "))
+        if (sel == 1):
+            print("Video is now playing.")
+            break
+        elif (sel == 0):
+            done == True
+            continue
+        else:
+            print("Invalid input. Input 1 to view the video. Input 0 to skip.")
     print("")
 
+def loginPrompt(foundUser):
+    sel = -1
+    if (foundUser == True):
+        print("Would you like to login or sign up for an account?")
+        while (sel != 0):
+            sel = int(input("Input 1 to log in. Input 2 to sign up. Input 0 to continue without logging in or signing up: "))
+            if (sel == 0):
+                continue
+            elif (sel == 1):
+                theUser = accnt.login()
+                return theUser
+                break
+            elif (sel == 2):
+                accnt.create_account()
+                print("Please log in from the home page!")
+                break
+            else:
+                print("Invalid selection. Input 1 to log in. Input 2 to sign up. Input 0 to continue without logging in or signing up: ")
+    return False
+    
 def main ():
     mainMenuIntroMessage()
     loginStatus = False
@@ -73,7 +101,12 @@ def main ():
                 print("Under construction.")
             elif (sel == 4):
                 db = database.Database()
-                db.search_users()
+                foundUser = db.search_users()
+                theUser = loginPrompt(foundUser)
+                if theUser is False:
+                    loginStatus = False
+                else:
+                    loginStatus = True
             elif (sel == 5):
                 skillScreen()
             elif (sel == 6):

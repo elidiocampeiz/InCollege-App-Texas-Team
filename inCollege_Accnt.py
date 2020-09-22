@@ -39,8 +39,12 @@ def login():
     # Init DB
     DB = database.Database()
     # Get user input
-    username = input("Please enter your username: ")
-    password = input("Please enter your password: ")
+    username = input("Please enter your username, type 'q' to cancel: ")
+    if (username == 'q'):
+        return False
+    password = input("Please enter your password, type 'q' to cancel: ")
+    if (password == 'q'):
+        return False
     # Try to login with username and password combination
     login = DB.login(username, password)
     # Handle error TODO: Replace by Try/catch block
@@ -57,8 +61,12 @@ def create_account():
     # Init DB
     DB = database.Database()
     # Get user input
-    username = str(input("Please enter username: "))
-    password = str(input("Please enter password: "))
+    username = str(input("Please enter username, type 'q' to cancel: "))
+    if (username == 'q'):
+        return False
+    password = str(input("Please enter password, type 'q' to cancel: "))
+    if (password == 'q'):
+        return False
     # Check if password is secure
     while passwordChecker(password) == False:
         password = str(input("Please enter new password or type 'q' to quit): "))
@@ -66,8 +74,12 @@ def create_account():
             break
 
     # Getting name
-    firstName = str(input("Please enter first name: "))
-    lastName = str(input("Please enter last name: "))
+    firstName = str(input("Please enter first name, type 'q' to cancel: "))
+    if (firstName == 'q'):
+        return False
+    lastName = str(input("Please enter last name, type 'q' to cancel: "))
+    if (lastName == 'q'):
+        return False
 
     if password != 'q':
         # Try to create new student account in DB
