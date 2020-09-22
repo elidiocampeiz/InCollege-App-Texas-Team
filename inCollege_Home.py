@@ -3,6 +3,7 @@
 #calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
 import inCollege_Database as database
+import inCollege_CurrentUser as user
 
 def skillScreen():
     print("")
@@ -45,6 +46,7 @@ def main ():
     sel = -1
     print("Welcome to InCollege!")
     while (sel != 0):
+        #This menu is displayed to non-logged in user
         if (loginStatus == False):
             print("")
             print("1. Login")
@@ -59,20 +61,26 @@ def main ():
             if (sel == 0):
                 print("Goodbye!")
             elif (sel == 1):
-                loginStatus = accnt.login()
+                # if log in is successful, the user object is returned. Otherwise, false is returned.
+                theUser = accnt.login()
+                if theUser is False:
+                    loginStatus = False
+                else:
+                    loginStatus = True
             elif (sel == 2):
                 accnt.create_account()
             elif (sel == 3):
                 print("Under construction.")
             elif (sel == 4):
-                #The find someone by their name function goes here.
-                print("Under construction.")
+                db = database.Database()
+                db.search_users()
             elif (sel == 5):
                 skillScreen()
             elif (sel == 6):
                 accnt.clear_accounts()
             else:
                 print("Invalid Selection!")
+        #This menue is displayed for logged in user
         else:
             print("")
             print("1. Post a Job")
@@ -86,19 +94,26 @@ def main ():
             if (sel == 0):
                 print("Goodbye!")
             elif (sel == 1):
-                print("Awaiting Functionality.")
-                #The Job Posting Function goes here.
+                accnt.post_job(theUser.name)
             elif (sel == 2):
                 print("Under construction.")                
             elif (sel == 3):
-                #The find someone by their name function goes here.
-                print("Awaiting Functionality.")
+                db = database.Database()
+                db.search_users()
             elif (sel == 4):
                 skillScreen()
             elif (sel == 6):
                 accnt.clear_accounts()
             else:
                 print("Invalid Selection!")
+
+
+    #Ignore everything between '====='
+    #=========================================================
+    db = database.Database()
+    print("Students in database: ", db.data["Students"])
+    print("Jobs in database: ", db.data["Jobs"])
+    #=========================================================
 
 if __name__=='__main__':
     main()

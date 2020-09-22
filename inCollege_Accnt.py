@@ -1,4 +1,5 @@
 import inCollege_Database as database
+import inCollege_CurrentUser as user
 
 # function that validates a secure password
 def passwordChecker(password):
@@ -45,7 +46,11 @@ def login():
     # Handle error TODO: Replace by Try/catch block
     if (login == False):
         print("\nLogin Error")
-    return login
+        return login
+
+    theUser = user.User(username)
+
+    return theUser
 
 # Function for create an account UI
 def create_account():
@@ -60,10 +65,29 @@ def create_account():
         if password == 'q':
             break
 
+    # Getting name
+    firstName = str(input("Please enter first name: "))
+    lastName = str(input("Please enter last name: "))
+
     if password != 'q':
         # Try to create new student account in DB
-        create_account = DB.create_account(username, password)
+        create_account = DB.create_account(username, password, firstName, lastName)
         # Handle error TODO: Replace by Try/catch block
         if (create_account == False):
             print("\nCreate Account Error")
-    
+
+def post_job(fullname):
+    # Init DB
+    DB = database.Database()
+
+    #Get user input
+    title = str(input("Please enter job title: "))
+    description = str(input("Please enter job description: "))
+    employer = str(input("Please enter employer for job: "))
+    location = str(input("Please enter job location: "))
+    salary = str(input("Please enter job salary: "))
+
+    create_job_posting = DB.create_job_posting(title, description, employer, location, salary, fullname)
+
+    if (create_job_posting == False):
+        print("\nCreate Job Posting Error")
