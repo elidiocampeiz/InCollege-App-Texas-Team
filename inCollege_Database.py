@@ -25,13 +25,11 @@ class Database():
 
     # Load data from file, with the option of usign an alternative file
     def load(self, filename=None):
-        if filename==None:
-            filename = self.filename
-        else: 
+        if filename!=None: 
             self.filename = filename
         
         # Load data from file
-        with open(filename, 'rb') as database_file:
+        with open(self.filename, 'rb') as database_file:
             self.data = pickle.load(database_file)
         
         # If DB is empty create a "Students" section

@@ -29,15 +29,15 @@ def passwordChecker(password):
     # else return True
     return True
 
-def clear_accounts():
-    # Init DB
-    DB = database.Database()
-    DB.clear()
+# def clear_accounts():
+#     # Init DB
+#     DB = database.Database()
+#     DB.clear()
 
 # Function for login UI
-def login():
+def login(DB):
     # Init DB
-    DB = database.Database()
+    # DB = database.Database()
     # Get user input
     username = input("Please enter your username, type 'q' to cancel: ")
     if (username == 'q'):
@@ -57,9 +57,9 @@ def login():
     return theUser
 
 # Function for create an account UI
-def create_account():
+def create_account(DB):
     # Init DB
-    DB = database.Database()
+    # DB = database.Database()
     # Get user input
     username = str(input("Please enter username, type 'q' to cancel: "))
     if (username == 'q'):
@@ -69,9 +69,9 @@ def create_account():
         return False
     # Check if password is secure
     while passwordChecker(password) == False:
-        password = str(input("Please enter new password or type 'q' to quit): "))
+        password = str(input("Please enter new password or type 'q' to quit: "))
         if password == 'q':
-            break
+            return False
 
     # Getting name
     firstName = str(input("Please enter first name, type 'q' to cancel: "))
@@ -81,12 +81,13 @@ def create_account():
     if (lastName == 'q'):
         return False
 
-    if password != 'q':
-        # Try to create new student account in DB
-        create_account = DB.create_account(username, password, firstName, lastName)
-        # Handle error TODO: Replace by Try/catch block
-        if (create_account == False):
-            print("\nCreate Account Error")
+
+    # Try to create new student account in DB
+    create_account = DB.create_account(username, password, firstName, lastName)
+    # Handle error TODO: Replace by Try/catch block
+    if (create_account == False):
+        print("\nCreate Account Error")
+    return create_account
 
 def post_job(fullname):
     # Init DB

@@ -13,13 +13,17 @@ def skillScreen():
     print("4. Teams")
     print("5. Git")
     sel = int(input("Please make a selection. Input any number not listed above to return to main menu: "))
-    selectionScreen(sel)
-
-def selectionScreen(val):
-    if val in range(1,6):
+    if sel in range(1,6):
         print("Under construction.")
         return True
     return False
+    
+
+# def selectionScreen(val):
+#     if val in range(1,6):
+#         print("Under construction.")
+#         return True
+#     return False
 
 def mainMenuIntroMessage():
     print("When I was in college, I didn't know what to do with myself.")
@@ -42,8 +46,8 @@ def mainMenuIntroMessage():
             print("Video is now playing.")
             break
         elif (sel == 0):
-            done == True
-            continue
+            print("Video was skipped")
+            break
         else:
             print("Invalid input. Input 1 to view the video. Input 0 to skip.")
     print("")
@@ -70,6 +74,7 @@ def loginPrompt(foundUser):
     
 def main ():
     mainMenuIntroMessage()
+    DB = database.Database()
     loginStatus = False
     sel = -1
     print("Welcome to InCollege!")
@@ -90,18 +95,18 @@ def main ():
                 print("Goodbye!")
             elif (sel == 1):
                 # if log in is successful, the user object is returned. Otherwise, false is returned.
-                theUser = accnt.login()
+                theUser = accnt.login(DB)
                 if theUser is False:
                     loginStatus = False
                 else:
                     loginStatus = True
             elif (sel == 2):
-                accnt.create_account()
+                accnt.create_account(DB)
             elif (sel == 3):
                 print("Under construction.")
             elif (sel == 4):
-                db = database.Database()
-                foundUser = db.search_users()
+                
+                foundUser = DB.search_users()
                 theUser = loginPrompt(foundUser)
                 if theUser is False:
                     loginStatus = False
@@ -109,7 +114,7 @@ def main ():
                     loginStatus = True
             elif (sel == 5):
                 skillScreen()
-            elif (sel == 6):
+            elif (sel == -100):
                 accnt.clear_accounts()
             else:
                 print("Invalid Selection!")
