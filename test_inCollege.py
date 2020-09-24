@@ -3,6 +3,7 @@ import inCollege_Accnt as accnt
 import inCollege_Home as home
 import inCollege_CurrentUser as user
 import inCollege_Database as database
+import inCollege_CurrentUser as user
 
 
 # Test function that asserts whether the passwordChecker() function returned the correct value
@@ -338,13 +339,14 @@ def login_fake_inputs(key, username, password):
     val = prompt_to_return_val[key]
 
     return val
+
 @pytest.mark.parametrize("username, password, expected",
  [
     #Test correct first name from test_create_account
     (
-        "1_acc_username",
-        "1_acc_password", 
-        False
+        "1accusername",
+        "1Password", 
+        True
     ),
     #Test a wrong combination of 
     (
@@ -354,6 +356,7 @@ def login_fake_inputs(key, username, password):
     ),
     # Todo: 3 more cases
 ])
+# Test Login Acc
 def test_login(DB, monkeypatch, username, password, expected):
 
     with monkeypatch.context() as m:
@@ -361,5 +364,73 @@ def test_login(DB, monkeypatch, username, password, expected):
         m.setattr('builtins.input', lambda x: login_fake_inputs(x, username, password))
         # m.setattr('sys.stdin', ans2)
         result = accnt.login(DB)
+
         # result = userInputFucntion()
+        if result == False:
+            assert result == expected
+        else:
+            print('result.name', result.name)
+            assert result.name != ''
+
+
+def post_job_fake_inputs(key, title, description, employer, location, salary, expected):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "Please enter job title: ": title,
+        "Please enter job description: ": description,
+        "Please enter employer for job: ": employer,
+        "Please enter job location: ": location,
+        "Please enter job salary: ": salary
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+# Post Job Parameters
+@pytest.mark.parametrize("title, description, employer, location, salary, fullname, expected",
+[
+    # test a correct combination of jobs and names
+    (
+        "",
+        "1_description",
+        "1_employer",
+        "1_location",
+        "1_salary",
+        "1_fullname",
+        False
+    ),
+    (
+        "1_title",
+        "1_description",
+        "1_employer",
+        "1_location",
+        "1_salary",
+        "1_fullname",
+        True
+    ),
+])
+#Post Job Test
+def test_post_job(monkeypatch, DB, title, description, employer, location, salary, fullname, expected ):
+    with monkeypatch.context() as m:
+        # the x parameter of the lambda function becomes the key used to access each respective input call
+        m.setattr('builtins.input', lambda x: post_job_fake_inputs(x, title, description, employer, location, salary, expected))
+        result = accnt.post_job(fullname, DB)
         assert result == expected
+
+# Test for User Class
+@pytest.mark.parametrize("username, expected",
+ [
+    #Test correct first name from test_create_account
+    (
+        "1accusername",
+        "1Firstname 1Lastname",
+    ),
+    #Test a wrong combination of 
+    (
+        "2_acc_username",
+        ""
+    ),
+    # Todo: 3 more cases
+])
+def test_getUserName(DB, username, expected):
+    myUser = user.User(username, DB)
+    assert expected == myUser.getUserName(username).strip()

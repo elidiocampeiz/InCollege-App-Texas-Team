@@ -52,8 +52,7 @@ def login(DB):
         print("\nLogin Error")
         return login
 
-    theUser = user.User(username)
-
+    theUser = user.User(username, DB)
     return theUser
 
 # Function for create an account UI
@@ -89,9 +88,9 @@ def create_account(DB):
         print("\nCreate Account Error")
     return create_account
 
-def post_job(fullname):
+def post_job(fullname, DB):
     # Init DB
-    DB = database.Database()
+    # DB = database.Database()
 
     #Get user input
     title = str(input("Please enter job title: "))
@@ -104,3 +103,6 @@ def post_job(fullname):
 
     if (create_job_posting == False):
         print("\nCreate Job Posting Error")
+    
+    create_job_posting
+    

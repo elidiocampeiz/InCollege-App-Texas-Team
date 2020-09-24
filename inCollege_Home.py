@@ -132,7 +132,7 @@ def main ():
             if (sel == 0):
                 print("Goodbye!")
             elif (sel == 1):
-                accnt.post_job(theUser.name)
+                accnt.post_job(theUser.name, DB)
             elif (sel == 2):
                 print("Under construction.")                
             elif (sel == 3):

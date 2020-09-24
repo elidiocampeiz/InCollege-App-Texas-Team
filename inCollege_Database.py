@@ -92,6 +92,8 @@ class Database():
 
     def create_job_posting(self, title, description, employer, location, salary, name_of_poster):
 
+        if title == '' or description == '' or employer == '' or location == '' or salary == '' or salary == '' or name_of_poster == '':
+            return False
         #loading data from file
         self.load()
 
