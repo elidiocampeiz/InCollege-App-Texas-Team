@@ -131,29 +131,23 @@ class Database():
 
     def search_users(self):
 
-        firstname_search = input(str("Please enter the first name of the user you want to connect to: "))
-        lastname_search = input(str("Please enter the last name of the user you want to connect to: "))
+        print("     *** Type 'x' at any time to go back ***\n")
+        print("Enter the following information about user you are searching for...")
+        firstname_search = input("--> First Name: ")
+        if firstname_search == 'x':
+            return False
+
+        lastname_search = input("--> Last Name: ")
+        if lastname_search == 'x':
+            return False
 
         for student in self.data["Students"]:
             # If username already exists return false
             if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
-                print('They are a part of the InCollege system')
+                print('\nThey are a part of the InCollege system!')
                 return True
 
         #if we get to this point, the user was not founf
-        print("They are not yet a part of the InCollege system yet")
+        print("They are not yet a part of the InCollege system yet!\n")
         return False
 
-# DB = Database()
-# # DB.clear()
-# a = DB.create_account("u","p")
-# a = DB.create_account("a","p")
-# a = DB.create_account("b","p")
-# a = DB.create_account("c","p")
-# a = DB.create_account("d","p")
-# a = DB.create_account("g","p")
-
-
-
-# a = DB.login("u","p")
-# a = DB.login("a","p")

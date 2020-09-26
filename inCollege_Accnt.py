@@ -39,17 +39,22 @@ def login(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    username = input("Please enter your username, type 'q' to cancel: ")
-    if (username == 'q'):
+    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("+--------------+")
+    print("|    Log In    |")
+    print("+--------------+")
+    username = input("Enter Your Username: ")
+    if (username == 'x'):
         return False
-    password = input("Please enter your password, type 'q' to cancel: ")
-    if (password == 'q'):
+    password = input("Enter Your Password: ")
+    if (password == 'x'):
         return False
+
     # Try to login with username and password combination
     login = DB.login(username, password)
     # Handle error TODO: Replace by Try/catch block
     if (login == False):
-        print("\nLogin Error")
+        print("\n     ***Login Error***")
         return login
 
     theUser = user.User(username, DB)
@@ -60,26 +65,29 @@ def create_account(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    username = str(input("Please enter username, type 'q' to cancel: "))
-    if (username == 'q'):
+    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("+-------------------+")
+    print("| Create An Account |")
+    print("+-------------------+\n")
+    username = str(input("Enter username: "))
+    if (username == 'x'):
         return False
-    password = str(input("Please enter password, type 'q' to cancel: "))
-    if (password == 'q'):
+    password = str(input("Enter password: "))
+    if (password == 'x'):
         return False
     # Check if password is secure
     while passwordChecker(password) == False:
-        password = str(input("Please enter new password or type 'q' to quit: "))
-        if password == 'q':
+        password = str(input("Please enter new password: "))
+        if password == 'x':
             return False
 
     # Getting name
-    firstName = str(input("Please enter first name, type 'q' to cancel: "))
-    if (firstName == 'q'):
+    firstName = str(input("Please enter first name: "))
+    if (firstName == 'x'):
         return False
-    lastName = str(input("Please enter last name, type 'q' to cancel: "))
-    if (lastName == 'q'):
+    lastName = str(input("Please enter last name: "))
+    if (lastName == 'x'):
         return False
-
 
     # Try to create new student account in DB
     create_account = DB.create_account(username, password, firstName, lastName)
@@ -92,12 +100,27 @@ def post_job(fullname, DB):
     # Init DB
     # DB = database.Database()
 
+    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("+-------------------+")
+    print("|    Post A Job     |")
+    print("+-------------------+\n")
+
     #Get user input
-    title = str(input("Please enter job title: "))
-    description = str(input("Please enter job description: "))
-    employer = str(input("Please enter employer for job: "))
-    location = str(input("Please enter job location: "))
-    salary = str(input("Please enter job salary: "))
+    title = input("Enter Job Title: ")
+    if title == 'x':
+        return False
+    description = input("Enter Job Description: ")
+    if description == 'x':
+        return False
+    employer = str(input("Enter Employer For Job: "))
+    if employer == 'x':
+        return False
+    location = str(input("Enter Job Location: "))
+    if location == 'x':
+        return False
+    salary = str(input("Enter Job Salary: "))
+    if salary == 'x':
+        return False
 
     create_job_posting = DB.create_job_posting(title, description, employer, location, salary, fullname)
 
@@ -106,3 +129,5 @@ def post_job(fullname, DB):
     
     return create_job_posting
     
+def clear_accounts():
+    database.Database

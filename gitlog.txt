@@ -1,0 +1,21 @@
+commit 2ff384439e12ad0cc48de482e12c29c02801979a (HEAD -> master)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Fri Sep 25 20:34:00 2020 -0400
+
+    Challenge 2 - Final Version
+
+commit 532f8e101c35ccdab93cf2b2095475bd703daca5
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Fri Sep 25 20:30:37 2020 -0400
+
+    challenge 2 - Testing V3
+
+commit 52c7cb7c4d88369505084f862db442ce89c73ebf
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Fri Sep 25 20:30:20 2020 -0400
+
+    Co-authored-by: bayatpoora@usf.edu <bayatpoora@usf.edu>
+
+commit 520d14923daa4a8cd9d7d581c42e77c8f77fa8ef
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Thu Sep 24 18:29:54 2020 -0400

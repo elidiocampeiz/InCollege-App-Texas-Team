@@ -28,7 +28,7 @@ def DB():
  [
     (
         "1_acc_username",
-        "1_acc_password", 
+        "1_acc_password",
         "1_Firstname",
         "1_Lastname",
         True
@@ -42,33 +42,33 @@ def DB():
     ),
     (
         "3_acc_username",
-        "3_acc_password", 
+        "3_acc_password",
         "3_Firstname",
         "3_Lastname",
         True
     ),
     (
         "4_acc_username",
-        "4_acc_password", 
+        "4_acc_password",
         "4_Firstname",
         "4_Lastname",
         True
     ),
     (
         "5_acc_username",
-        "5_acc_password", 
+        "5_acc_password",
         "5_Firstname",
         "5_Lastname",
         True
     ),
     (
         "6_acc_username",
-        "6_acc_password", 
+        "6_acc_password",
         "6_Firstname",
         "6_Lastname",
         False
     ), # The DB can only have 5 user accounts so if we try to create the 6th the create_account function returns false
-    
+
 ])
 def test_create_account(DB, username, password, firstname, lastname, expected):
     # create_account() create returning true if the account exists and false otherwise
@@ -81,29 +81,29 @@ def test_create_account(DB, username, password, firstname, lastname, expected):
     # test a correct combination of username and password
     (
         "1_acc_username",
-        "1_acc_password", 
+        "1_acc_password",
         True
     ),
     # test a wrong combination of username and password
     (
         "2_acc_username",
-        "1_acc_username", 
+        "1_acc_username",
         False
     ),
     # test a correct username and wrong_password
     (
         "1_acc_username",
-        "random_wrong_password", 
+        "random_wrong_password",
         False
     ),
     # test using a correct username as password
     (
         "1_acc_username",
-        "4_acc_password", 
+        "4_acc_password",
         False
     ),
-    
-    
+
+
 ])
 def test_login(DB, username, password, expected):
     # loginChecker() authenticates the user login, returning true if the account exists and false otherwise
@@ -111,7 +111,7 @@ def test_login(DB, username, password, expected):
     assert result == expected
 
 # # Test function that selects a skill
-# @pytest.mark.parametrize("selection, expected", 
+# @pytest.mark.parametrize("selection, expected",
 # [
 #     (0, False),
 #     (1, True),
@@ -124,15 +124,14 @@ def test_login(DB, username, password, expected):
 # def test_skillSelect(selection, expected):
 #     result = home.selectionScreen(selection)
 #     assert result == expected
-@pytest.mark.parametrize("selectionStr, expected", 
+@pytest.mark.parametrize("selectionStr, expected",
 [
-    ('0', False),
     ('1', True),
     ('2', True),
     ('3', True),
     ('4', True),
     ('5', True),
-    ('6', False),
+    ('x', False),
 ])
 def test_skillSelect(monkeypatch, selectionStr, expected):
     monkeypatch.setattr('builtins.input', lambda x: selectionStr)
@@ -145,7 +144,7 @@ def test_skillSelect(monkeypatch, selectionStr, expected):
     # test a correct combination of posting job
     (
         "1_title",
-        "1_description", 
+        "1_description",
         "1_employer",
         "1_location",
         "1_salary",
@@ -159,7 +158,7 @@ def test_create_job_posting(DB, title, description, employer, location, salary, 
     assert result == expected
 
 # #Test login prompt
-# @pytest.mark.parametrize("selection, expected", 
+# @pytest.mark.parametrize("selection, expected",
 # [
 #     (-1, False),
 #     (0, False),
@@ -176,8 +175,8 @@ def test_create_job_posting(DB, title, description, employer, location, salary, 
 def fake_inputs(key, firstname, lastname):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Please enter the first name of the user you want to connect to: ": firstname,
-        "Please enter the last name of the user you want to connect to: ": lastname,
+        "--> First Name: ": firstname,
+        "--> Last Name: ": lastname,
     }
     val = prompt_to_return_val[key]
     return val
@@ -188,30 +187,30 @@ def fake_inputs(key, firstname, lastname):
     # Test correct first and name input
     (
         "1_Firstname",
-        "1_Lastname", 
+        "1_Lastname",
         True
     ),
     # Test a wrong first name input
     (
         "1_Lastname",
-        "1_Lastname", 
+        "1_Lastname",
         False
     ),
     # Test a wrong last name input
     (
         "1_Firstname",
-        "1_Firstname", 
+        "1_Firstname",
         False
     ),
     # Test null input
     (
         "",
-        "", 
+        "",
         False
     ),
 ])
 def test_search_users(DB, monkeypatch, firstname, lastname, expected):
-    
+
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
         m.setattr('builtins.input', lambda x: fake_inputs(x, firstname, lastname))
@@ -251,11 +250,11 @@ def test_save(DB):
 def create_accout_menu_fake_inputs(key, username, password, passwordCheck, firstname, lastname):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Please enter username, type 'q' to cancel: ": username,
-        "Please enter password, type 'q' to cancel: ": password,
-        "Please enter new password or type 'q' to quit: ": passwordCheck,
-        "Please enter first name, type 'q' to cancel: ": firstname,
-        "Please enter last name, type 'q' to cancel: ": lastname
+        "Enter username: ": username,
+        "Enter password: ": password,
+        "Please enter new password: ": passwordCheck,
+        "Please enter first name: ": firstname,
+        "Please enter last name: ": lastname
     }
     val = prompt_to_return_val[key]
     return val
@@ -266,7 +265,7 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     (
         "1accusername",
         "1Password",
-        "Pass123", 
+        "Pass123",
         "1Firstname",
         "1Lastname",
         True
@@ -274,26 +273,26 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     # invalid password input, default to 'Pass123', pass the test
     (
         "2accusername",
-        "2password", 
-        "Pass123", 
+        "2password",
+        "Pass123",
         "2Firstname",
         "2Lastname",
         True
     ),
-    # invalid username already exists input 
+    # invalid username already exists input
     (
         "1accusername",
-        "3password", 
-        "Pass123", 
+        "3password",
+        "Pass123",
         "3Firstname",
         "3Lastname",
         False
     ),
     # 'q' in the username field
     (
-        "q",
+        "x",
         "4Password",
-        "Pass123",  
+        "Pass123",
         "4Firstname",
         "4Lastname",
         False
@@ -301,8 +300,8 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     # 'q' in the password field
     (
         "4accusername",
-        "q",
-        "Pass123",  
+        "x",
+        "Pass123",
         "4Firstname",
         "4Lastname",
         False
@@ -310,32 +309,32 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     # invalid password and 'q' in the Default password field
     (
         "4accusername",
-        "4password", 
-        "q", 
+        "4password",
+        "x",
         "4Firstname",
         "4Lastname",
         False
-    ), 
+    ),
     (
         "3accusername",
-        "3Password", 
-        "Pass133", 
+        "3Password",
+        "Pass133",
         "3Firstname",
         "3Lastname",
         True
     ),
     (
         "4accusername",
-        "4Password", 
-        "Pass143", 
+        "4Password",
+        "Pass143",
         "4Firstname",
         "4Lastname",
         True
     ),
     (
         "5accusername",
-        "5Password", 
-        "Pass153", 
+        "5Password",
+        "Pass153",
         "5Firstname",
         "5Lastname",
         True
@@ -343,8 +342,8 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     # The DB can only have 5 user accounts so if we try to create the 6th the create_account function returns false
     (
         "6_acc_username",
-        "6_Password", 
-        "Pass163", 
+        "6_Password",
+        "Pass163",
         "6_Firstname",
         "6_Lastname",
         False
@@ -352,7 +351,7 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
 ])
 
 def test_create_accout_menu(DB, monkeypatch, username, password, passwordCheck, firstname, lastname, expected ):
-    
+
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
         m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, username, password, passwordCheck, firstname, lastname))
@@ -364,9 +363,9 @@ def test_create_accout_menu(DB, monkeypatch, username, password, passwordCheck, 
 def login_fake_inputs(key, username, password):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Please enter your username, type 'q' to cancel: ": username,
-        "Please enter your password, type 'q' to cancel: ": password
-    } 
+        "Enter Your Username: ": username,
+        "Enter Your Password: ": password
+    }
     val = prompt_to_return_val[key]
 
     return val
@@ -376,31 +375,31 @@ def login_fake_inputs(key, username, password):
     # Test correct combination of username and password input
     (
         "1accusername",
-        "1Password", 
+        "1Password",
         True
     ),
     # Test incorrect password input
     (
         "1accusername",
-        "1accusername", 
+        "1accusername",
         False
     ),
     # Test incorrect username input
     (
         "2accusername",
-        "1Password", 
+        "1Password",
         False
     ),
     # Test quit, case 1
     (
         "q",
-        "1Password", 
+        "1Password",
         False
     ),
     # Test quit, case 2
     (
         "1accusername",
-        "q", 
+        "q",
         False
     ),
     # Todo: 3 more cases
@@ -418,18 +417,18 @@ def test_login(DB, monkeypatch, username, password, expected):
         if result == False:
             assert result == expected
         else:
-            print('result.name', result.name)
+            #print('result.name', result.name)
             assert result.name != ''
 
 
 def post_job_fake_inputs(key, title, description, employer, location, salary, expected):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Please enter job title: ": title,
-        "Please enter job description: ": description,
-        "Please enter employer for job: ": employer,
-        "Please enter job location: ": location,
-        "Please enter job salary: ": salary
+        "Enter Job Title: ": title,
+        "Enter Job Description: ": description,
+        "Enter Employer For Job: ": employer,
+        "Enter Job Location: ": location,
+        "Enter Job Salary: ": salary
     }
     val = prompt_to_return_val[key]
     return val
@@ -523,7 +522,7 @@ def test_post_job(monkeypatch, DB, title, description, employer, location, salar
         "1accusername",
         "1Firstname 1Lastname",
     ),
-    #Test a wrong combination of 
+    #Test a wrong combination of
     (
         "2_acc_username",
         ""
@@ -533,7 +532,6 @@ def test_post_job(monkeypatch, DB, title, description, employer, location, salar
 def test_getUserName(DB, username, expected):
     myUser = user.User(username, DB)
     assert expected == myUser.getUserName(username).strip()
-
 
 def intro_menu_fake_inputs(key, selection, validSelection):
     # Each Key has to be the same string as the respective input statement
@@ -583,4 +581,4 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
 #     outputFunction(inputStr)
 #     captured_stdout, captured_stderr = capsys.readouterr()
 #     # You can use .strip here to eliminate '\n', or include it in the expected string
-#     assert captured_stdout.strip() == expected 
+#     assert captured_stdout.strip() == expected

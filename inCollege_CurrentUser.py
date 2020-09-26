@@ -18,11 +18,3 @@ class User:
                 # concatenating first/last name
                 return student['firstname'] + " " + student['lastname']
         return ""
-
-
-
-# user = User("username")
-
-# ["correct_usernames, fullname",[('usrname1','fullname'),('username2', '')]]
-
-# assert user.getUserName("correct_usernames") == fullname 
