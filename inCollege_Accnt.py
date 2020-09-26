@@ -104,5 +104,5 @@ def post_job(fullname, DB):
     if (create_job_posting == False):
         print("\nCreate Job Posting Error")
     
-    create_job_posting
+    return create_job_posting
     
