@@ -185,20 +185,30 @@ def fake_inputs(key, firstname, lastname):
 # Create search_users
 @pytest.mark.parametrize("firstname, lastname, expected",
  [
-    #Test correct first name from test_create_account
+    # Test correct first and name input
     (
         "1_Firstname",
         "1_Lastname", 
         True
     ),
-    #Test a wrong combination of 
+    # Test a wrong first name input
     (
-        "2_acc_username",
-        "1_acc_username", 
+        "1_Lastname",
+        "1_Lastname", 
         False
     ),
-    # Todo: 3 more cases
-    
+    # Test a wrong last name input
+    (
+        "1_Firstname",
+        "1_Firstname", 
+        False
+    ),
+    # Test null input
+    (
+        "",
+        "", 
+        False
+    ),
 ])
 def test_search_users(DB, monkeypatch, firstname, lastname, expected):
     
@@ -213,8 +223,29 @@ def test_search_users(DB, monkeypatch, firstname, lastname, expected):
 def test_clear(DB):
     DB.clear()
     reset_DB_data = {"Students":[], "Jobs":[]}
+    DB.load()
     assert DB.data == reset_DB_data
     assert DB.isFull == False
+
+def test_reset(DB):
+    DB.reset()
+    reset_DB_data = {"Students":[], "Jobs":[]}
+    assert DB.data == reset_DB_data
+    assert DB.isFull == False
+
+def test_load(DB):
+    filename = DB.filename
+    DB.filename = None
+    assert DB.filename == None
+    DB.load(filename)
+    assert DB.filename == filename
+
+def test_save(DB):
+    assert "test_save" not in  DB.data.keys()
+    DB.data["test_save"] = True
+    DB.save()
+    assert "test_save" in  DB.data.keys()
+    DB.clear()
 
 # Create Account Test (inCollege_Acct.py)
 def create_accout_menu_fake_inputs(key, username, password, passwordCheck, firstname, lastname):
@@ -342,16 +373,34 @@ def login_fake_inputs(key, username, password):
 
 @pytest.mark.parametrize("username, password, expected",
  [
-    #Test correct first name from test_create_account
+    # Test correct combination of username and password input
     (
         "1accusername",
         "1Password", 
         True
     ),
-    #Test a wrong combination of 
+    # Test incorrect password input
     (
-        "2_acc_username",
-        "1_acc_username", 
+        "1accusername",
+        "1accusername", 
+        False
+    ),
+    # Test incorrect username input
+    (
+        "2accusername",
+        "1Password", 
+        False
+    ),
+    # Test quit, case 1
+    (
+        "q",
+        "1Password", 
+        False
+    ),
+    # Test quit, case 2
+    (
+        "1accusername",
+        "q", 
         False
     ),
     # Todo: 3 more cases
@@ -398,6 +447,56 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_fullname",
         False
     ),
+    # test a correct combination of jobs and names
+    (
+        "1_title",
+        "",
+        "1_employer",
+        "1_location",
+        "1_salary",
+        "1_fullname",
+        False
+    ),
+    # test a correct combination of jobs and names
+    (
+        "1_title",
+        "1_description",
+        "",
+        "1_location",
+        "1_salary",
+        "1_fullname",
+        False
+    ),
+    # test a correct combination of jobs and names
+    (
+        "1_title",
+        "1_description",
+        "1_employer",
+        "",
+        "1_salary",
+        "1_fullname",
+        False
+    ),
+    # test a correct combination of jobs and names
+    (
+        "1_title",
+        "1_description",
+        "1_employer",
+        "1_location",
+        "",
+        "1_fullname",
+        False
+    ),
+    # test a correct combination of jobs and names
+    (
+        "1_title",
+        "1_description",
+        "1_employer",
+        "1_location",
+        "1_salary",
+        "",
+        False
+    ),
     (
         "1_title",
         "1_description",
@@ -434,3 +533,54 @@ def test_post_job(monkeypatch, DB, title, description, employer, location, salar
 def test_getUserName(DB, username, expected):
     myUser = user.User(username, DB)
     assert expected == myUser.getUserName(username).strip()
+
+
+def intro_menu_fake_inputs(key, selection, validSelection):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "Enter Your Selection:\n":selection,
+        "Invalid Entry. Enter 0 or 1.":validSelection,
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+# Test for intro menu
+@pytest.mark.parametrize("selection, validSelection, expected",
+ [
+    # Test correct first input, case 1
+    (
+        "1",
+        "1",
+        True,
+    ),
+    # Test correct first input, case 2
+    (
+        "0",
+        "0",
+        False,
+    ),
+    # Test incorrect first input, case 1
+    (
+        "wrong",
+        "1",
+        True,
+    ),
+    # Test incorrect first input, case 2
+    (
+        "wrong",
+        "0",
+        False,
+    ),
+])
+def test_intro_menu(monkeypatch, selection, validSelection, expected):
+    with monkeypatch.context() as m:
+        # the x parameter of the lambda function becomes the key used to access each respective input call
+        m.setattr('builtins.input', lambda x: intro_menu_fake_inputs(x, selection, validSelection))
+        assert expected == home.mainMenuIntroMessage()
+
+
+# def test_hello(capsys, inputStr, expected):
+#     outputFunction(inputStr)
+#     captured_stdout, captured_stderr = capsys.readouterr()
+#     # You can use .strip here to eliminate '\n', or include it in the expected string
+#     assert captured_stdout.strip() == expected 
