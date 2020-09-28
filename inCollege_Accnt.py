@@ -39,7 +39,7 @@ def login(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
     print("+--------------+")
     print("|    Log In    |")
     print("+--------------+")
@@ -65,7 +65,7 @@ def create_account(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
     print("+-------------------+")
     print("| Create An Account |")
     print("+-------------------+\n")
@@ -100,7 +100,7 @@ def post_job(fullname, DB):
     # Init DB
     # DB = database.Database()
 
-    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
     print("+-------------------+")
     print("|    Post A Job     |")
     print("+-------------------+\n")

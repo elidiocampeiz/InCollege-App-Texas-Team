@@ -106,22 +106,21 @@ def main ():
     mainMenuIntroMessage()
     loginStatus = False
     sel = ''
-    print("             +/ ==================== \+")
-    print("             |  Welcome to inCOLLEGE  |")
-    print("             +\ ==================== /+\n")
 
     while (sel != 'x'):
 
         #This menu is displayed to non-logged in user
         if (loginStatus == False):
-            print("\n\n")
+            print("\n")
+            print("        + --------- +")
+            print("        | MAIN MENU |         ")
             print(" +--------------------------+")
             print(" | 1. Login                 |")
             print(" | 2. Create New Account    |")
             print(" | 3. Find Someone You Know |")
             print(" | x. Quit                  |")
             print(" +--------------------------+")
-            sel = input("Enter your selection:\n")
+            sel = input("\nEnter your selection:")
             print("")
             if (sel == 'x' or sel == '0'):
                 print("Goodbye!")

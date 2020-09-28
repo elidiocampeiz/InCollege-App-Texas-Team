@@ -1,4 +1,5 @@
 import pickle
+import time 
 
 #Dictionary data structure. Or set. I don't know.
 #Pickle saves the binary data of the python object.
@@ -69,7 +70,7 @@ class Database():
 
         # If DB is full return False
         if self.isFull == True:
-            print('Maximum number of accounts accounts have been created. Please come back later.')
+            print('Error: Maximum Number of Accounts In Database Already.')
             return False
 
         # Init new student 
@@ -87,7 +88,10 @@ class Database():
             
         # Save data to file
         self.save()
-        print("Account created")
+        print("\n... \n")
+        time.sleep(1) #added this for effect, makes program wait for second then tells user account was created.
+        print("Account Succesfully Created!")
+        time.sleep(1)
         return True
 
     def create_job_posting(self, title, description, employer, location, salary, name_of_poster):
@@ -123,7 +127,10 @@ class Database():
         for student in self.data["Students"]:
             # If username and password match, login succesful return True
             if student['username'] == username and student['password'] == password:
-                print('Succesful login')
+                print("\n...")
+                time.sleep(1)
+                print('Succesful login!')
+                time.sleep(1)
                 return True
         
         print("No account found with this username and password combination")
@@ -144,7 +151,10 @@ class Database():
         for student in self.data["Students"]:
             # If username already exists return false
             if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
+                print("\n...")
+                time.sleep(1)
                 print('\nThey are a part of the InCollege system!')
+                time.sleep(1)
                 return True
 
         #if we get to this point, the user was not founf
