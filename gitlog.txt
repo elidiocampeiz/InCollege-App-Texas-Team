@@ -10,12 +10,15 @@ Date:   Fri Sep 25 20:30:37 2020 -0400
 
     challenge 2 - Testing V3
 
-commit 52c7cb7c4d88369505084f862db442ce89c73ebf
+joseelidiocampeizneto@Joses-MacBook-Pro inCollege_C2 % git log
+commit 3baae849f471da9ee5d29d887ea4a04c2d06100d (HEAD -> master)
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Fri Sep 25 20:30:20 2020 -0400
+Date:   Fri Sep 25 20:48:10 2020 -0400
 
-    Co-authored-by: bayatpoora@usf.edu <bayatpoora@usf.edu>
+    Challenge 2 - Final Version
 
-commit 520d14923daa4a8cd9d7d581c42e77c8f77fa8ef
+commit 532f8e101c35ccdab93cf2b2095475bd703daca5
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Thu Sep 24 18:29:54 2020 -0400
+Date:   Fri Sep 25 20:30:37 2020 -0400
+
+    challenge 2 - Testing V3
