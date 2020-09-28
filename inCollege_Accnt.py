@@ -28,7 +28,7 @@ def passwordChecker(password):
         return False
     # else return True
     return True
-
+# hhh
 # def clear_accounts():
 #     # Init DB
 #     DB = database.Database()
