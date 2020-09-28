@@ -158,7 +158,7 @@ def main ():
                         print("+-------------------------+")
                         sel = input("\nEnter Your Selection: ")
 
-                        if (el == '1':
+                        if sel == '1':
                             theUser = accnt.login(db)
                             if theUser is False:
                                 loginStatus = False
