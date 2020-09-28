@@ -1,5 +1,6 @@
 import inCollege_Database as database
 import inCollege_CurrentUser as user
+import time
 
 # function that validates a secure password
 def passwordChecker(password):
@@ -7,7 +8,10 @@ def passwordChecker(password):
     contains_digit = False
     contains_alpha = True
     if password== None or len(password)<7 or len(password)>13:
-        print('password must contain at least 7 and at most 13 characters.')
+        print("...")
+        time.sleep(1)
+        print('|*| Error - Password Must contain 7 --> 13 characters |*|')
+        time.sleep(1)
         return False
     for character in password:
         if character.isupper():
@@ -20,11 +24,11 @@ def passwordChecker(password):
     if contains_digit == False or contains_upper == False or contains_alpha == True:
         # Tell the user why the password is not secured
         if contains_digit == False:
-            print('password must contain at least one digit (0-9).')
+            print('|*| Password Must Contain At Least One Digit (0-9) |*|')
         if contains_upper == False:
-            print('password must contain at least one upper case letter (A-Z).')
+            print('|*| Password Must Contain At Least One Upper Case Letter (A-Z) |*|')
         if contains_alpha == True:
-            print("password must not contain alpha-numeric characters (e.g. '^', ']', '#').")
+            print("|*| Password Must Not Contain Alpha-Numeric Characters (e.g. '^', ']', '#') |*|")
         return False
     # else return True
     return True
@@ -39,7 +43,7 @@ def login(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     print("+--------------+")
     print("|    Log In    |")
     print("+--------------+")
@@ -54,7 +58,10 @@ def login(DB):
     login = DB.login(username, password)
     # Handle error TODO: Replace by Try/catch block
     if (login == False):
-        print("\n     ***Login Error***")
+        time.sleep(1)
+        print("...")
+        time.sleep(1)
+        print("\n|*| Login Error |*|\n")
         return login
 
     theUser = user.User(username, DB)
@@ -65,7 +72,7 @@ def create_account(DB):
     # Init DB
     # DB = database.Database()
     # Get user input
-    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     print("+-------------------+")
     print("| Create An Account |")
     print("+-------------------+\n")
@@ -77,15 +84,15 @@ def create_account(DB):
         return False
     # Check if password is secure
     while passwordChecker(password) == False:
-        password = str(input("Please enter new password: "))
+        password = str(input("Enter Password: "))
         if password == 'x':
             return False
 
     # Getting name
-    firstName = str(input("Please enter first name: "))
+    firstName = str(input("Enter First Name: "))
     if (firstName == 'x'):
         return False
-    lastName = str(input("Please enter last name: "))
+    lastName = str(input("Enter Last Name: "))
     if (lastName == 'x'):
         return False
 
@@ -93,14 +100,14 @@ def create_account(DB):
     create_account = DB.create_account(username, password, firstName, lastName)
     # Handle error TODO: Replace by Try/catch block
     if (create_account == False):
-        print("\nCreate Account Error")
+        print("\n|*| Create Account Error |*|")
     return create_account
 
 def post_job(fullname, DB):
     # Init DB
     # DB = database.Database()
 
-    print("|*|NOTE - Enter 'x' at any time to go back|*|\n")
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     print("+-------------------+")
     print("|    Post A Job     |")
     print("+-------------------+\n")
@@ -125,7 +132,7 @@ def post_job(fullname, DB):
     create_job_posting = DB.create_job_posting(title, description, employer, location, salary, fullname)
 
     if (create_job_posting == False):
-        print("\nCreate Job Posting Error")
+        print("\n|*| Create Job Posting Error |*|")
     
     return create_job_posting
     

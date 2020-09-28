@@ -70,7 +70,10 @@ class Database():
 
         # If DB is full return False
         if self.isFull == True:
-            print('Error: Maximum Number of Accounts In Database Already.')
+            print("...")
+            time.sleep(1)
+            print('|*| Error: Maximum Number of Accounts Already Taken |*|')
+            time.sleep(1)
             return False
 
         # Init new student 
@@ -80,7 +83,10 @@ class Database():
         for student in self.data["Students"]:
             # If username already exists return false
             if student['username'] == new_username:
+                print("...")
+                time.sleep(1)
                 print('Username already in use')
+                time.sleep(1)
                 return False
         
         # Else append new student to the list
@@ -110,7 +116,10 @@ class Database():
 
         # Save data to file
         self.save()
-        print("Job Posting Created")
+        print("...")
+        time.sleep(1)
+        print("Job Posted Successfully!")
+        time.sleep(1)
         return True
 
     # Login function
@@ -129,17 +138,20 @@ class Database():
             if student['username'] == username and student['password'] == password:
                 print("\n...")
                 time.sleep(1)
-                print('Succesful login!')
+                print('Succesful login!\n')
                 time.sleep(1)
                 return True
         
+        print(...)
+        time.sleep(1)
         print("No account found with this username and password combination")
+        time.sleep(1)
         return False
 
     def search_users(self):
 
-        print("     *** Type 'x' at any time to go back ***\n")
-        print("Enter the following information about user you are searching for...")
+        print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+        print("Enter the Following to check if user is in the inCollege Database...\n")
         firstname_search = input("--> First Name: ")
         if firstname_search == 'x':
             return False
@@ -151,13 +163,12 @@ class Database():
         for student in self.data["Students"]:
             # If username already exists return false
             if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
-                print("\n...")
-                time.sleep(1)
-                print('\nThey are a part of the InCollege system!')
-                time.sleep(1)
                 return True
 
         #if we get to this point, the user was not founf
+        print("...")
+        time.sleep(1)
         print("They are not yet a part of the InCollege system yet!\n")
+        time.sleep(1)
         return False
 

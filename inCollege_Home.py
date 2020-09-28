@@ -4,6 +4,7 @@
 import inCollege_Accnt as accnt
 import inCollege_Database as database
 import inCollege_CurrentUser as user
+import time
 
 
 def skillScreen():
@@ -120,7 +121,7 @@ def main ():
             print(" | 3. Find Someone You Know |")
             print(" | x. Quit                  |")
             print(" +--------------------------+")
-            sel = input("\nEnter your selection:")
+            sel = input("\nEnter your selection: ")
             print("")
             if (sel == 'x' or sel == '0'):
                 print("Goodbye!")
@@ -131,54 +132,65 @@ def main ():
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
                 return 0
-            elif (sel == '1'): #Log In. if log in is successful, the user object is returned. Otherwise, false is returned.
+            elif sel == '1': #Log In. if log in is successful, the user object is returned. Otherwise, false is returned.
                 theUser = accnt.login(db)
                 if theUser is False:
                     loginStatus = False
                 else:
                     loginStatus = True
-            elif (sel == '2'): #Create an account
+            elif sel == '2': #Create an account
                 accnt.create_account(db)
 
-            elif (sel == '3'): #Find Someone You Know
+            elif sel == '3': #Find Someone You Know
                 foundUser = db.search_users() #returns t / f
                 theUser = False
-                if (foundUser == True):
-                    print("They are a part of the InCollege system! "
-                          "\nWhy don't you join them?")
-                    print("+-------------------------+")
-                    print("|1. Login                 |")
-                    print("|2. Create New Account    |")
-                    print("|x. Go To Main Menu       |")
-                    print("+-------------------------+")
-                    sel = input("Enter your selection:\n")
-                    while (sel != 'x'):
-                        sel = input("Input 1 to log in. Input 2 to sign up. Input 0 to continue without logging in or signing up: ")
-                        if (sel == '1'):
+                if foundUser == True:
+                    print("\nThey are a part of the InCollege system!")
+                    time.sleep(1)
+                    print("Why don't you join them?\n")
+                    time.sleep(1)
+
+                    while sel != '0': #had to change this to zero to fix problem with program exiting if user places x there
+                        print("+-------------------------+")
+                        print("| 1. Login                |")
+                        print("| 2. Create New Account   |")
+                        print("| 0. Go Back to Main Menu |")
+                        print("+-------------------------+")
+                        sel = input("\nEnter Your Selection: ")
+
+                        if (el == '1':
                             theUser = accnt.login(db)
-                            return theUser
-                            break
-                        elif (sel == '2'):
-                            accnt.create_account()
-                            print("Please log in from the home page!")
+                            if theUser is False:
+                                loginStatus = False
+                            else:
+                                loginStatus = True
+                        elif sel == '2':
+                            accnt.create_account(db)
+                            print("Log in from the Main Menu")
                             break
                         else:
-                            print(
-                                "Invalid selection. Input 1 to log in. Input 2 to sign up. Input 0 to continue without logging in or signing up: ")
+                            time.sleep(1)
+                            print("Invalid selection.")
+                            time.sleep(1)
                 if theUser is False:
                     loginStatus = False
                 else:
                     loginStatus = True
 
             #Erases the database
-            elif (sel == "-100"):
+            elif sel == "-100":
                 db.clear()
             else:
+                print("...")
+                time.sleep(1)
                 print("Invalid Selection!")
+                time.sleep(1)
 
         # if User is logged in
         else:
 
+            print("          + --------- +")
+            print("          | MAIN MENU |         ")
             print("+------------------------------+")
             print("|1. Post a Job                 |")
             print("|2. Job / Internship Search    |")
@@ -187,8 +199,8 @@ def main ():
             print("|x. Quit                       |")
             print("+------------------------------+")
             print("")
-            sel = input("Enter Your Selection:\n ")
-            if (sel == 'x'):
+            sel = input("Enter Your Selection: ")
+            if sel == 'x':
                 print("Goodbye!")
                 # Ignore everything between '====='(Printing DB results)
                 # =========================================================
@@ -197,16 +209,21 @@ def main ():
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
                 return 0
-            elif (sel == '1'): # Post A Job
+            elif sel == '1': # Post A Job
                 accnt.post_job(theUser.name, db)
-            elif (sel == '2'):
+            elif sel == '2':
                 print("Under construction.")                
-            elif (sel == '3'): # Find someone you know
+            elif sel == '3': # Find someone you know
                 db = database.Database()
-                db.search_users()
-            elif (sel == '4'): # Learn a New Skill
+                foundUser = db.search_users()
+                if foundUser is True:
+                    print("...")
+                    time.sleep(1)
+                    print("User found in the inCollege System!")
+                    time.sleep(1)
+            elif sel == '4': # Learn a New Skill
                 skillScreen()
-            elif (sel == "-100"):
+            elif sel == "-100":
                 db.clear()
             else:
                 print("Invalid Selection!")
