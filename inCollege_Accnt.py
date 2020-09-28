@@ -34,8 +34,6 @@ def passwordChecker(password):
 #     DB = database.Database()
 #     DB.clear()
 
-##hey
-
 # Function for login UI
 def login(DB):
     # Init DB
