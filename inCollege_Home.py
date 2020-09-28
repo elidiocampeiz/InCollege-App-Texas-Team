@@ -50,26 +50,28 @@ def skillScreen():
 #     return False
 
 def mainMenuIntroMessage():
-    print("====================")
-    print("|||IN COLLEGE APP|||")
-    print("====================")
-    print("+---------------------------------------------------------------------------------------------------+")
-    print("|When I was in college, I didn't know what to do with myself.                                       |")
-    print("|I was well on my way to graduation, but I had no experience, no internships lined up, nothing.     |")
-    print("|Then a friend pointed me to inCollege and it changed my future forever.                            |")
-    print("|InCollege is a wonderful tool to connect college hopefuls to one another and to future employers.  |")
-    print("|It's easy to use and it gave me results in no time at all.                                         |")
-    print("|I went from having no prospects to an internship at a major company in a matter of weeks!          |")
-    print("|It's not an exaggeration to say that I wouldn't have been as successful as I am without inCollege. |")
-    print("|So I can't recommend it enough. Give it a chance and it will change your life for the better!      |")
-    print("|--Dick Tracey, Computer Science Graduate from USF, Chief Software Engineer at Microsoft.           |")
-    print("+---------------------------------------------------------------------------------------------------+\n")
-    print("Would you like to know more?")
+    print("\n\n\n")
+    print("                  +/ ==================== \+")
+    print("                  |   inCOLLEGE: The App   |")
+    print("                  +\ ==================== /+")
+    print("+-------------------------------------------------------------+")
+    print("|A User Testimonial:                                          |")
+    print("|When I was in college, I didn't know what to do with myself. |")
+    print("|I was well on my way to graduation, but I had no experience. |")
+    print("|Then a friend pointed me to inCollege and it changed my life |")
+    print("|InCollege is a wonderful tool.                               |")
+    print("|It's easy to use and it gave me results in no time at all.   |")
+    print("|I went from nothing  t an internship in a matter of weeks!   |")
+    print("|I can't recommend it enough.                                 |")
+    print("|Give it a chance and it will change your life for the better!|")
+    print("|--Dick Tracey, Chief Software Engineer at Microsoft.         |")
+    print("+-------------------------------------------------------------+\n")
+    print("\n     Want to watch a video to find out more?                       ")
 
-    print("+-------------------------+")
-    print("|0. Skip Video |")
-    print("|1. View Video |")
-    print("+-------------------------+")
+    print("       +-------------------+")
+    print("       |  0. Skip Video    |")
+    print("       |  1. Watch a Video |")
+    print("       +-------------------+")
 
     sel = '-1'
     played = False
@@ -78,15 +80,19 @@ def mainMenuIntroMessage():
         sel = input("Invalid Entry. Enter 0 or 1.")
 
     if (sel == '1'):
-        print("Video is now playing.")
-        print("|---------------------------------|")
-        print("|------------- |\ ----------------|")
-        print("|------------- | \ ---------------|")
-        print("|------------- |  \ --------------|")
-        print("|------------- |  / --------------|")
-        print("|------------- | / ---------------|")
-        print("|------------- |/ ----------------|")
-        print("|---------------------------------|")
+        print("\n\n")
+        print("|================================================|")
+        print("|---------------------|\-------------------------|")
+        print("|---------------------|-\------------------------|")
+        print("|---------------------|--\-----------------------|")
+        print("|---------------------|---\----------------------|")
+        print("|-------------Video is now playing---------------|")
+        print("|---------------------|---/----------------------|")
+        print("|---------------------|--/-----------------------|")
+        print("|---------------------|-/------------------------|")
+        print("|---------------------|/-------------------------|")
+        print("|================================================|\n\n\n")
+
         played = True
 
     return played
@@ -100,18 +106,21 @@ def main ():
     mainMenuIntroMessage()
     loginStatus = False
     sel = ''
-    print("   Welcome to InCollege!")
+    print("             +/ ==================== \+")
+    print("             |  Welcome to inCOLLEGE  |")
+    print("             +\ ==================== /+\n")
 
     while (sel != 'x'):
 
         #This menu is displayed to non-logged in user
         if (loginStatus == False):
-            print("+-------------------------+")
-            print("|1. Login                 |")
-            print("|2. Create New Account    |")
-            print("|3. Find Someone You Know |")
-            print("|x. Quit                  |")
-            print("+-------------------------+")
+            print("\n\n")
+            print(" +--------------------------+")
+            print(" | 1. Login                 |")
+            print(" | 2. Create New Account    |")
+            print(" | 3. Find Someone You Know |")
+            print(" | x. Quit                  |")
+            print(" +--------------------------+")
             sel = input("Enter your selection:\n")
             print("")
             if (sel == 'x' or sel == '0'):
