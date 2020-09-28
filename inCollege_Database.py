@@ -142,10 +142,8 @@ class Database():
                 time.sleep(1)
                 return True
         
-        print(...)
-        time.sleep(1)
-        print("No account found with this username and password combination")
-        time.sleep(1)
+        
+        print("|*| No account found with this username and password combination |*|\n")
         return False
 
     def search_users(self):

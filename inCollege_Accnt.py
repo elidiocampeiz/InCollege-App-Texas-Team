@@ -46,7 +46,7 @@ def login(DB):
     print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     print("+--------------+")
     print("|    Log In    |")
-    print("+--------------+")
+    print("+--------------+\n")
     username = input("Enter Your Username: ")
     if (username == 'x'):
         return False

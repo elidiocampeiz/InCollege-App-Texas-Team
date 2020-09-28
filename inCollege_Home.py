@@ -8,17 +8,17 @@ import time
 
 
 def skillScreen():
-    print("  *** Type 'x' at any time to go back to main menu ***\n")
+    print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    print("+--------------------+")
+    print("| Master a New Skill |")
+    print("+--------------------+")
     print("+-------------------+")
-    print("|   Learn a Skill   |")
-    print("+-------------------+")
-    print("+-----------------+")
-    print("|   1. Python     |")
-    print("|   2. Java       |")
-    print("|   3. C ++       |")
-    print("|   4. HTML       |")
-    print("|   5. Git        |")
-    print("+-----------------+\n")
+    print("|    1. Python      |")
+    print("|    2. Java        |")
+    print("|    3. C ++        |")
+    print("|    4. HTML        |")
+    print("|    5. Git         |")
+    print("+-------------------+\n")
 
     sel = -1
     while sel != "x":
@@ -62,7 +62,7 @@ def mainMenuIntroMessage():
     print("|Then a friend pointed me to inCollege and it changed my life |")
     print("|InCollege is a wonderful tool.                               |")
     print("|It's easy to use and it gave me results in no time at all.   |")
-    print("|I went from nothing  t an internship in a matter of weeks!   |")
+    print("|I went from nothing to an internship in a matter of weeks!   |")
     print("|I can't recommend it enough.                                 |")
     print("|Give it a chance and it will change your life for the better!|")
     print("|--Dick Tracey, Chief Software Engineer at Microsoft.         |")
@@ -82,6 +82,7 @@ def mainMenuIntroMessage():
 
     if (sel == '1'):
         print("\n\n")
+        time.sleep(1)
         print("|================================================|")
         print("|---------------------|\-------------------------|")
         print("|---------------------|-\------------------------|")
@@ -92,7 +93,8 @@ def mainMenuIntroMessage():
         print("|---------------------|--/-----------------------|")
         print("|---------------------|-/------------------------|")
         print("|---------------------|/-------------------------|")
-        print("|================================================|\n\n\n")
+        print("|================================================|\n")
+        time.sleep(1)
 
         played = True
 
@@ -124,7 +126,10 @@ def main ():
             sel = input("\nEnter your selection: ")
             print("")
             if (sel == 'x' or sel == '0'):
-                print("Goodbye!")
+                print("       + --------- +")
+                print("       | GOOD BYE! |")
+                print("       + --------- +")
+                time.sleep(1)
                 # Ignore everything between '=====' (Printing DB results)
                 # ========================================================
                 # db = database.Database()
@@ -201,7 +206,11 @@ def main ():
             print("")
             sel = input("Enter Your Selection: ")
             if sel == 'x':
-                print("Goodbye!")
+                print("       + --------- +")
+                print("       | GOOD BYE! |")
+                print("       + --------- +")
+                time.sleep(1)
+
                 # Ignore everything between '====='(Printing DB results)
                 # =========================================================
                 # db = database.Database()
