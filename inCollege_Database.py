@@ -198,7 +198,7 @@ class Database():
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
         data = self.data
         # Get student by username
-        student = get_student_by_username(username)
+        student = self.get_student_by_username(username)
         # If student not found return false
         if not student:
             return False

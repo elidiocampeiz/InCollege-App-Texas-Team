@@ -124,19 +124,19 @@ def test_login(DB, username, password, expected):
 # def test_skillSelect(selection, expected):
 #     result = home.selectionScreen(selection)
 #     assert result == expected
-@pytest.mark.parametrize("selectionStr, expected",
-[
-    ('1', True),
-    ('2', True),
-    ('3', True),
-    ('4', True),
-    ('5', True),
-    ('x', False),
-])
-def test_skillSelect(monkeypatch, selectionStr, expected):
-    monkeypatch.setattr('builtins.input', lambda x: selectionStr)
-    result = home.skillScreen()
-    assert result == expected
+# @pytest.mark.parametrize("selectionStr, expected",
+# [
+#     ('1', True),
+#     ('2', True),
+#     ('3', True),
+#     ('4', True),
+#     ('5', True),
+#     ('x', False),
+# ])
+# def test_skillSelect(monkeypatch, selectionStr, expected):
+#     monkeypatch.setattr('builtins.input', lambda x: selectionStr)
+#     result = home.skillScreen()
+#     assert result == expected
 
 #Create Job testing
 @pytest.mark.parametrize("title, description, employer, location, salary, name_of_poster, expected",
@@ -247,20 +247,20 @@ def test_save(DB):
     DB.clear()
 
 # Create Account Test (inCollege_Acct.py)
-def create_accout_menu_fake_inputs(key, username, password, passwordCheck, firstname, lastname):
+def create_accout_menu_fake_inputs(key, new_username, new_password, passwordCheck, new_firstname, new_lastname):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Enter username: ": username,
-        "Enter password: ": password,
-        "Please enter new password: ": passwordCheck,
-        "Please enter first name: ": firstname,
-        "Please enter last name: ": lastname
+        "Enter username: ": new_username,
+        "Enter password: ": new_password,
+        "Enter New Password: ": passwordCheck,
+        "Enter First Name: ": new_firstname,
+        "Enter Last Name: ": new_lastname
     }
     val = prompt_to_return_val[key]
     return val
 
 # Create Account Test
-@pytest.mark.parametrize("username, password, passwordCheck, firstname, lastname, expected",
+@pytest.mark.parametrize("new_username, new_password, passwordCheck, new_firstname, new_lastname, expected",
  [
     (
         "1accusername",
@@ -350,11 +350,11 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     ),
 ])
 
-def test_create_accout_menu(DB, monkeypatch, username, password, passwordCheck, firstname, lastname, expected ):
+def test_create_accout_menu(DB, monkeypatch, new_username, new_password, passwordCheck, new_firstname, new_lastname, expected ):
 
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
-        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, username, password, passwordCheck, firstname, lastname))
+        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, new_username, new_password, passwordCheck, new_firstname, new_lastname))
         # print('BREAKPOINT db is full ', DB.isFull, len(DB.data["Students"]) )
         result = accnt.create_account(DB)
         assert result == expected
@@ -537,7 +537,7 @@ def intro_menu_fake_inputs(key, selection, validSelection):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
         "Enter Your Selection:\n":selection,
-        "Invalid Entry. Enter 0 or 1.":validSelection,
+        "Enter Your Selection: ":validSelection,
     }
     val = prompt_to_return_val[key]
     return val
