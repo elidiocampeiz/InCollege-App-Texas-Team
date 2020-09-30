@@ -56,11 +56,6 @@ class Database():
     #     self.load()
     #     return self.data
 
-    # # Get Students data
-    # def get_students(self):
-    #     # Load data
-    #     self.load()
-    #     return self.data["Students"] 
 
     # Create new student account
     def create_account(self, new_username, new_password, new_firstname, new_lastname):
@@ -76,8 +71,15 @@ class Database():
             time.sleep(1)
             return False
 
+        # New accounts have all notifications turned on
+        # Notifications is a dict {notificationtype : boolean}
+        notifications = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+
+        settings = {'notifications' : notifications, "language" : "English"} 
+        # language settings
+
         # Init new student 
-        new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname}
+        new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
         
         # Iterate through each student in "Students" section
         for student in self.data["Students"]:
@@ -170,3 +172,67 @@ class Database():
         time.sleep(1)
         return False
 
+    # Get Students data return student dict or false
+    # Note: to test the function in use an if statement before the assert
+    # e.g
+    # result = get_student_by_username(username)
+    # if result:
+    #   assert result.username == username
+    # else:
+    #    assert result == False
+    def get_student_by_username(self, username):
+
+        # Load data
+        self.load()
+        # Get student by username
+        for student in self.data["Students"]:
+            # If username already exists return false
+            if student['username'] == username:
+                return student
+        return False
+    
+
+    # Change Account Settings 
+    # field is the settings type (e.g. )
+    def change_language_settings(self, username, value):
+        # Get instance of self.data
+        data = self.data
+        # Get student by username
+        student = get_student_by_username(username)
+        # If student not found return false
+        if not student:
+            return False
+        # index of student
+        idx = data["Students"].index(student)
+        # Update student language settings
+        student["settings"]['language'] = value
+        # Update data
+        data["Students"][idx] = student
+        # Update self.data
+        self.data = data 
+        # Save update in DB file
+        self.save()
+        # success return true
+        return True
+    
+    # change notification settings
+    def change_notification_settings(self,username, field, value):
+        # Get instance of self.data
+        data = self.data
+        # Get student by username
+        student = get_student_by_username(username)
+        # If student not found return false
+        if not student:
+            return False
+        # index of student
+        idx = data["Students"].index(student)
+        # Update student notification settings
+        student["settings"]['notifications'][field] = value
+        # Update data object
+        data["Students"][idx] = student
+        # Update self.data
+        self.data = data 
+        # Save change in DB file
+        self.save()
+        # success return true
+        return True
