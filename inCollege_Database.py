@@ -1,4 +1,5 @@
 import pickle
+import time 
 
 #Dictionary data structure. Or set. I don't know.
 #Pickle saves the binary data of the python object.
@@ -69,7 +70,10 @@ class Database():
 
         # If DB is full return False
         if self.isFull == True:
-            print('Maximum number of accounts accounts have been created. Please come back later.')
+            print("...")
+            time.sleep(1)
+            print('|*| Error: Maximum Number of Accounts Already Taken |*|')
+            time.sleep(1)
             return False
 
         # Init new student 
@@ -79,7 +83,10 @@ class Database():
         for student in self.data["Students"]:
             # If username already exists return false
             if student['username'] == new_username:
+                print("...")
+                time.sleep(1)
                 print('Username already in use')
+                time.sleep(1)
                 return False
         
         # Else append new student to the list
@@ -87,7 +94,10 @@ class Database():
             
         # Save data to file
         self.save()
-        print("Account created")
+        print("\n... \n")
+        time.sleep(1) #added this for effect, makes program wait for second then tells user account was created.
+        print("Account Succesfully Created!")
+        time.sleep(1)
         return True
 
     def create_job_posting(self, title, description, employer, location, salary, name_of_poster):
@@ -106,7 +116,10 @@ class Database():
 
         # Save data to file
         self.save()
-        print("Job Posting Created")
+        print("...")
+        time.sleep(1)
+        print("Job Posted Successfully!")
+        time.sleep(1)
         return True
 
     # Login function
@@ -123,16 +136,20 @@ class Database():
         for student in self.data["Students"]:
             # If username and password match, login succesful return True
             if student['username'] == username and student['password'] == password:
-                print('Succesful login')
+                print("\n...")
+                time.sleep(1)
+                print('Succesful login!\n')
+                time.sleep(1)
                 return True
         
-        print("No account found with this username and password combination")
+        
+        print("|*| No account found with this username and password combination |*|\n")
         return False
 
     def search_users(self):
 
-        print("     *** Type 'x' at any time to go back ***\n")
-        print("Enter the following information about user you are searching for...")
+        print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+        print("Enter the Following to check if user is in the inCollege Database...\n")
         firstname_search = input("--> First Name: ")
         if firstname_search == 'x':
             return False
@@ -144,10 +161,12 @@ class Database():
         for student in self.data["Students"]:
             # If username already exists return false
             if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
-                print('\nThey are a part of the InCollege system!')
                 return True
 
         #if we get to this point, the user was not founf
+        print("...")
+        time.sleep(1)
         print("They are not yet a part of the InCollege system yet!\n")
+        time.sleep(1)
         return False
 
