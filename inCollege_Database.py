@@ -56,11 +56,6 @@ class Database():
     #     self.load()
     #     return self.data
 
-    # # Get Students data
-    # def get_students(self):
-    #     # Load data
-    #     self.load()
-    #     return self.data["Students"] 
 
     # Create new student account
     def create_account(self, new_username, new_password, new_firstname, new_lastname):
@@ -76,8 +71,17 @@ class Database():
             time.sleep(1)
             return False
 
+        # New accounts have all guest control turned on
+        # guest control is a dict {guest_control_type : boolean}
+        guest_control = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+        # laguage settings
+        language = "English"
+
+        settings = {'guest control' : guest_control, "language" : language} 
+        # language settings
+
         # Init new student 
-        new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname}
+        new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
         
         # Iterate through each student in "Students" section
         for student in self.data["Students"]:
@@ -170,3 +174,52 @@ class Database():
         time.sleep(1)
         return False
 
+    # Get Students data return student dict or false
+    # Note: to test the function in use an if statement before the assert
+    # e.g
+    # result = get_student_by_username(username)
+    # if result:
+    #   assert result.username == username
+    # else:
+    #    assert result == False
+    def get_student_by_username(self, username):
+
+        # Load data
+        self.load()
+        # Get student by username
+        for student in self.data["Students"]:
+            # If username already exists return false
+            if student['username'] == username:
+                return student
+        return False
+    
+
+
+    def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
+        data = self.data
+        # Get student by username
+        student = get_student_by_username(username)
+        # If student not found return false
+        if not student:
+            return False
+        # index of student
+        idx = data["Students"].index(student)
+
+        # if its a settings update
+        if field == "settings" and setting_field != None:
+            # if its a notification
+            if setting_field == 'guest control':
+                student[field][setting_field][guest_control_field] = value
+            # if its a language update
+            else:
+                student[field][setting_field] = value
+        # Else (e.i. if its a username, password, firstname or lastname update)
+        else:
+            student[field] = value
+        
+        data["Students"][idx] = student
+        # Update self.data
+        self.data = data 
+        # Save change in DB file
+        self.save()
+        return True
