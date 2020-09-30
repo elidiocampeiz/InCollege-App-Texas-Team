@@ -6,54 +6,11 @@ import inCollege_Database as database
 import inCollege_CurrentUser as user
 import time
 
-#Note - When going back, and when an error occurs, the program sleeps for 1 second for added effect
+#Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
+#     - The @ symbol means we are navigating back through menu to create a new account
 
 
-def skillScreen():
-    print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
-    print("+--------------------+")
-    print("| Master a New Skill |")
-    print("+--------------------+")
-    print("+-------------------+")
-    print("|    1. Python      |")
-    print("|    2. Java        |")
-    print("|    3. C ++        |")
-    print("|    4. HTML        |")
-    print("|    5. Git         |")
-    print("+-------------------+\n")
 
-    sel = -1
-    while sel != "x":
-        sel = input("Make a selection: ")
-        if sel == "1":
-            print("Under construction.")
-            return True
-        elif sel == "2":
-            print("Under construction.")
-            return True
-        elif sel == "3":
-            print("Under construction.")
-            return True
-        elif sel == "4":
-            print("Under construction.")
-            return True
-        elif sel == "5":
-            print("Under construction.")
-            return True
-        elif sel == 'x': #Go back to main menu
-            print("... Going Back")
-            time.sleep(1)
-            return False
-        else:
-            print("...Invalid Input")
-            time.sleep(1)
-
-
-# def selectionScreen(val):
-#     if val in range(1,6):
-#         print("Under construction.")
-#         return True
-#     return False
 
 def mainMenuIntroMessage():
     print("\n\n\n")
@@ -296,10 +253,14 @@ def main ():
 
 
                             elif sel == "2":
-                                print()
-                                print("+========================+")
-                                print("|*| We're Here to Help |*|")
-                                print("+========================+\n")
+                                print("\n                 + ----------- +")
+                                print("                 | HELP CENTER |")
+                                print("+-------------------------------------------------+")
+                                print("|              Welcome to In College,             |")
+                                print("| the world's largest college student network     |")
+                                print("| with users in several countries and territories |")
+                                print("|                    World Wide                   |")
+                                print("+-------------------------------------------------+\n")
                             elif sel == "3":
                                 print()
                                 print("+========================+")
@@ -308,9 +269,11 @@ def main ():
 
                             elif sel == "4": 
                                 print()
-                                print("+========================+")
-                                print("|*| Under Construction |*|")
-                                print("+========================+\n")
+                                print("+---------------------------+")
+                                print("|  In College Pressroom:    |")
+                                print("| Stay on top of the latest |")
+                                print("| news, updates, and reports|")
+                                print("+---------------------------+\n")
 
                             elif sel == "5":
                                 print()
@@ -437,9 +400,6 @@ def main ():
                                 time.sleep(1)
 
                         sel = "" #resetting
-                
-                    elif sel == "5":
-                        print("Our Privacy Policy goes here")
 
                     elif sel == "6":
                         print("Our Cookie Policy goes here")
@@ -496,8 +456,8 @@ def main ():
             print(" | 1. Post a New Job            |")
             print(" | 2. Find Someone You Know     |")
             print(" | 3. Skill Screen              |")
-            print(" | 5. Useful Links              |")
-            print(" | 6. InCollege Important Links |")
+            print(" | 4. Useful Links              |")
+            print(" | 5. InCollege Important Links |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -517,7 +477,265 @@ def main ():
                     
             # Learn a New Skill        
             elif sel == '3': 
-                skillScreen()
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                flag = True
+                while flag is True:
+                    print("+--------------------+")
+                    print("| Master a New Skill |")
+                    print("+--------------------+")
+                    print("+-------------------+")
+                    print("|    1. Python      |")
+                    print("|    2. Java        |")
+                    print("|    3. C ++        |")
+                    print("|    4. HTML        |")
+                    print("|    5. Git         |")
+                    print("|    x. Go Back     |")
+                    print("+-------------------+\n")
+
+                    sel = input("Make a selection: ")
+                    
+                    if sel == "1":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n") 
+                    elif sel == "2":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n") 
+                    elif sel == "3":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n") 
+                    elif sel == "4":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n") 
+                    elif sel == "5":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n") 
+                    elif sel == 'x': 
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+                sel = "" #resetting
+
+            elif sel == '4':
+                #This will control the loop for Useul Links, when we want to exit the loop the flag will be flipped
+                flag = True
+                while flag is True:
+
+                    print("       + -------------- +")
+                    print("       |  USEFUL LINKS  |         ")
+                    print(" +------------------------------+")
+                    print(" | 1. General                   |")
+                    print(" | 2. Browse inCollege          |")
+                    print(" | 3. Business Solutions        |")
+                    print(" | 4. Directories               |")
+                    print(" | x. Go Back                   |")
+                    print(" +------------------------------+")
+
+                    sel = input("\nEnter Your Selection: ")
+                    
+                    #General
+                    if sel == '1':
+                        flag2 = True
+                        while flag2 is True:
+
+                            print("    + --------- +")
+                            print("    |  GENERAL  |")
+                            print(" +------------------+")
+                            print(" | 1. Help Center   |")
+                            print(" | 2. About         |")
+                            print(" | 3. Press         |")
+                            print(" | 4. Blog          |")
+                            print(" | 5. Careers       |")
+                            print(" | 6. Developers    |")
+                            print(" | x. Go Back       |")
+                            print(" +------------------+")
+                            
+                            sel = input("\nEnter Your Selection: ")
+
+                            if sel == "1":
+                                print("\n                 + ----------- +")
+                                print("                 | HELP CENTER |")
+                                print("+-------------------------------------------------+")
+                                print("|              Welcome to In College,             |")
+                                print("| the world's largest college student network     |")
+                                print("| with users in several countries and territories |")
+                                print("|                    World Wide                   |")
+                                print("+-------------------------------------------------+\n")
+                            elif sel == "2":
+                                print()
+                                print("+========================+")
+                                print("|*| Our About Goes Here |*|")
+                                print("+========================+\n")
+
+                            elif sel == "3": 
+                                print("\n+---------------------------+")
+                                print("|  In College Pressroom:    |")
+                                print("| Stay on top of the latest |")
+                                print("| news, updates, and reports|")
+                                print("+---------------------------+\n")
+
+                            elif sel == "4":
+                                print()
+                                print("+========================+")
+                                print("|*| Under Construction |*|")
+                                print("+========================+\n")
+
+                            elif sel == "5":
+                                print()
+                                print("+========================+")
+                                print("|*| Under Construction |*|")
+                                print("+========================+\n")
+
+                            elif sel == "6":
+                                print()
+                                print("+========================+")
+                                print("|*| Under Construction |*|")
+                                print("+========================+\n")
+
+                            elif sel == "x":
+                                flag2 = False
+                                print("... Going Back")
+                                time.sleep(1)
+
+                            else:
+                                print("...Invalid Input")
+                                time.sleep(1)
+
+                        sel = "" #resetting sel
+
+
+                    #Browse inCollege
+                    elif sel == '2':
+                        print()
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                    #Business Solutions
+                    elif sel == '3': 
+                        print()
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")                    
+                    #Directories
+                    elif sel == '4':
+                        print()
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")                    
+                    #Go Back
+                    elif sel == 'x':
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+                
+                sel = "" #resetting sel
+
+            elif sel == '5':
+                flag = True
+                while flag is True:
+                    print("+---------------------------+")
+                    print("| inCollege Important Links |")
+                    print("+---------------------------+")
+                    print("| 1. Copyright Notice       |")
+                    print("| 2. About                  |")
+                    print("| 3. Accessibility          |")
+                    print("| 4. User Agreement         |")
+                    print("| 5. Privacy Policy         |")
+                    print("| 6. Cookie Policy          |")
+                    print("| 7. Brand Policy           |")
+                    print("| 8. Languages              |")
+                    print("| x. Go Back                |")
+                    print("+---------------------------+\n")
+
+                    sel = input("Enter Your Selection: ")
+
+                    if sel == "1":
+                        print("Our Copyright notice goes here")
+                    elif sel == "2":
+                        print("Our About goes here")
+
+                    elif sel == "3":
+                        print("Our Accessibility goes here")
+
+                    elif sel == "4":
+                        print("Our User Agreement goes here")
+
+                    elif sel == "5":
+                        print(" +-------------------------+")
+                        print(" |     Privacy Policy      |")
+                        print(" +-------------------------+\n")
+                        print("Our Privacy Policy is written here...\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("+--------------------------+")
+                            print("|   Edit Guest Controls?   |")
+                            print("+--------------------------+")
+                            print("| 1. Yes                   |")
+                            print("| x. Go Back               |")
+                            print("+--------------------------+\n")
+                            sel = input("Enter Your Selection: ")
+
+                            if sel == "1":
+                                print("Editing Guest Controls")
+
+                            elif sel == "x":
+                                flag2 = False
+                                print("... Going Back")
+                                time.sleep(1)
+
+                            else:
+                                print("... Invalid Input")
+                                time.sleep(1)
+
+                        sel = "" #resetting
+
+                    elif sel == "6":
+                        print("Our Cookie Policy goes here")
+
+
+                    elif sel == "7":
+                        print("Our Brand Policy goes here")
+
+                    elif sel == "8":
+                        flag2 = True
+                        while flag2 is True:
+                            print("+---------------------------------------+")
+                            print("|   Language Settings Guest Controls?   |")
+                            print("+---------------------------------------+")
+                            print("| 1. Change Settings                    |")
+                            print("| x. Go Back                            |")
+                            print("+---------------------------------------+\n")
+                            sel = input("Enter Your Selection: ")
+
+                            if sel == "1":
+                                print("Change the Settings")
+                            elif sel == "x":
+                                flag2 = False
+                                print("... Going Back\n")
+                                time.sleep(1)
+
+                        sel = "" #resetting sel
+
+                    elif sel == "x":
+                        flag = False
+                        print("... Going Back\n")
+                        time.sleep(1)
+
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+                sel = "" #resetting
 
             #Exit Program    
             elif sel == 'x':
