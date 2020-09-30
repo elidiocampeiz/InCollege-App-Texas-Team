@@ -71,11 +71,13 @@ class Database():
             time.sleep(1)
             return False
 
-        # New accounts have all notifications turned on
-        # Notifications is a dict {notificationtype : boolean}
-        notifications = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+        # New accounts have all guest control turned on
+        # guest control is a dict {guest_control_type : boolean}
+        guest_control = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+        # laguage settings
+        language = "English"
 
-        settings = {'notifications' : notifications, "language" : "English"} 
+        settings = {'guest control' : guest_control, "language" : language} 
         # language settings
 
         # Init new student 
@@ -192,10 +194,8 @@ class Database():
         return False
     
 
-    # Change Account Settings 
-    # field is the settings type (e.g. )
-    def change_language_settings(self, username, value):
-        # Get instance of self.data
+
+    def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
         data = self.data
         # Get student by username
         student = get_student_by_username(username)
@@ -204,35 +204,22 @@ class Database():
             return False
         # index of student
         idx = data["Students"].index(student)
-        # Update student language settings
-        student["settings"]['language'] = value
-        # Update data
-        data["Students"][idx] = student
-        # Update self.data
-        self.data = data 
-        # Save update in DB file
-        self.save()
-        # success return true
-        return True
-    
-    # change notification settings
-    def change_notification_settings(self,username, field, value):
-        # Get instance of self.data
-        data = self.data
-        # Get student by username
-        student = get_student_by_username(username)
-        # If student not found return false
-        if not student:
-            return False
-        # index of student
-        idx = data["Students"].index(student)
-        # Update student notification settings
-        student["settings"]['notifications'][field] = value
-        # Update data object
+
+        # if its a settings update
+        if field == "settings" and setting_field != None:
+            # if its a notification
+            if setting_field == 'guest control':
+                student[field][setting_field][guest_control_field] = value
+            # if its a language update
+            else:
+                student[field][setting_field] = value
+        # Else (e.i. if its a username, password, firstname or lastname update)
+        else:
+            student[field] = value
+        
         data["Students"][idx] = student
         # Update self.data
         self.data = data 
         # Save change in DB file
         self.save()
-        # success return true
         return True
