@@ -121,19 +121,27 @@ def main ():
 
         #This menu is displayed to non-logged in user. 
         if (loginStatus == False):
-            print("\n")
-            print("         + ----------- +")
-            print("         |  MAIN MENU  |         ")
-            print(" +------------------------------+")
-            print(" | 1. Login                     |")
-            print(" | 2. Create New Account        |")
-            print(" | 3. Find Someone You Know     |")
-            print(" | 4. Useful Links              |")
-            print(" | 5. InCollege Important Links |")
-            print(" | x. Quit                      |")
-            print(" +------------------------------+")
-            sel = input("\nEnter your selection: ")
-            print("")
+
+            #in this case we navigated from somewhere else to create a new account
+            if sel == "@": 
+                sel = "2"
+            else:
+                print("\n")
+                print("         + ----------- +")
+                print("         |  MAIN MENU  |         ")
+                print(" +------------------------------+")
+                print(" | 1. Login                     |")
+                print(" | 2. Create New Account        |")
+                print(" | 3. Find Someone You Know     |")
+                print(" | 4. Useful Links              |")
+                print(" | 5. InCollege Important Links |")
+                print(" | x. Quit                      |")
+                print(" +------------------------------+")
+
+                sel = input("\nEnter your selection: ")
+                print("")
+
+
             if (sel == 'x' or sel == '0'):
                 print("       + --------- +")
                 print("       | GOOD BYE! |")
@@ -167,7 +175,7 @@ def main ():
                     print("Why don't you join them?\n")
                     time.sleep(1)
 
-                    while sel != 'x': #had to change this to zero to fix problem with program exiting if user places x there
+                    while sel != 'x': 
                         print("+-------------------------+")
                         print("| 1. Login                |")
                         print("| 2. Create New Account   |")
@@ -214,41 +222,78 @@ def main ():
                 flag = True
                 while flag is True:
 
-                    print("       + -------------- +")
-                    print("       |  USEFUL LINKS  |         ")
-                    print(" +------------------------------+")
-                    print(" | 1. General                   |")
-                    print(" | 2. Browse inCollege          |")
-                    print(" | 3. Business Solutions        |")
-                    print(" | 4. Directories               |")
-                    print(" | x. Go Back                   |")
-                    print(" +------------------------------+")
+                    if sel == "@": # in this case we are going back to main menu
+                        sel = "@"
 
-                    sel = input("\nEnter Your Selection: ")
+                    else:
+                        print("       + -------------- +")
+                        print("       |  USEFUL LINKS  |         ")
+                        print(" +------------------------------+")
+                        print(" | 1. General                   |")
+                        print(" | 2. Browse inCollege          |")
+                        print(" | 3. Business Solutions        |")
+                        print(" | 4. Directories               |")
+                        print(" | x. Go Back                   |")
+                        print(" +------------------------------+")
 
-                    #
+                        sel = input("\nEnter Your Selection: ")
+
+                    if sel == "@":
+                        flag = False
                     
                     #General
-                    if sel == '1':
+                    elif sel == '1':
                         flag2 = True
                         while flag2 is True:
-                            print("    + --------- +")
-                            print("    |  GENERAL  |")
-                            print(" +------------------+")
-                            print(" | 1. Sign Up       |")
-                            print(" | 2. Help Center   |")
-                            print(" | 3. About         |")
-                            print(" | 4. Press         |")
-                            print(" | 5. Blog          |")
-                            print(" | 6. Careers       |")
-                            print(" | 7. Developers    |")
-                            print(" | x. Go Back       |")
-                            print(" +------------------+")
 
-                            sel = input("\nEnter Your Selection: ")
+                            if sel == "@": #in this case we are navigating back to main
+                                sel = "@"
+                            else:
+                                print("    + --------- +")
+                                print("    |  GENERAL  |")
+                                print(" +------------------+")
+                                print(" | 1. Sign Up       |")
+                                print(" | 2. Help Center   |")
+                                print(" | 3. About         |")
+                                print(" | 4. Press         |")
+                                print(" | 5. Blog          |")
+                                print(" | 6. Careers       |")
+                                print(" | 7. Developers    |")
+                                print(" | x. Go Back       |")
+                                print(" +------------------+")
+                                
+                                sel = input("\nEnter Your Selection: ")
 
-                            if sel == "1":
-                                print("Need to take them to sign up")
+
+                            if sel == "@":
+                                flag2 = False
+
+                            elif sel == "1":
+                                flag3 = True
+                                while flag3 is True:
+                                    print("+----------------------------+")
+                                    print("|   Sign Up For inCollege?   |")
+                                    print("+----------------------------+")
+                                    print("| 1. Yes                     |")
+                                    print("| x. Go Back                 |")
+                                    print("+----------------------------+\n\n")
+                                    sel = input("Enter Your Selection: ")
+                                    if sel == "1":
+                                        #Whenever "@" shows up in this program it is in reference to accessing another spot in menu
+                                        sel = "@"
+                                        flag3 = False
+                                    elif sel == "x":
+                                        flag3 = False
+                                        print("...Going back")
+                                        time.sleep(1)
+                                    else:
+                                        print("...Invalid Input")
+                                        time.sleep(1)
+                                if sel == "@": #"@" indicates we are going back to main to sign in
+                                    sel="@"
+                                else:
+                                    sel = "" #resetting
+
 
                             elif sel == "2":
                                 print()
@@ -287,12 +332,17 @@ def main ():
 
                             elif sel == "x":
                                 flag2 = False
+                                print("... Going Back")
+                                time.sleep(1)
 
                             else:
                                 print("...Invalid Input")
                                 time.sleep(1)
 
-                        sel = "" #resetting sel
+                        if sel == "@": #This means we are navigating back to create an account
+                            print()
+                        else:
+                            sel = "" #resetting sel
 
 
                     #Browse inCollege
@@ -316,12 +366,17 @@ def main ():
                     #Go Back
                     elif sel == 'x':
                         flag = False
+                        print("... Going Back")
+                        time.sleep(1)
 
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
                 
-                sel = "" #resetting sel
+                if sel == "@":
+                    sel = "@"
+                else:
+                    sel = "" #resetting sel
 
             # inCollege Important Links
             elif sel == '5':
