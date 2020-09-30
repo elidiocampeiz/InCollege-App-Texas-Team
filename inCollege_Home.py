@@ -740,7 +740,7 @@ def main ():
             #Exit Program    
             elif sel == 'x':
                 print("       + --------- +")
-                print("       | GOOD BYE! |")
+                print("       | Good Bye! |")
                 print("       + --------- +")
                 time.sleep(1)
 
