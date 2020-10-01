@@ -70,10 +70,17 @@ def main ():
     # maintaining the database for our program
     db = database.Database()
 
+    # Default Settings
+    # guest control is a dict {guest_control_type : boolean}
+    guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+    # laguage settings
+    language = "English"
+    settings = {'guest control' : guest_control, "language" : language} 
+
     mainMenuIntroMessage()
     loginStatus = False
     sel = ''
-
+    theUser = user.User()
     while (sel != 'x'):
 
         #This menu is displayed to non-logged in user. 
@@ -117,6 +124,8 @@ def main ():
                 if theUser is False:
                     loginStatus = False
                 else:
+                    # Update global settings 
+                    settings = theUser.student_data['settings']
                     loginStatus = True
 
             #Create an account
@@ -379,18 +388,24 @@ def main ():
                         print("Our Privacy Policy is written here...\n")
                         flag2 = True
                         while flag2 is True:
+                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
+                            email = "ON" if settings['guest control']['Email'] == True else "OFF"
                             print("+--------------------------+")
-                            print("|   Edit Guest Controls?   |")
+                            print("| Default Guest Controls:  |")
                             print("+--------------------------+")
-                            print("| 1. Yes                   |")
+                            # the Menu is Aligned 
+                            print(f"| Email:       {email}          |")
+                            print(f"| SMS:         {SMS}          |")
+                            print(f"| Advertising: {targeted_advertising}          |")
                             print("| x. Go Back               |")
                             print("+--------------------------+\n")
                             sel = input("Enter Your Selection: ")
 
-                            if sel == "1":
-                                print("Editing Guest Controls")
+                            # if sel == "1":
+                            #     print("Editing Guest Controls")
 
-                            elif sel == "x":
+                            if sel == "x":
                                 flag2 = False
                                 print("... Going Back")
                                 time.sleep(1)
@@ -411,17 +426,19 @@ def main ():
                     elif sel == "8":
                         flag2 = True
                         while flag2 is True:
-                            print("+---------------------------------------+")
-                            print("|   Language Settings Guest Controls?   |")
-                            print("+---------------------------------------+")
-                            print("| 1. Change Settings                    |")
-                            print("| x. Go Back                            |")
-                            print("+---------------------------------------+\n")
+                            language = settings['language']
+                            print("+----------------------------+")
+                            print("|      Language Settings:    |")
+                            print("+----------------------------+")
+                            #"English" or "Spanish"
+                            print(f"| Language:     {language}      |")
+                            print( "| x. Go Back                 |")
+                            print("+----------------------------+\n")
                             sel = input("Enter Your Selection: ")
 
-                            if sel == "1":
-                                print("Change the Settings")
-                            elif sel == "x":
+                            # if sel == "1":
+                            #     print("Change the Settings")
+                            if sel == "x":
                                 flag2 = False
                                 print("... Going Back\n")
                                 time.sleep(1)
@@ -677,18 +694,92 @@ def main ():
                         print(" +-------------------------+\n")
                         print("Our Privacy Policy is written here...\n")
                         flag2 = True
+                        #TODO TODO TODO
                         while flag2 is True:
-                            print("+--------------------------+")
-                            print("|   Edit Guest Controls?   |")
-                            print("+--------------------------+")
-                            print("| 1. Yes                   |")
-                            print("| x. Go Back               |")
-                            print("+--------------------------+\n")
+                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
+                            email = "ON" if settings['guest control']['Email'] == True else "OFF"
+                            # the Menu is Aligned 
+                            print("+------------------------------+")
+                            print("|    Current Guest Controls:   |")
+                            print(f"| Email:       {email}              |")
+                            print(f"| SMS:         {SMS}              |")
+                            print(f"| Advertising: {targeted_advertising}              |")
+                            print("+------------------------------+")
+                            print("|     Edit Guest Controls?     |")
+                            print("+------------------------------+")
+                            print("| 1. Yes                       |")
+                            print("| x. Go Back                   |")
+                            print("+------------------------------+")
                             sel = input("Enter Your Selection: ")
 
                             if sel == "1":
-                                print("Editing Guest Controls")
+                                # print("Editing Guest Controls")
+                                guest_control_flag = True
+                                while guest_control_flag:
+                                    print("+-----------------------------------+")
+                                    print("|    Choose Which Guest Control     |") 
+                                    print("+-----------------------------------+")
+                                    print("| 1. Email                          |")
+                                    print("| 2. SMS                            |")
+                                    print("| 3. Advertising                    |")
+                                    print("| x. Go Back                        |")
+                                    print("+-----------------------------------+")
+                                    selection = input("Enter Your Selection: ")
+                                    guest_control_field = ""
+                                    if selection == 'x':
+                                        guest_control_flag = False
+                                        print("... Going Back")
+                                        time.sleep(1)
+                                        break
+                                    elif selection == '1':
+                                        guest_control_field = 'Email'
+                                    
+                                    elif selection == '2':
+                                        guest_control_field = 'SMS'
+                                        
+                                    elif selection == '3':
+                                        guest_control_field = 'Targeted Advertising'
 
+                                    else:
+                                        print("...Invalid Input")
+                                        time.sleep(1)
+                                        continue
+                                    value_update_flag = True
+                                    while value_update_flag:
+                                        print("+------------------------------------+")
+                                        print("|   Choose New Guest Control Value   |")
+                                        print("+------------------------------------+")
+                                        print("| 1. ON                              |")
+                                        print("| 2. OFF                             |")
+                                        print("| x. Go Back                         |")
+                                        print("+------------------------------------+")
+                                        new_value = input("Enter Your Selection: ")
+                                        
+                                        if new_value == 'x':
+                                            value_update_flag = False
+                                            print("... Going Back")
+                                            time.sleep(1)
+                                            break
+                                        elif new_value != '1' and new_value != '2':
+                                            print("...Invalid Input")
+                                            time.sleep(1)
+                                            continue
+                                        elif new_value == '1':
+                                            db.update_student(theUser.username, 'settings', True, 'guest control', guest_control_field)
+                                        elif new_value == '2':
+                                            db.update_student(theUser.username, 'settings', False, 'guest control', guest_control_field)
+                                        
+                                        # Update user object
+                                        updated_user = user.User(theUser.username)
+                                        # Update Global Setings 
+                                        settings = updated_user.student_data['settings']
+                                        # print(settings)
+                                        # set flags to false
+                                        value_update_flag = False
+                                        guest_control_flag = False
+
+                                    
                             elif sel == "x":
                                 flag2 = False
                                 print("... Going Back")
@@ -710,20 +801,55 @@ def main ():
                     elif sel == "8":
                         flag2 = True
                         while flag2 is True:
-                            print("+---------------------------------------+")
-                            print("|   Language Settings Guest Controls?   |")
-                            print("+---------------------------------------+")
-                            print("| 1. Change Settings                    |")
-                            print("| x. Go Back                            |")
-                            print("+---------------------------------------+\n")
+                            language = settings['language']
+                            print("+--------------------------------+")
+                            print("|   Current Language Setting:    |")
+                            print("+--------------------------------+")
+                            print(f"| Language:         {language}      |")
+                            print("+--------------------------------+")
+                            print("| Edit Language Settings?        |")
+                            print("+--------------------------------+")
+                            print("| 1. Yes                         |")
+                            print("| x. Go Back                     |")
+                            print("+--------------------------------+\n")
                             sel = input("Enter Your Selection: ")
-
+                            # TODO
                             if sel == "1":
-                                print("Change the Settings")
+                                language_update_flag = True
+                                while language_update_flag:
+                                    print("+---------------------------------+")
+                                    print("|   Choose New Language Option    |")
+                                    print("+---------------------------------+")
+                                    print("| 1. English                      |")
+                                    print("| 2. Spanish                      |")
+                                    print("| x. Go Back                      |")
+                                    print("+---------------------------------+")
+                                    new_language = input("Enter Your Selection: ")
+                                    if new_language == 'x':
+                                        print("... Going Back")
+                                        time.sleep(1)
+                                        break
+                                    elif new_language == '1':
+                                        db.update_student(theUser.username, 'settings', 'English', 'language')
+                                    elif new_language == '2':
+                                        db.update_student(theUser.username, 'settings', 'Spanish', 'language')
+                                    else:
+                                        print("... Invalid Input")
+                                        time.sleep(1)
+                                        continue
+                                    # Update user object
+                                    updated_user = user.User(theUser.username)
+                                    # Update Global Setings 
+                                    settings = updated_user.student_data['settings']
+                                    language_update_flag = False
                             elif sel == "x":
                                 flag2 = False
                                 print("... Going Back\n")
                                 time.sleep(1)
+                            else:
+                                print("... Invalid Input")
+                                time.sleep(1)
+                                continue
 
                         sel = "" #resetting sel
 
