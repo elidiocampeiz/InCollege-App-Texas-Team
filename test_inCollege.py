@@ -4,7 +4,8 @@ import inCollege_Home as home
 import inCollege_CurrentUser as user
 import inCollege_Database as database
 import inCollege_CurrentUser as user
-
+import time
+time.sleep=lambda x:None
 
 # Test function that asserts whether the passwordChecker() function returned the correct value
 @pytest.mark.parametrize("test_password, expected", [("Abcdef1", True), ("Abcdefg", False), ("abcdef1", False), ("Abcde1", False), ("Abcdefghijklm1", False), ("Ab1asd2#", False), ("", False)])
@@ -584,15 +585,16 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
         False,
     ),
     (
-        "",
+        "1accusername",
         True,
     ),
+ 
 ])
 #Test for get student by username
 def test_get_student_by_username(DB, username, expected):
     result = DB.get_student_by_username(username)
     if result:
-        assert result.username == username
+        assert result["username"] == username
     else:
         assert result == False
 
