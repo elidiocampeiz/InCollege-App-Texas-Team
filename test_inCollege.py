@@ -576,6 +576,25 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
         m.setattr('builtins.input', lambda x: intro_menu_fake_inputs(x, selection, validSelection))
         assert expected == home.mainMenuIntroMessage()
 
+@pytest.mark.parametrize("username, expected",
+[
+    
+    (
+        "username",
+        False,
+    ),
+    (
+        "",
+        True,
+    ),
+])
+#Test for get student by username
+def test_get_student_by_username(DB, username, expected):
+    result = DB.get_student_by_username(username)
+    if result:
+        assert result.username == username
+    else:
+        assert result == False
 
 # def test_hello(capsys, inputStr, expected):
 #     outputFunction(inputStr)
