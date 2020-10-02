@@ -84,7 +84,7 @@ def create_account(DB):
         return False
     # Check if password is secure
     while passwordChecker(password) == False:
-        password = str(input("Enter Password: "))
+        password = str(input("Enter New Password: "))
         if password == 'x':
             return False
 
@@ -138,3 +138,30 @@ def post_job(fullname, DB):
     
 def clear_accounts():
     database.Database
+
+# Change Account Settings 
+# field is the settings type (e.g. )
+def change_language_settings(DB, username):
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    print("+-------------------+")
+    print("|    Choose your Language     |")
+    print("+-------------------+\n")
+    language = input("Enter Language Choice: ")
+    if language == 'x':
+        return False
+    return DB.update_student(username, 'settings', language, 'language')
+
+# change notification settings
+# def change_notification_settings(DB, username):
+#     print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+#     print("+-------------------+")
+#     print("|    Choose your guest control     |") # TODO format string
+#     print("+-------------------+\n")
+#     guest_control_field = input("Guest control: ") # TODO format string
+#     if guest_control_field == 'x':
+#         return False 
+#     value = input("True\False: ") # TODO format string
+#     if value == 'x':
+#         return False
+
+#     return DB.update_student(username, 'settings', value, 'guest control', guest_control_field)
