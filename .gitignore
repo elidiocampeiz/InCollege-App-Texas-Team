@@ -3,3 +3,4 @@
 *.pyc
 .pytest_cache
 TexasTeamChallenge2.zip
+/__pycache__
