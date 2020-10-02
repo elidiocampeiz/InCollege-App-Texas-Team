@@ -84,7 +84,7 @@ def create_account(DB):
         return False
     # Check if password is secure
     while passwordChecker(password) == False:
-        password = str(input("Enter Password: "))
+        password = str(input("Enter New Password: "))
         if password == 'x':
             return False
 
@@ -141,4 +141,3 @@ def clear_accounts():
 # TODO
 # Change Account Settings 
 # field is the settings type (e.g. )
-
