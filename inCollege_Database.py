@@ -73,7 +73,7 @@ class Database():
 
         # New accounts have all guest control turned on
         # guest control is a dict {guest_control_type : boolean}
-        guest_control = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+        guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
         # laguage settings
         language = "English"
 
@@ -183,7 +183,6 @@ class Database():
     # else:
     #    assert result == False
     def get_student_by_username(self, username):
-
         # Load data
         self.load()
         # Get student by username
@@ -196,6 +195,8 @@ class Database():
 
 
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
+        if username == None or field ==None or value ==None:
+            return False
         data = self.data
         # Get student by username
         student = self.get_student_by_username(username)
