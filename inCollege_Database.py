@@ -195,7 +195,7 @@ class Database():
 
 
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
-        if username == '' or field == '' or value == '':
+        if username == None or field ==None or value ==None:
             return False
         data = self.data
         # Get student by username
