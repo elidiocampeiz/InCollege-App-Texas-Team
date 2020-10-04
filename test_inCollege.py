@@ -581,7 +581,11 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
 [
     
     (
-        "username",
+        "wrong_username",
+        False,
+    ),
+    (
+        "",
         False,
     ),
     (
@@ -592,12 +596,136 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
 ])
 #Test for get student by username
 def test_get_student_by_username(DB, username, expected):
-    result = DB.get_student_by_username(username)
-    if result:
-        assert result["username"] == username
+    student = DB.get_student_by_username(username)
+    if student:
+        assert student["username"] == username
     else:
-        assert result == False
+        assert student == False
 
+@pytest.mark.parametrize("usernames, field, value, setting_field, guest_control_field, expected",
+[
+    # Test Update Fail -> username
+    (  
+        '',
+        "settings",
+        False,
+        'guest control',
+        'Email',
+        False
+    ),
+    # Test Update Fail -> field
+    (  
+        "1accusername",
+        None,
+        False,
+        'guest control',
+        'Email',
+        False
+    ),
+    # Test Update Fail -> value
+    (  
+        "1accusername",
+        "settings",
+        None,
+        'guest control',
+        'Email',
+        False
+    ),
+    # Test Update Fail -> wrong_username
+    (  
+        'wrong_username',
+        "settings",
+        False,
+        'guest control',
+        'Email',
+        False
+    ),
+    # Test Update settings -> guest control -> Email : True
+    (  
+        "1accusername",
+        "settings",
+        False,
+        'guest control',
+        'Email',
+        True
+    ),
+    # Test Update settings -> guest control -> Email : False
+    (  
+        "1accusername",
+        "settings",
+        True,
+        'guest control',
+        'Email',
+        True
+    ),
+    # Test Update settings -> guest control -> SMS : False
+    (  
+        "1accusername",
+        "settings",
+        False,
+        'guest control',
+        'SMS',
+        True
+    ),
+    # Test Update settings -> guest control -> SMS : True
+    (  
+        "1accusername",
+        "settings",
+        True,
+        'guest control',
+        'SMS',
+        True
+    ),
+    # Test Update settings -> guest control -> Targeted Advertising : False
+    (  
+        "1accusername",
+        "settings",
+        False,
+        'guest control',
+        'Targeted Advertising',
+        True
+    ),
+    # Test Update settings -> guest control -> Targeted Advertising : True
+    (  
+        "1accusername",
+        "settings",
+        True,
+        'guest control',
+        'Targeted Advertising',
+        True
+    ),
+    # Test Update settings -> language : Spanish
+    (  
+        "1accusername",
+        "settings",
+        'Spanish',
+        'language',
+        None,
+        True
+    ),
+    # Test Update settings -> language : English
+    (  
+        "1accusername",
+        "settings",
+        'English',
+        'language',
+        None,
+        True
+    ),
+    # # Test Update username -> language : English
+    # (  
+    #     "1accusername",
+    #     'firstname',
+    #     'new_username',
+    #     None,
+    #     None,
+    #     True
+    # ),
+
+])
+def test_update_student(DB, usernames, field, value, setting_field, guest_control_field, expected):
+    result = DB.update_student(usernames, field, value, setting_field, guest_control_field)
+    assert result == expected
 # def test_hello(capsys, inputStr, expected):
 #     outputFunction(inputStr)
 #     captured_stdout, captured_stderr = capsys.readouterr()
