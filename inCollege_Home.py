@@ -371,21 +371,68 @@ def main ():
                     sel = input("Enter Your Selection: ")
 
                     if sel == "1":
-                        print("Our Copyright notice goes here")
+                        print("The contents of this website, including but not limited to all, all written materials, images, photos, and code are protected under international copyright and trademark laws. You may not in any circumstances copy, reproduce, modify, republish and transmit or distribute an material from this site without express written permission.\nInCollege reserves the right, however, to make changes at its discretion affecting policies, fee or other matters announced on this site.")
                     elif sel == "2":
-                        print("Our About goes here")
+                        print("This application is designed to allow college students to create personal accounts, upload profile information, search for and apply for jobs, and connect with other students both at their college and at other colleges. These specifications are designed to lay out the functionality that will be provided by an alpha version of this program. The intended functionality is just enough to be able to demo to groups of investors as we attempt to spark their interest in the project and get them to commit to funding future versions of the software.")
 
                     elif sel == "3":
-                        print("Our Accessibility goes here")
+                        print("InCollege has utilized guidelines to implement functional improvements to InCollege. We are working to ensure that all contents on the InCollege site meet the level AA success criteria set forth in WCAG 2.0.\nIf you have any question or comments, please contact our professor Dr. James Anderson.")
 
                     elif sel == "4":
-                        print("Our User Agreement goes here")
+                        useragreement = """
+                                This Website User Agreement and the Privacy Policy lays out the terms and conditions and rules, as maybe amended and supplemented, from time to time (hereinafter referred to as the “Agreement”) which shall be applicable to the access and use of the website of inCollege by you, the visitor/ user (“User”) of the Website. 
+                                
+                                1. ACCEPTANCE OF TERMS AND MODIFICATION THEREOF  
+                                1.1	Access of the Website by the User constitutes an acknowledgement and acceptance in full, of all the terms, conditions and notices as stated in this Agreement and without any modification and/or exception by the User of this Agreement. If the User does not agree with any part of such terms, conditions and notices as stated in this Agreement in any manner, the User must not access the Website.  
+                                1.2	inCollege reserves the right to change the terms, conditions and notices pursuant to which the Website is accessed by the User, without any notice or intimation of such change.  
+                                
+                                2. LIMITED USER
+                                2.1 The User agrees that given the nature of the Internet, even though the Website is targeted to Indian Residents only, it may be accessed in other parts of the world. The material/information on this Website is not intended for use by persons located in, or residents in countries that restrict the distribution of such material/information or by any person in any jurisdiction where distribution or use of such material/information or usage or access of Website will be contrary to law or any regulation. It shall be the responsibility of every User to be aware of and fully observe the applicable laws and regulations of the jurisdiction which User is subject of.  If the User is not an Indian resident and yet uses this Website, he acknowledges, understands and agrees that he is doing so on his own initiative and at his own risk and inCollege shall not be liable for violation/breach of any of the laws applicable to usage of the Website. The Website is not to be and should not be construed as purporting to offer or inviting to offer any information to residents of countries where inCollege is not licensed or authorized to perform activities related to its objective.  
+                                2.2 The User further agrees and undertakes not to reverse engineer, modify, copy, distribute, transmit, display, perform, reproduce, publish, license, create derivative works from, transfer, or sell any information, software, products, services or intellectual property obtained from the Website in any manner whatsoever.   Reproduction, copying of the content for commercial or non‐commercial purposes and unwarranted modification of data and information within the content of the Website is strictly not permitted without prior written consent from inCollege and/or third party owners. However, some of the content of our services or other files may be made available for download from the website which is  permitted to be copied and/or used only for personal purposes of the User.   The User and/or any third party is prohibited from running or displaying this Website and /or information displayed on this Website on any other Website or frames , without prior written consent from inCollege.
+                                
+                                3. DISCLAIMER OF WARRANTIES  
+                                3.1 INCOLLEGE has endeavored to ensure that all the information provided by it on this Website is correct, but INCOLLEGE neither warrants nor makes any representations regarding the quality, accuracy or completeness of any data or information displayed on this Website and INCOLLEGE shall not be, in any manner liable for inaccuracy/error if any. INCOLLEGE makes no warranty, express or implied, concerning the Website and/or its contents and disclaims all warranties of fitness for a particular purpose and warranties of merchantability in respect of information displayed and communicated through or on the Website, including any liability, responsibility or any other claim, whatsoever, in respect of any loss, whether direct or consequential, to any User or any other person, arising out of or from the use of any such information as is displayed or communicated through or on the Website or the provision of the Services. 
+                                3.2   INCOLLEGE shall not be held responsible for non‐availability of the Website at any point in time for any reason whatsoever. The User understands and agrees that any material and/or data downloaded or otherwise obtained from INCOLLEGE through the Website is done entirely at his discretion and risk and he will be solely responsible for any damage to his computer systems or any other loss that results from such material and/or data
+                                
+                                4.       LINKS TO THIRD PARTY SITES   
+                                4.1 The Website may contain links to other websites or may contain features of any nature of other websites on the Website ("Linked Sites"). The Linked Sites are not under the control of INCOLLEGE or the Website and INCOLLEGE is not responsible for the contents of any Linked Site, including without limitation any link or advertisement contained in a Linked Site, or any changes or updates to a Linked Site. INCOLLEGE is not responsible for any form of transmission, whatsoever, received by the User from any Linked Site.  The inclusion of any link does not imply endorsement of any nature by INCOLLEGE or the Website of the Linked Sites or any association with its operators or owners.   
+                                4.2   INCOLLEGE is not responsible for any errors, inclusions, omissions or representations on any Linked Site, or on any link contained in a Linked Site.    The User is requested to verify the accuracy of all information on his own before undertaking any reliance on such information of such products/ services that they believe may benefit the User. 
+                                
+                                5. USER'S OBLIGATIONS   
+                                5.1 As a condition of access and use of the Website, the User warrants that he will not use the Website for any purpose that is unlawful or illegal under any law for the time being in force within or outside India or prohibited by this Agreement. In addition, the Website shall not be used in any manner, which could damage, disable, overburden or impair it or interfere with any other party's use and/or 
+                                
+                                6.   CONTACT US FEATURE 
+                                6.1 The Users will be provided with Contact Us features on the Website. The Users will be able to provide their contact details to enable INCOLLEGE to contact them. 
+                                6.2 The Users may further be provided with features to contact INCOLLEGE, raise queries, comments or interact with INCOLLEGE. However INCOLLEGE shall be at its sole discretion and be within its rights to answer, reply or opt not to reply to any such queries or comments. 
+                                6.3 By using the said features, User permits INCOLLEGE to contact them on their registered details, for any clarification or to offer any other service from time to time.          
+                                
+                                7. BREACH 
+                                7.1 Without prejudice to the other remedies available to INCOLLEGE under this Agreement or under applicable law, INCOLLEGE may limit the User's activity, warn other Users of the User's actions, immediately temporarily / indefinitely suspend or terminate the User’s use of the Website, and/or refuse to provide the User with access to the Website if the User is in breach of this Agreement.      
+                                
+                                8. OWNERSHIP AND PROPRIETARY RIGHTS
+                                8.1 The content of the Website and all copyrights, patents, trademarks, service marks, trade names and all other intellectual property rights therein are owned by INCOLLEGE or validly  licensed to INCOLLEGE  and are protected by applicable USA and international copyright and other intellectual property law. The User acknowledges, understands and agrees that he shall not have, nor be entitled to claim, any rights in and to the Website content and/or any portion thereof. 
+                                8.2 Some of the content on the Website have been permitted by the third party/ies to be used by INCOLLEGE in such form and manner as may be desired by INCOLLEGE and INCOLLEGE will makes its best endeavors to give credit to such third party/ies during publication of such content on its Website. If at any point in time any dispute is raised with respect to publication of such content, by any third party, INCOLLEGE shall be in its rights to remove such content or procure requisite consents from third party/ies.    
+                                8.3 Any copyrighted or other proprietary content distributed on or through the Website with the consent of the owner must contain the appropriate copyright or other proprietary rights notice. The unauthorized submission or distribution of copyrighted or other proprietary content is illegal and could subject the User to personal liability or criminal prosecution.
+                                
+                                9. LIMITATION OF LIABILITY   
+                                9.1 The user understands and expressly agrees that to the extent permitted under applicable laws, in no event will the incollege or any of its affiliates or parent company or any of their respective officers, employees, directors, shareholders, agents, or licensors be liable to the user or anyone else under any theory of liability (whether in contract, tort, statutory, or otherwise) for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to, damages for loss of revenues, profits, goodwill, use, data or other intangible losses (even if such parties were advised of, knew of or should have known of the possibility of such damages), resulting from the user’s use  of or inability to use the website or any parts thereof. 
+                                
+                                10. INDEMNIFICATION 
+                                10.1 The User agrees to indemnify, defend and hold harmless INCOLLEGE, its affiliates, group companies and their directors, officers, employees, agents, third party service providers, and any other third   party providing any service to INCOLLEGE in relation to the Website  whether directly or indirectly, from and against any and all losses, liabilities, claims, damages, costs and expenses (including legal fees and disbursements in connection therewith and interest chargeable thereon) asserted against or incurred by INCOLLEGE that arise out of, result from, or may be payable by virtue of, any breach or non‐performance of any terms of this Agreement including any representation, warranty, covenant or agreement made or obligation to be performed by the User pursuant to this Agreement. 
+                                
+                                11. SEVERABILITY 
+                                11.1 If any provision of this Agreement is determined to be invalid or unenforceable in whole or in part, such invalidity or unenforceability shall attach only to such provision or part of such provision and the remaining part of such provision and all other provisions of this Agreement shall continue to be in full force and effect.     
+                                
+                                12. GOVERNING LAW   
+                                12.1 This Agreement shall be governed by and constructed in accordance with the laws of United States of America without reference to conflict of laws principles. In the event any dispute in relation hereto is brought by the User, it shall be subject to the exclusive jurisdiction of the courts of United States of America.  
+                                """
+                        print(useragreement)
 
                     elif sel == "5":
                         print(" +-------------------------+")
                         print(" |     Privacy Policy      |")
                         print(" +-------------------------+\n")
-                        print("Our Privacy Policy is written here...\n")
+                        print("For policy in Pirvacy, please refer back to the User agreement \n")
                         flag2 = True
                         while flag2 is True:
                             targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
@@ -417,11 +464,31 @@ def main ():
                         sel = "" #resetting
 
                     elif sel == "6":
-                        print("Our Cookie Policy goes here")
+                        cookieprivacy = """
+                        \nWhat are cookies?
+                        Cookies are simple text files that are stored on your computer or mobile device by a website’s server. Each cookie is unique to your web browser. It will contain some anonymous information such as a unique identifier, website’s domain name, and some digits and numbers.
+                        
+                        \nWhat types of cookies do we use?
+                        Necessary cookies
+                        Necessary cookies allow us to offer you the best possible experience when accessing and navigating through our website and using its features. For example, these cookies let us recognize that you have created an account and have logged into that account to access the content.
+                        
+                        \nFunctionality cookies
+                        Functionality cookies let us operate the site in accordance with the choices you make. For example, we will recognize your username and remember how you customized the site during future visits.
+                        
+                        \nAnalytical cookies
+                        These cookies enable us and third-party services to collect aggregated data for statistical purposes on how our visitors use the website. These cookies do not contain personal information such as names and email addresses and are used to help us improve your user experience of the website.
+                       
+                        \nHow to delete cookies?
+                        If you want to restrict or block the cookies that are set by our website, you can do so through your browser setting. Alternatively, you can visit www.internetcookies.org, which contains comprehensive information on how to do this on a wide variety of browsers and devices. You will find general information about cookies and details on how to delete cookies from your device.
+
+                        \nContacting us
+                        If you have any questions about this cookie policy or our use of cookies, please contact us.
+                        """
+                        print(cookieprivacy)
 
 
                     elif sel == "7":
-                        print("Our Brand Policy goes here")
+                        print("For policy in brands, please refer back to the User agreement ")
 
                     elif sel == "8":
                         flag2 = True

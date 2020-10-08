@@ -57,7 +57,7 @@ class Database():
     #     return self.data
 
 
-    # Create new student account
+    # Create new student account COMIT
     def create_account(self, new_username, new_password, new_firstname, new_lastname):
         
         # Load data from file
