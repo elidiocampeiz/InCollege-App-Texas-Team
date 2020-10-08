@@ -8,7 +8,7 @@ class Student():
         # self.student_data['firstname']=firstname
         # self.student_data['lastname']=lastname
     
-    def __getattribute__(self, name):
+    def __getattr__(self, name):
         return self[name]
     
         # # Class settings
