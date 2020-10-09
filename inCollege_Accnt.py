@@ -167,7 +167,7 @@ def school_info(school_name, major, year, DB):
 #Gets the Users experience  
 def user_experience(DB, experience):
     
-     print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     title = input("Enter Job Title: ")
     if title == 'x':
         return False
@@ -184,7 +184,7 @@ def user_experience(DB, experience):
     if location == 'x':
         return False
     end_date = str(input("Enter The Date You Ended: "))
-    if salary == 'x':
+    if end_date == 'x':
         return False
 
     set_experience = DB.set_experience(title, description, employer, location, start_date, end_date)

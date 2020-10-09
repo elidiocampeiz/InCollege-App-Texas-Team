@@ -253,10 +253,17 @@ DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
 myStudent = DB.get_student_by_username(new_username)
 
 print(myStudent.firstname)
-
-myStudent.update(firstname='new_firstname',title='title', experience=[{'title':'job name'}])
+new_job = {
+            'title' :'title',
+            'employer' :'employer',
+            'started' :'started',
+            'ended' :'ended',
+            'location' :'location',
+            'description':'description',
+        }
+myStudent.update(firstname='new_firstname',title='title', experience=[new_job])
 print(myStudent.firstname)
-print(myStudent.get_experience(0)['title'])
+print(myStudent.experience)
 DB.load()
 for username, student in DB.data['Students'].items():
     print(username, student.title, student.firstname)
@@ -264,8 +271,4 @@ for username, student in DB.data['Students'].items():
 DB.set_student(myStudent)
 for username, student in DB.data['Students'].items():
     print(username, student.title, student.firstname, student.get_experience(1))
-    
-
-
-   
     
