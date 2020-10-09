@@ -4,6 +4,7 @@ import inCollege_Home as home
 import inCollege_CurrentUser as user
 import inCollege_Database as database
 import inCollege_CurrentUser as user
+from inCollege_Student import *
 import time
 time.sleep=lambda x:None
 
@@ -222,14 +223,14 @@ def test_search_users(DB, monkeypatch, firstname, lastname, expected):
 
 def test_clear(DB):
     DB.clear()
-    reset_DB_data = {"Students":[], "Jobs":[]}
+    reset_DB_data = {"Students":{}, "Jobs":[]}
     DB.load()
     assert DB.data == reset_DB_data
     assert DB.isFull == False
 
 def test_reset(DB):
     DB.reset()
-    reset_DB_data = {"Students":[], "Jobs":[]}
+    reset_DB_data = {"Students":{}, "Jobs":[]}
     assert DB.data == reset_DB_data
     assert DB.isFull == False
 
@@ -406,7 +407,7 @@ def login_fake_inputs(key, username, password):
     # Todo: 3 more cases
 ])
 # Test Login Acc
-def test_login(DB, monkeypatch, username, password, expected):
+def test_login_menu(DB, monkeypatch, username, password, expected):
 
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
@@ -419,7 +420,7 @@ def test_login(DB, monkeypatch, username, password, expected):
             assert result == expected
         else:
             #print('result.name', result.name)
-            assert result.name != ''
+            assert result.username != ''
 
 
 def post_job_fake_inputs(key, title, description, employer, location, salary, expected):
@@ -598,136 +599,220 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
 def test_get_student_by_username(DB, username, expected):
     student = DB.get_student_by_username(username)
     if student:
-        assert student["username"] == username
+        assert student.username == username
     else:
         assert student == False
 
-@pytest.mark.parametrize("usernames, field, value, setting_field, guest_control_field, expected",
-[
-    # Test Update Fail -> username
-    (  
-        '',
-        "settings",
-        False,
-        'guest control',
-        'Email',
-        False
-    ),
-    # Test Update Fail -> field
-    (  
-        "1accusername",
-        None,
-        False,
-        'guest control',
-        'Email',
-        False
-    ),
-    # Test Update Fail -> value
-    (  
-        "1accusername",
-        "settings",
-        None,
-        'guest control',
-        'Email',
-        False
-    ),
-    # Test Update Fail -> wrong_username
-    (  
-        'wrong_username',
-        "settings",
-        False,
-        'guest control',
-        'Email',
-        False
-    ),
-    # Test Update settings -> guest control -> Email : True
-    (  
-        "1accusername",
-        "settings",
-        False,
-        'guest control',
-        'Email',
-        True
-    ),
-    # Test Update settings -> guest control -> Email : False
-    (  
-        "1accusername",
-        "settings",
-        True,
-        'guest control',
-        'Email',
-        True
-    ),
-    # Test Update settings -> guest control -> SMS : False
-    (  
-        "1accusername",
-        "settings",
-        False,
-        'guest control',
-        'SMS',
-        True
-    ),
-    # Test Update settings -> guest control -> SMS : True
-    (  
-        "1accusername",
-        "settings",
-        True,
-        'guest control',
-        'SMS',
-        True
-    ),
-    # Test Update settings -> guest control -> Targeted Advertising : False
-    (  
-        "1accusername",
-        "settings",
-        False,
-        'guest control',
-        'Targeted Advertising',
-        True
-    ),
-    # Test Update settings -> guest control -> Targeted Advertising : True
-    (  
-        "1accusername",
-        "settings",
-        True,
-        'guest control',
-        'Targeted Advertising',
-        True
-    ),
-    # Test Update settings -> language : Spanish
-    (  
-        "1accusername",
-        "settings",
-        'Spanish',
-        'language',
-        None,
-        True
-    ),
-    # Test Update settings -> language : English
-    (  
-        "1accusername",
-        "settings",
-        'English',
-        'language',
-        None,
-        True
-    ),
-    # # Test Update username -> language : English
-    # (  
-    #     "1accusername",
-    #     'firstname',
-    #     'new_username',
-    #     None,
-    #     None,
-    #     True
-    # ),
+# @pytest.mark.parametrize("usernames, field, value, setting_field, guest_control_field, expected",
+# [
+#     # Test Update Fail -> username
+#     (  
+#         '',
+#         "settings",
+#         False,
+#         'guest control',
+#         'Email',
+#         False
+#     ),
+#     # Test Update Fail -> field
+#     (  
+#         "1accusername",
+#         None,
+#         False,
+#         'guest control',
+#         'Email',
+#         False
+#     ),
+#     # Test Update Fail -> value
+#     (  
+#         "1accusername",
+#         "settings",
+#         None,
+#         'guest control',
+#         'Email',
+#         False
+#     ),
+#     # Test Update Fail -> wrong_username
+#     (  
+#         'wrong_username',
+#         "settings",
+#         False,
+#         'guest control',
+#         'Email',
+#         False
+#     ),
+#     # Test Update settings -> guest control -> Email : True
+#     (  
+#         "1accusername",
+#         "settings",
+#         False,
+#         'guest control',
+#         'Email',
+#         True
+#     ),
+#     # Test Update settings -> guest control -> Email : False
+#     (  
+#         "1accusername",
+#         "settings",
+#         True,
+#         'guest control',
+#         'Email',
+#         True
+#     ),
+#     # Test Update settings -> guest control -> SMS : False
+#     (  
+#         "1accusername",
+#         "settings",
+#         False,
+#         'guest control',
+#         'SMS',
+#         True
+#     ),
+#     # Test Update settings -> guest control -> SMS : True
+#     (  
+#         "1accusername",
+#         "settings",
+#         True,
+#         'guest control',
+#         'SMS',
+#         True
+#     ),
+#     # Test Update settings -> guest control -> Targeted Advertising : False
+#     (  
+#         "1accusername",
+#         "settings",
+#         False,
+#         'guest control',
+#         'Targeted Advertising',
+#         True
+#     ),
+#     # Test Update settings -> guest control -> Targeted Advertising : True
+#     (  
+#         "1accusername",
+#         "settings",
+#         True,
+#         'guest control',
+#         'Targeted Advertising',
+#         True
+#     ),
+#     # Test Update settings -> language : Spanish
+#     (  
+#         "1accusername",
+#         "settings",
+#         'Spanish',
+#         'language',
+#         None,
+#         True
+#     ),
+#     # Test Update settings -> language : English
+#     (  
+#         "1accusername",
+#         "settings",
+#         'English',
+#         'language',
+#         None,
+#         True
+#     ),
+#     # # Test Update username -> language : English
+#     # (  
+#     #     "1accusername",
+#     #     'firstname',
+#     #     'new_username',
+#     #     None,
+#     #     None,
+#     #     True
+#     # ),
 
+# ])
+# def test_update_student(DB, usernames, field, value, setting_field, guest_control_field, expected):
+#     result = DB.update_student(usernames, field, value, setting_field, guest_control_field)
+#     assert result == expected
+# # def test_hello(capsys, inputStr, expected):
+# #     outputFunction(inputStr)
+# #     captured_stdout, captured_stderr = capsys.readouterr()
+# #     # You can use .strip here to eliminate '\n', or include it in the expected string
+# #     assert captured_stdout.strip() == expected
+@pytest.mark.parametrize("username, update_dict , expected",
+[
+        (
+            '1accusername',
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            },
+            True
+        ),
+        (
+            '1accusername',
+            {  
+                'title':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            True
+        ),
+        (
+            '1accusername',
+            {  
+                'About':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            True
+        ),
+        # Test a username da doesn't exist in DB
+        (
+            'wrong_username',
+            {  
+                'About':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            False
+        ),
+        # Test a username da doesn't exist in DB
+        (
+            '',
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            },
+            False
+        )
 ])
-def test_update_student(DB, usernames, field, value, setting_field, guest_control_field, expected):
-    result = DB.update_student(usernames, field, value, setting_field, guest_control_field)
+def test_set_student(DB, username, update_dict, expected):
+    # Get student from DB
+    myStudent = DB.get_student_by_username(username)
+    
+    old_student = DB.get_student_by_username(username)
+    if not myStudent:
+        myStudent = Student(username=username)
+    if not old_student:
+        old_student = Student(username=username)
+
+    myStudent.update(**update_dict)    
+    result = DB.set_student(myStudent)
+    if result:
+        for key, updated_value in update_dict.items():
+            assert (old_student.key != updated_value) == expected
+   
     assert result == expected
-# def test_hello(capsys, inputStr, expected):
-#     outputFunction(inputStr)
-#     captured_stdout, captured_stderr = capsys.readouterr()
-#     # You can use .strip here to eliminate '\n', or include it in the expected string
-#     assert captured_stdout.strip() == expected

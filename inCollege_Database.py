@@ -144,16 +144,23 @@ class Database():
         if "Students" not in self.data:
             return False
         
-        # Iterate through each student in "Students" section
-        for student in self.data["Students"]:
-            # If username and password match, login succesful return True
-            if student['username'] == username and student['password'] == password:
-                print("\n...")
-                time.sleep(1)
-                print('Succesful login!\n')
-                time.sleep(1)
-                return True
-        
+        # # Iterate through each student in "Students" section
+        # for student in self.data["Students"]:
+        #     # If username and password match, login succesful return True
+        #     if student['username'] == username and student['password'] == password:
+        #         print("\n...")
+        #         time.sleep(1)
+        #         print('Succesful login!\n')
+        #         time.sleep(1)
+        #         return True
+        if self.data["Students"].get(username) != None:
+                student = self.data["Students"][username]
+                if student.password == password:
+                    print("\n...")
+                    time.sleep(1)
+                    print('Succesful login!\n')
+                    time.sleep(1)
+                    return True
         
         print("|*| No account found with this username and password combination |*|\n")
         return False
@@ -170,9 +177,9 @@ class Database():
         if lastname_search == 'x':
             return False
 
-        for student in self.data["Students"]:
+        for username, student in self.data["Students"].items():
             # If username already exists return false
-            if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
+            if student.firstname == firstname_search and student.lastname == lastname_search:
                 return True
 
         #if we get to this point, the user was not founf
@@ -236,11 +243,16 @@ class Database():
         # Save change in DB file
         self.save()
         return True
-    def set_student(self, new_student):
+    def set_student(self, student):
 
-        self.data["Students"][new_student.username] = new_student
-        self.save()
+        if not isinstance(student, Student):
+            return False
+        if self.data["Students"].get(student.username) == None:
+            return False
         
+        self.data["Students"][student.username] = student
+        self.save()
+        return True
 DB = Database()
 DB.clear()
 new_username='word2'
@@ -249,7 +261,7 @@ new_firstname='word'
 new_lastname='word'
 
 DB.create_account( new_username, new_password, new_firstname, new_lastname)
-DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
+# DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
 myStudent = DB.get_student_by_username(new_username)
 
 print(myStudent.firstname)
@@ -261,14 +273,33 @@ new_job = {
             'location' :'location',
             'description':'description',
         }
-myStudent.update(firstname='new_firstname',title='title', experience=[new_job])
+guest_control_field = 'SMS'
+new_value = False
+old_settings = myStudent.settings
+
+new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+new_guest_control[guest_control_field] = new_value
+new_settings = old_settings.copy()
+
+print(old_settings)
+new_settings['guest control'] = new_guest_control
+print(old_settings)
+# print(myStudent.firstname)
+# print(myStudent.experience)
+print(myStudent.settings)
+myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
+print(myStudent.settings)
 print(myStudent.firstname)
-print(myStudent.experience)
-DB.load()
+# DB.load()
 for username, student in DB.data['Students'].items():
-    print(username, student.title, student.firstname)
- 
-DB.set_student(myStudent)
+    print(username, student.settings)
+    print(new_settings)
+    print(old_settings)
+
+print(DB.set_student(myStudent))
+
 for username, student in DB.data['Students'].items():
-    print(username, student.title, student.firstname, student.get_experience(1))
-    
+    print(username, student.settings)
+    print(new_settings)
+    print(old_settings)
+

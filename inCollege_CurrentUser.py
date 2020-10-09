@@ -12,10 +12,10 @@ class User:
     #This function assigns the users full name to name attribute
     def getUserName(self, username):
         self.db.load()
-        for student in self.db.data["Students"]:
-            #looking for user with username
-            if student['username'] == username:
-                self.student_data = student
-                # concatenating first/last name
-                return student['firstname'] + " " + student['lastname']
+        student = self.db.get_student_by_username(username)
+        if student:
+
+            self.student_data = student
+            return student.firstname + " " + student.lastname
+            
         return ""

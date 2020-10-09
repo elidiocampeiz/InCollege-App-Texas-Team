@@ -80,10 +80,10 @@ def main ():
     mainMenuIntroMessage()
     loginStatus = False
     sel = ''
-    theUser = user.User()
+    # theUser = user.User()
     while (sel != 'x'):
 
-        #This menu is displayed to non-logged in user. 
+        #This menu is displayed to non-logged in user
         if (loginStatus == False):
 
             #in this case we navigated from somewhere else to create a new account
@@ -120,12 +120,14 @@ def main ():
                 return 0    
 
             elif sel == '1': #Log In. if log in is successful, the user object is returned. Otherwise, false is returned.
-                theUser = accnt.login(db)
-                if theUser is False:
+                # theUser = accnt.login(db)
+                theStudent = accnt.login(db)
+                if theStudent is False:
                     loginStatus = False
                 else:
                     # Update global settings 
-                    settings = theUser.student_data['settings']
+                    # settings = theUser.student_data['settings']
+                    settings = theStudent.settings
                     loginStatus = True
 
             #Create an account
@@ -135,7 +137,7 @@ def main ():
             #Find Someone You Know
             elif sel == '3': 
                 foundUser = db.search_users() #returns t / f
-                theUser = False
+                isStudentLoggedIn = False
                 if foundUser == True:
                     print("\nThey are a part of the InCollege system!")
                     print("Why don't you join them?\n")
@@ -150,8 +152,8 @@ def main ():
                         sel = input("\nEnter Your Selection: ")
 
                         if sel == '1':
-                            theUser = accnt.login(db)
-                            if theUser is False:
+                            isStudentLoggedin = accnt.login(db)
+                            if isStudentLoggedin is False:
                                 print("...\n")
                                 time.sleep(1)
                                 loginStatus = False
@@ -177,7 +179,7 @@ def main ():
                             time.sleep(1)
 
                     sel = '' #resetting from 'x' to fix problem where programming was exitting 
-                if theUser is False:
+                if isStudentLoggedin is False:
                     loginStatus = False
                 else:
                     loginStatus = True
@@ -549,7 +551,7 @@ def main ():
             
             # Post A Job
             if sel == '1': 
-                accnt.post_job(theUser.name, db)
+                accnt.post_job(theStudent.name, db)
 
             # Find someone you know
             elif sel == '2': 
@@ -821,26 +823,40 @@ def main ():
                                         print("| 2. OFF                             |")
                                         print("| x. Go Back                         |")
                                         print("+------------------------------------+")
-                                        new_value = input("Enter Your Selection: ")
-                                        
-                                        if new_value == 'x':
+                                        new_selected_value = input("Enter Your Selection: ")
+                                        new_value = True
+                                        if new_selected_value == 'x':
                                             value_update_flag = False
                                             print("... Going Back")
                                             time.sleep(1)
                                             break
-                                        elif new_value != '1' and new_value != '2':
+                                        elif new_selected_value != '1' and new_selected_value != '2':
                                             print("...Invalid Input")
                                             time.sleep(1)
                                             continue
-                                        elif new_value == '1':
-                                            db.update_student(theUser.username, 'settings', True, 'guest control', guest_control_field)
-                                        elif new_value == '2':
-                                            db.update_student(theUser.username, 'settings', False, 'guest control', guest_control_field)
-                                        
+                                        elif new_selected_value == '1':
+                                            new_value = True
+                                            # db.update_student(theStudent.username, 'settings', True, 'guest control', guest_control_field)
+                                        elif new_selected_value == '2':
+                                            # db.update_student(theStudent.username, 'settings', False, 'guest control', guest_control_field)
+                                            new_value = False
+                                        # Get shallow copy of current settings
+                                        new_settings = settings.copy()
+                                        # Get new guest controls 
+                                        new_guest_control = new_settings['guest control']
+                                        # Update new guest controls
+                                        new_guest_control[guest_control_field] = new_value
+                                        # Update new settings
+                                        new_settings['guest control'] = new_guest_control
                                         # Update user object
-                                        updated_user = user.User(theUser.username)
+                                        theStudent.update(settings=new_settings)
+                                        # Update Student in DB
+                                        db.set_student(theStudent)
+                                        # Update Stundet Object
+                                        theStudent = db.get_student_by_username(theStudent.username)
+                                        # Update settings
+                                        settings = theStudent.settings
                                         # Update Global Setings 
-                                        settings = updated_user.student_data['settings']
                                         # print(settings)
                                         # set flags to false
                                         value_update_flag = False
@@ -891,23 +907,35 @@ def main ():
                                     print("| 2. Spanish                      |")
                                     print("| x. Go Back                      |")
                                     print("+---------------------------------+")
-                                    new_language = input("Enter Your Selection: ")
-                                    if new_language == 'x':
+                                    new_language_selection = input("Enter Your Selection: ")
+                                    if new_language_selection == 'x':
                                         print("... Going Back")
                                         time.sleep(1)
                                         break
-                                    elif new_language == '1':
-                                        db.update_student(theUser.username, 'settings', 'English', 'language')
-                                    elif new_language == '2':
-                                        db.update_student(theUser.username, 'settings', 'Spanish', 'language')
+                                    elif new_language_selection == '1':
+                                        new_language = 'English'
+                                        # db.update_student(theStudent.username, 'settings', 'English', 'language')
+                                    elif new_language_selection == '2':
+                                        new_language = 'Spanish'
+                                        # db.update_student(theStudent.username, 'settings', 'Spanish', 'language')
                                     else:
                                         print("... Invalid Input")
                                         time.sleep(1)
                                         continue
-                                    # Update user object
-                                    updated_user = user.User(theUser.username)
+                                    # Get shallow copy of current settings 
+                                    new_settings = settings.copy()
+                                    # Update new settings 
+                                    new_settings['language'] = new_language
+                                    # Update Student Object 
+                                    theStudent.update(settings=new_settings)
+                                    # Update Student in DB
+                                    db.set_student(theStudent)
+                                    # Update Stundet Object
+                                    theStudent = db.get_student_by_username(theStudent.username)
+                                    # Update settings
+                                    settings = theStudent.settings
+                                    # updated_user = user.User(theUser.username)
                                     # Update Global Setings 
-                                    settings = updated_user.student_data['settings']
                                     language_update_flag = False
                             elif sel == "x":
                                 flag2 = False

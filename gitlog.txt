@@ -1,134 +1,43 @@
-commit 23e10531f23487dd7a9032e839e4ff56d68d49db (HEAD -> Jose, InCollege-App-Texas-Team/Jose)
+commit b4ba75b2553a46d108540769d763934608212376
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Sun Oct 4 01:34:06 2020 -0400
+Date:   Thu Oct 8 23:17:36 2020 -0400
 
-    Epic 3 - Todo: Add Strings For privacy policy
-
-commit dfc8bc788147fd22bedd3cea92482c3779fcd5c8
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Fri Oct 2 10:54:08 2020 -0400
-
-    Epic 3 - Test Merge
-
-commit de657a431d716da0f2a16d1a6df45a42c4f0aff0
-Merge: b9ac1bf e72d973
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Fri Oct 2 10:51:41 2020 -0400
-
-    Merge branch 'dariia' of https://github.com/elidiocampeiz/InCollege-App-Texas-Team into Jose
-
-commit e72d973facb2eca7efaf009d5f9eaff6c05aa105 (InCollege-App-Texas-Team/dariia)
-Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
-Date:   Fri Oct 2 10:23:03 2020 -0400
-
-    fixed test
-
-commit 30fe6c8605fbe40f69589cdaf6faadc7d2fc947d
-Merge: 1e84c04 89614eb
-Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
-Date:   Fri Oct 2 10:14:26 2020 -0400
-
-    Merge branch 'Challenge3' of https://github.com/elidiocampeiz/InCollege-App-Texas-Team into dariia
-
-commit 89614eb8da7545982c0874a49d914a03a13687b0 (InCollege-App-Texas-Team/Challenge3)
-Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
-Date:   Fri Oct 2 10:12:16 2020 -0400
-
-    new test
-
-commit b9ac1bf004e418bc42e6a8fbecf92bbee282ab94
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Thu Oct 1 16:49:34 2020 -0400
-
-    Epic 3
-
-commit 685ee4671bdbceb1ac3df81b4d0124c667f0fd4c
-Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
-Date:   Wed Sep 30 16:41:10 2020 -0400
-
-    fixed previous tests
-
-commit 18b3c376c1133ed843b1633a290b7a8a6bb06d8f
-Merge: 3a9f67c 66ff850
-Author: Jose Elidio Campeiz Neto <jecampeiz@gmail.com>
-Date:   Wed Sep 30 13:39:29 2020 -0400
-
-    Merge pull request #3 from elidiocampeiz/Jose
-    
     Jose
 
-commit 66ff85045adcb965a9e527429dfcad86077cd804
-Merge: 8e8df85 3a9f67c
+commit b018e371246415297f9cd14e54840856eed039e9
+Merge: 0fed589 6395438
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Wed Sep 30 13:39:00 2020 -0400
+Date:   Thu Oct 8 23:17:20 2020 -0400
 
-    Merge branch 'Challenge3' of https://github.com/elidiocampeiz/InCollege-App-Texas-Team into Jose
+    Merge branch 'Lordan-Cala' of https://github.com/elidiocampeiz/InCollege-App-Texas-Team into Challenge-4
 
-commit 8e8df85f1e328cd19b9aa631cfb9e3bbf4c5faee
+commit 0fed589c8d02f261a8ed7740752087c64639054f
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Wed Sep 30 13:31:45 2020 -0400
+Date:   Thu Oct 8 22:56:09 2020 -0400
 
-    Challenge 3 - Guest Controls V1
+    Jose - Student class
 
-commit 3a9f67c947b7545625cc7306c32c5289e8fd5bc8
-Merge: b006561 2418e86
-Author: Jose Elidio Campeiz Neto <jecampeiz@gmail.com>
-Date:   Wed Sep 30 13:14:05 2020 -0400
+commit 6395438c725ab9bc1caf7209101a1904d67056cf
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Thu Oct 8 22:54:14 2020 -0400
 
-    Merge pull request #2 from elidiocampeiz/Ali_Bayatpoor
-    
-    Ali bayatpoor
+    Lordan Cala
 
-commit 1e84c043afb4cb4c32875f1a38e1e2b903f72a7e
-Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
-Date:   Wed Sep 30 13:07:43 2020 -0400
-
-    hello
-
-commit 8ba4b8c4c9163cd1a8b6407812a9cf8c94c66f70
+commit 1eadf193bb49fbfecd36d694a82987bfc803714e
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Wed Sep 30 10:42:34 2020 -0400
+Date:   Thu Oct 8 13:22:32 2020 -0400
 
-    Add/update Settings field in student account
+    Student class
 
-commit 2418e86f7fb4ff204dad30f1a34ef7a8d956c17c (InCollege-App-Texas-Team/Ali_Bayatpoor)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Wed Sep 30 10:02:34 2020 -0400
+commit e52e921d2596ce112a799afe32574a55fe590456
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Thu Oct 8 13:13:56 2020 -0400
 
-    changed good bye message
+    Jose
 
-commit 20a92ac25f17ebf35c12a40b103e5f649bc9384f
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Wed Sep 30 10:00:04 2020 -0400
+commit 0ec9b604b616eed8bf812afa37b8f260c3baf427
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Oct 4 11:38:33 2020 -0400
 
-    Added messages to About and Press in general Tab in logged in account and not logged in account
+    challenge-4
 
-commit 707015d219912a4ce6751524ed5b873ef9499f5c
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Wed Sep 30 09:08:11 2020 -0400
-
-    Go back on menu to create new account when selected
-
-commit 6d2866c779cd48cfc7c9a78732e3031d675f03ae (Ali_Bayatpoor)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Tue Sep 29 10:06:01 2020 -0400
-
-    changes
-
-commit b3e03c61630d6f70658b3a2c80b5316ed2c48951
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Mon Sep 28 23:00:50 2020 -0400
-
-    Third Sprint Functionality Completed
-
-commit 6366ba9a30656ffaf40239184d7b264baa4f916f
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Mon Sep 28 21:00:18 2020 -0400
-
-    ui Updates
-
-commit ff8252485de77e6c3ea097a73bde57d3e818fd5f
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Mon Sep 28 17:18:37 2020 -0400
-
-    UI up

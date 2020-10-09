@@ -64,8 +64,10 @@ def login(DB):
         print("\n|*| Login Error |*|\n")
         return login
 
-    theUser = user.User(username, DB)
-    return theUser
+    # theUser = user.User(username, DB)
+    # return theUser
+    theStudent = DB.get_student_by_username(username)
+    return theStudent
 
 # Function for create an account UI
 def create_account(DB):
