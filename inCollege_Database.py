@@ -1,6 +1,6 @@
 import pickle
 import time 
-
+from inCollege_Student import *
 #Dictionary data structure. Or set. I don't know.
 #Pickle saves the binary data of the python object.
 
@@ -9,10 +9,11 @@ class Database():
         self.filename = filename
         self.reset()
         self.load()
+        
 
     # Reset data
     def reset(self):
-        self.data = {"Students":[], "Jobs":[]}
+        self.data = {"Students":{}, "Jobs":[]}
         self.isFull = False
         # if the database file doesn't exist uncomment the next line
         # self.save()            
@@ -35,7 +36,7 @@ class Database():
         
         # If DB is empty create a "Students" section
         if "Students" not in self.data:
-            self.data["Students"] = []
+            self.data["Students"] = {}
 
         # If DB is empty create a "Jobs" section
         if "Jobs" not in self.data:
@@ -82,11 +83,18 @@ class Database():
 
         # Init new student 
         new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
-        
+        my_student = Student(**new_student)
         # Iterate through each student in "Students" section
-        for student in self.data["Students"]:
-            # If username already exists return false
-            if student['username'] == new_username:
+        # for student in self.data["Students"]:
+        #     # If username already exists return false
+        #     if student.username == new_username:
+        #         print("...")
+        #         time.sleep(1)
+        #         print('Username already in use')
+        #         time.sleep(1)
+        #         return False
+
+        if new_username in self.data["Students"].keys():
                 print("...")
                 time.sleep(1)
                 print('Username already in use')
@@ -94,8 +102,8 @@ class Database():
                 return False
         
         # Else append new student to the list
-        self.data["Students"].append(new_student)
-            
+        self.data["Students"][new_username] = my_student
+
         # Save data to file
         self.save()
         print("\n... \n")
@@ -186,12 +194,16 @@ class Database():
         # Load data
         self.load()
         # Get student by username
-        for student in self.data["Students"]:
-            # If username already exists return false
-            if student['username'] == username:
-                return student
+        # for student in self.data["Students"]:
+        #     # If username already exists return false
+        #     # if student['username'] == username:
+        #     if student.username == username:
+        #         return student
+        # return False
+        if username in self.data["Students"].keys():
+            student =  self.data["Students"][username]
+            return student
         return False
-    
 
 
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
@@ -224,3 +236,36 @@ class Database():
         # Save change in DB file
         self.save()
         return True
+    def set_student(self, new_student):
+
+        self.data["Students"][new_student.username] = new_student
+        self.save()
+        
+DB = Database()
+DB.clear()
+new_username='word2'
+new_password='word'
+new_firstname='word'
+new_lastname='word'
+
+DB.create_account( new_username, new_password, new_firstname, new_lastname)
+DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
+myStudent = DB.get_student_by_username(new_username)
+
+print(myStudent.firstname)
+
+myStudent.update(firstname='new_firstname',title='title', experience=[{'title':'job name'}])
+print(myStudent.firstname)
+print(myStudent.get_experience(0)['title'])
+DB.load()
+for username, student in DB.data['Students'].items():
+    print(username, student.title, student.firstname)
+ 
+DB.set_student(myStudent)
+for username, student in DB.data['Students'].items():
+    print(username, student.title, student.firstname, student.get_experience(1))
+    
+
+
+   
+    
