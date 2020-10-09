@@ -135,9 +135,81 @@ def post_job(fullname, DB):
         print("\n|*| Create Job Posting Error |*|")
     
     return create_job_posting
+
+#Getting School info from student
+def school_info(school_name, major, year, DB):
+    # Init DB
+    # DB = database.Database()
+
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    print("+--------------------------------------------------+")
+    print("|    Add University, major and your school year    |")
+    print("+--------------------------------------------------+\n")
+
+    #Get user input
+    university = input("Enter The University you attend: ")
+    if university == 'x':
+        return False
+    major = input("Enter The Major you're taking: ")
+    if major == 'x':
+        return False
+    year = str(input("Enter Your Status Year(Freshman, Sophomore, Junior, Senior): "))
+    if year == 'x':
+        return False
+
+    set_education = DB.set_education(university, major, year)
+
+    if (set_education == False):
+        print("\n|*| Putting School info Error |*|")
     
+    return set_education
+
+#Gets the Users experience  
+def user_experience(DB, experience):
+    
+     print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    title = input("Enter Job Title: ")
+    if title == 'x':
+        return False
+    description = input("Enter Job Description: ")
+    if description == 'x':
+        return False
+    employer = str(input("Enter Employer For Job: "))
+    if employer == 'x':
+        return False
+    location = str(input("Enter Job Location: "))
+    if location == 'x':
+        return False
+    start_date = str(input("Enter the Date you Started: "))
+    if location == 'x':
+        return False
+    end_date = str(input("Enter The Date You Ended: "))
+    if salary == 'x':
+        return False
+
+    set_experience = DB.set_experience(title, description, employer, location, start_date, end_date)
+
+    if (set_experience == False):
+        print("\n|*| Set experience Error |*|")
+    
+    return set_experience
+
+def title(self):
+    profile_title = str(input("Enter a title for you profile: "))
+    
+    set_title = DB.set_title(profile_title)
+    return set_title
+
+def about(self):
+    profile_about = str(input("Tell Us About Yourself: "))
+    
+    set_title = DB.set_title(profile_title)
+    return set_title
+
+
 def clear_accounts():
     database.Database
+
 # TODO
 # Change Account Settings 
 # field is the settings type (e.g. )

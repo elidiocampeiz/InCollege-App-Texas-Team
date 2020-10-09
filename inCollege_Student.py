@@ -167,3 +167,7 @@ class Student():
 # myStudent.set_education('a','b','c')
 # print('Title: ',myStudent.education)
 
+<<<<<<< HEAD
+=======
+print(myStudent.settings)
+>>>>>>> 6395438c725ab9bc1caf7209101a1904d67056cf
