@@ -253,53 +253,53 @@ class Database():
         self.data["Students"][student.username] = student
         self.save()
         return True
-DB = Database()
-DB.clear()
-new_username='word2'
-new_password='word'
-new_firstname='word'
-new_lastname='word'
+# DB = Database()
+# DB.clear()
+# new_username='word2'
+# new_password='word'
+# new_firstname='word'
+# new_lastname='word'
 
-DB.create_account( new_username, new_password, new_firstname, new_lastname)
-# DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
-myStudent = DB.get_student_by_username(new_username)
+# DB.create_account( new_username, new_password, new_firstname, new_lastname)
+# # DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
+# myStudent = DB.get_student_by_username(new_username)
 
-print(myStudent.firstname)
-new_job = {
-            'title' :'title',
-            'employer' :'employer',
-            'started' :'started',
-            'ended' :'ended',
-            'location' :'location',
-            'description':'description',
-        }
-guest_control_field = 'SMS'
-new_value = False
-old_settings = myStudent.settings
-
-new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
-new_guest_control[guest_control_field] = new_value
-new_settings = old_settings.copy()
-
-print(old_settings)
-new_settings['guest control'] = new_guest_control
-print(old_settings)
 # print(myStudent.firstname)
-# print(myStudent.experience)
-print(myStudent.settings)
-myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
-print(myStudent.settings)
-print(myStudent.firstname)
-# DB.load()
-for username, student in DB.data['Students'].items():
-    print(username, student.settings)
-    print(new_settings)
-    print(old_settings)
+# new_job = {
+#             'title' :'title',
+#             'employer' :'employer',
+#             'started' :'started',
+#             'ended' :'ended',
+#             'location' :'location',
+#             'description':'description',
+#         }
+# guest_control_field = 'SMS'
+# new_value = False
+# old_settings = myStudent.settings
 
-print(DB.set_student(myStudent))
+# new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+# new_guest_control[guest_control_field] = new_value
+# new_settings = old_settings.copy()
 
-for username, student in DB.data['Students'].items():
-    print(username, student.settings)
-    print(new_settings)
-    print(old_settings)
+# print(old_settings)
+# new_settings['guest control'] = new_guest_control
+# print(old_settings)
+# # print(myStudent.firstname)
+# # print(myStudent.experience)
+# print(myStudent.settings)
+# myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
+# print(myStudent.settings)
+# print(myStudent.firstname)
+# # DB.load()
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
+
+# print(DB.set_student(myStudent))
+
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
 

@@ -816,3 +816,86 @@ def test_set_student(DB, username, update_dict, expected):
             assert (old_student.key != updated_value) == expected
    
     assert result == expected
+
+# guest control is a dict {guest_control_type : boolean}
+guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+# laguage settings
+language = "English"
+
+settings = {'guest control' : guest_control, "language" : language} 
+# language settings
+
+# Init new student 
+new_student = {'username':"new_username", 'password':"new_password",'firstname':"new_firstname", 'lastname':"new_lastname", 'settings': settings}
+my_student = Student(**new_student)
+
+@pytest.fixture (scope = "module")
+def default_Student(): 
+    guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+    # laguage settings
+    language = "English"
+
+    settings = {'guest control' : guest_control, "language" : language} 
+    # language settings
+
+    # Init new student 
+    new_student = {'username':"new_username", 'password':"new_password",'firstname':"new_firstname", 'lastname':"new_lastname", 'settings': settings}
+    my_student = Student(**new_student)
+
+    return my_student
+@pytest.mark.parametrize("update_dict",
+[
+        (
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            }
+        ),
+        ( 
+            {  
+                'title':'Computer Science Student' 
+            }
+        ),
+        (
+            
+            {  
+                'About':'Computer Science Student'  # doesn't matter what value is
+            }
+        ),
+        # Test a username da doesn't exist in DB
+        (
+            {  
+                'About':
+                {
+                    'Computer Science Student' 
+                }
+            }
+        ),
+        # Test a username da doesn't exist in DB
+        (
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            }
+        )
+])
+def test_student_update(default_Student, update_dict):
+    default_Student.update(**update_dict)
+    for key, updated_value in update_dict.items():
+        assert default_Student.key == updated_value
