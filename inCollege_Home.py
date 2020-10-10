@@ -960,21 +960,15 @@ def main ():
                         time.sleep(1)
                 sel = "" #resetting
             elif sel == "6":
-                print("+========================+")
-                print("|*| Under Construction |*|")
-                print("+========================+\n")
                 # loop while 
                 while accnt.display_profile(db, theStudent):
                     pass
                 
-
             elif sel == "7":
-                # TODO: Add dummy Students as friends in the Student constructor
-                # TODO: Display Friend List menu
-                # TODO: On Select Friend Display their profile
-                print("+====================================+")
-                print("|*| Friend List Under Construction |*|")
-                print("+====================================+\n") 
+                #TODO Print friends, and  =view profile of the one you select
+                print()
+
+            
             #Exit Program    
             elif sel == 'x':
                 print("       + --------- +")

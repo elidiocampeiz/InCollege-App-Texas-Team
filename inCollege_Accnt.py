@@ -338,12 +338,12 @@ def display_profile(DB, student):
 
     print("About Me:\n", prof_about, "\n")
     print("Education History")
-    print("-----------------\n")
+    print("-----------------")
     print("School: ", stu_university)
     print("Year: ", stu_schoolYear)
     print("Major: ", stu_major, "\n")
     print(" Job Experience")
-    print("-----------------\n")
+    print("-----------------") 
     counter = 0 #this counter keeps track of which section of job dictionary we are in
     outer_counter = 1 # starting at one to label Job1, Job2, Job3
     for job in dict_Jobs:

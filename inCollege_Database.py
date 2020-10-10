@@ -9,7 +9,6 @@ class Database():
         self.filename = filename
         self.reset()
         self.load()
-        
 
     # Reset data
     def reset(self):
@@ -22,7 +21,6 @@ class Database():
     def clear(self):
         # Reset data
         self.reset()
-        # Clear file
         self.save()
 
     # Load data from file, with the option of usign an alternative file
@@ -41,6 +39,7 @@ class Database():
         # If DB is empty create a "Jobs" section
         if "Jobs" not in self.data:
             self.data["Jobs"] = []
+
         
         # If there are 5 or more student accounts, the DB is full
         if len(self.data["Students"]) > 4:
@@ -81,7 +80,7 @@ class Database():
         settings = {'guest control' : guest_control, "language" : language} 
         # language settings
 
-        # Init new student 
+        # Init new student  
         new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
         my_student = Student(**new_student)
         # Iterate through each student in "Students" section
@@ -95,9 +94,7 @@ class Database():
         #         return False
 
         if new_username in self.data["Students"].keys():
-                print("...")
-                time.sleep(1)
-                print('Username already in use')
+                print('Username already in use...')
                 time.sleep(1)
                 return False
         
@@ -254,6 +251,25 @@ class Database():
         self.data["Students"][student.username] = student
         self.save()
         return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DB = Database()
 # DB.clear()
 # new_username='word2'
