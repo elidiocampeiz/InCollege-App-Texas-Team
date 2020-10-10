@@ -285,8 +285,7 @@ def display_profile(DB, student):
     fullname = ""
     prof_title = ""
     prof_about = ""
-    prof_education = ""
-    prof_experience = ""
+    dict_Jobs = ""
     stu_university = ""
     stu_major = ""
     stu_schoolYear = ""
@@ -316,21 +315,53 @@ def display_profile(DB, student):
                     stu_schoolYear = val
 
         elif key == "experience":
-            prof_experience = value
+            dict_Jobs = value
 
     print(" +---------------------------------------+")
     print(" |           inCollege Profile           |")
+    print(" +---------------------------------------+")
+
+    print("      ", fullName)
+    print("       Title: ", prof_title)
+    print(" +---------------------------------------+")
+    print(" |                      .--------------. |")
+    print(" |                      |      /~~\    | |") 
+    print(" |     .........        |   | ( OO )   | |")
+    print(" |   ..............     |    \ \--/    | |")
+    print(" |   ..............     |      \II     | |")
+    print(" |   ................   |       <>\    | |")
+    print(" |   .............      |       <>  \  | |")
+    print(" |                      |      /  \    | |")
+    print(" |                      |     /    \   | |")
+    print(" |                      `--------------' |")
     print(" +---------------------------------------+\n")
+
     print("Profile Name: ", fullName, "\n")
     print("Title: ", prof_title, "\n")
     print("About Me:\n", prof_about, "\n")
-    print("School: ", stu_university, "\n")
-    print("Year: ", stu_schoolYear, "\n")
-    print("Major: ", stu_major, "\n")
+    print("School: ", stu_university)
+    print("Year: ", stu_schoolYear)
+    print("Major: ", stu_major)
     print("Job Experience:\n")
-    for value in prof_experience:
-        print(value)
-    print(" +---------------------------------------+")
+    counter = 0 #this counter keeps track of which section of job dictionary we are in
+    for job in dict_Jobs:
+        print("Jobs")
+        for val in job:
+            if counter == 0:
+                print("Title: ", val)
+            elif counter == 1:
+                print("Employer: ", val)
+            elif counter == 2:
+                print("Start Date: ", val)
+            elif counter == 3:
+                print("End Date: ", val)
+            elif counter == 4:
+                print("Location: ", val)
+            elif counter == 5:
+                print("Description: ", val) #text wrap
+            counter += 1 #incrementing
+        print() #put spacing between each job
+    print(" +---------------------------------------+\n")
         
     
     print(" +-----------------------------+")
