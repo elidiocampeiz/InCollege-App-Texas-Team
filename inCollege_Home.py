@@ -544,6 +544,8 @@ def main ():
             print(" | 3. Skill Screen              |")
             print(" | 4. Useful Links              |")
             print(" | 5. InCollege Important Links |")
+            print(" | 6. View Profile              |")
+            print(" | 7. View Friends              |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -763,7 +765,7 @@ def main ():
                         print(" +-------------------------+\n")
                         print("Our Privacy Policy is written here...\n")
                         flag2 = True
-                        #TODO TODO TODO
+                        
                         while flag2 is True:
                             targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
                             SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
@@ -896,7 +898,7 @@ def main ():
                             print("| x. Go Back                     |")
                             print("+--------------------------------+\n")
                             sel = input("Enter Your Selection: ")
-                            # TODO
+
                             if sel == "1":
                                 language_update_flag = True
                                 while language_update_flag:
@@ -957,7 +959,22 @@ def main ():
                         print("...Invalid Input")
                         time.sleep(1)
                 sel = "" #resetting
+            elif sel == "6":
+                print("+========================+")
+                print("|*| Under Construction |*|")
+                print("+========================+\n")
+                # loop while 
+                while accnt.display_profile(db, theStudent):
+                    pass
+                
 
+            elif sel == "7":
+                # TODO: Add dummy Students as friends in the Student constructor
+                # TODO: Display Friend List menu
+                # TODO: On Select Friend Display their profile
+                print("+====================================+")
+                print("|*| Friend List Under Construction |*|")
+                print("+====================================+\n") 
             #Exit Program    
             elif sel == 'x':
                 print("       + --------- +")

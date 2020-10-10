@@ -230,11 +230,11 @@ def update_experience_info(DB, student):
     print("+--------------------------------------------------+\n")
     print("|*|   NOTE - Enter 'x' at any time to go back    |*|\n")
     i = 0
-    job_list = ['First', 'Second', 'Third']
+    job_list = ['First ', 'Second', 'Third ']
     while i < 3:
-        print("+------------------------------+")
+        print("+------------------------------------+")
         print("|     Enter {} Job Experience     |".format(job_list[i]))
-        print("+------------------------------+\n")
+        print("+------------------------------------+\n")
         title = input("Enter Job Title: ")
         if title == 'x':
             return False
@@ -269,12 +269,42 @@ def update_experience_info(DB, student):
 def clear_accounts():
     database.Database
 
-# TODO
-# Change Account Settings 
-# field is the settings type (e.g. )
-# words = 'a b, asasd c'
-# major = ''
-#     # Captilize each starting letter
-# for word in words.split():
-#     major += word.capitalize() + ' '
-# print(major)
+# TODO display profile
+def display_profile(DB, student):
+    # ... Display Profile 
+    # Name 
+    # Title 
+    # About 
+    # Education
+    # Experience
+    
+    print(" +-----------------------------+")
+    print(" |            Profile          |")
+    print(" +-----------------------------+")
+
+    for key, value in student.__dict__.items():
+        print(key,': ', value)
+    
+    print(" +-----------------------------+")
+    print(" |        Edit Profile?        |")
+    print(" +-----------------------------+")
+    print(" | 1. Yes                      |")
+    print(" | x. Go Back                  |")
+    print(" +-----------------------------+")
+
+    
+    edit_selection = input('Enter Your Selection: ')
+    if edit_selection == '1':
+        print("+=====================================+")
+        print("|*| Edit Profile Under Construction |*|")
+        print("+=====================================+\n")
+        time.sleep(1)
+    elif edit_selection == 'x':
+        print("... Going Back\n")
+        time.sleep(1)
+        return False
+    else:
+        print("...Invalid Input")
+        time.sleep(1)
+        return True # continue loop in Home line 966
+        
