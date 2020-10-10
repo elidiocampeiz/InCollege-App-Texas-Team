@@ -72,13 +72,13 @@ class Student():
     
     # 3 consecutive test expecting True
     # 4th consecutive test expect False
-    def add_job_experience(self, title, employer, started, ended, location, description):
+    def add_job_experience(self, title, employer, start_date, end_date, location, description):
         
         new_job = {
             'title' :title,
             'employer' :employer,
-            'started' :started,
-            'ended' :ended,
+            'start_date' :start_date,
+            'end_date' :end_date,
             'location' :location,
             'description':description,
         }
@@ -91,21 +91,25 @@ class Student():
     # def set_experience(self, experience):
     #     self.experience=experience 
     
-    # # Get 1st job , 2 job, 3 job, all Jobs, or None
+    # Get 1st job , 2 job, 3 job, all Jobs, or None
+    # Test for return value 
     def get_experience(self, index=None):
-        if index==None:
+        # return full expereince object
+        if index == None:
             return self.experience 
-        if index< len(self.experience):
+        # return job at index
+        if index < len(self.experience):
             return self.experience[index]
+        # Out of range
         return False
-
-    def set_education(self, school_name, degree, years):
-        education1 = {
-            'university':school_name.captilize(), 
-            'major':degree.captilize(), 
-            'years':years
+    # Test for Effect 
+    def set_education(self, university, major, year):
+        education = {
+            'university':university, 
+            'major':major, 
+            'year':year
             }
-        self.education.update(**education1)
+        self.education.update(**education)
         
     # # get education 
     # def get_education(self):

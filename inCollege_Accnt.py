@@ -100,10 +100,18 @@ def create_account(DB):
 
     # Try to create new student account in DB
     create_account = DB.create_account(username, password, firstName, lastName)
-    # Handle error TODO: Replace by Try/catch block
-    if (create_account == False):
+    # Get student form DB to call update profile info
+    student = DB.get_student_by_username(username)
+    if not create_account or not student:
         print("\n|*| Create Account Error |*|")
-    return create_account
+        return False
+    
+    # Get Profile Info
+    profile_complete = update_profile_info(DB, student)
+    if not profile_complete:
+        print("\n|*| Complete Profile Later |*|")
+    
+    return profile_complete
 
 def post_job(fullname, DB):
     # Init DB
@@ -138,75 +146,124 @@ def post_job(fullname, DB):
     
     return create_job_posting
 
+def update_profile_info(DB, student):
+
+    print("|*|     NOTE - Enter 'x' at any time to go back    |*|\n")
+    print("+--------------------------------------------------+")
+    print("|             Update Profile Information           |")
+    print("+--------------------------------------------------+\n")
+
+    # Ask for Title
+    new_profile_title = input("Enter a title for your profile: ")
+    if new_profile_title == 'x':
+        return False
+    # Update Title
+    student.update(title=new_profile_title)
+    # Save Student Update
+    DB.set_student(student)
+
+    # Ask for About 
+    new_profile_about = input("Enter the about section of your profile: ")
+    if new_profile_about == 'x':
+        return False
+    # Update student's About
+    student.update(about=new_profile_about)
+    # Save Student Update
+    DB.set_student(student)
+
+    # Ask for Education 
+    education = update_education_info(DB, student)
+    
+    # Ask for Job Experiences 
+    experience = update_experience_info(DB, student)
+    if not experience:
+        return False
+    if not education:
+        return False
+    return True
 #Getting School info from student
-def school_info(school_name, major, year, DB):
+def update_education_info(DB, student):
     # Init DB
     # DB = database.Database()
 
-    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     print("+--------------------------------------------------+")
-    print("|    Add University, major and your school year    |")
+    print("|      Enter University, Major and School Year     |")
     print("+--------------------------------------------------+\n")
+    print("|*|    NOTE - Enter 'x' at any time to go back   |*|\n")
 
-    #Get user input
-    university = input("Enter The University you attend: ")
-    if university == 'x':
+    # Get University input
+    words = input("Enter your University: ")
+    if words == 'x':
         return False
-    major = input("Enter The Major you're taking: ")
-    if major == 'x':
-        return False
-    year = str(input("Enter Your Status Year(Freshman, Sophomore, Junior, Senior): "))
-    if year == 'x':
-        return False
-
-    set_education = DB.set_education(university, major, year)
-
-    if (set_education == False):
-        print("\n|*| Putting School info Error |*|")
+    university = ''
+    # Captilize each starting letter
+    for word in words.split():
+        university += word.capitalize() + ' '
     
-    return set_education
+    # Get Major input
+    words = input("Enter your Major: ")
+    if words == 'x':
+        return False
+    major = ''
+    # Captilize each starting letter
+    for word in words.split():
+        major += word.capitalize() + ' '
+    
+    # Get year input
+    words = input("Enter Your Status Year (Freshman, Sophomore, Junior, Senior): ")
+    if words == 'x':
+        return False
+    # Captilize each starting letter
+    year = words.capitalize()
+
+    # Update Student Education 
+    student.set_education(university, major, year)
+    # Save student update
+    result = DB.set_student(student)
+    return result
 
 #Gets the Users experience  
-def user_experience(DB, experience):
-    
-    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
-    title = input("Enter Job Title: ")
-    if title == 'x':
-        return False
-    description = input("Enter Job Description: ")
-    if description == 'x':
-        return False
-    employer = str(input("Enter Employer For Job: "))
-    if employer == 'x':
-        return False
-    location = str(input("Enter Job Location: "))
-    if location == 'x':
-        return False
-    start_date = str(input("Enter the Date you Started: "))
-    if location == 'x':
-        return False
-    end_date = str(input("Enter The Date You Ended: "))
-    if end_date == 'x':
-        return False
+def update_experience_info(DB, student):
 
-    set_experience = DB.set_experience(title, description, employer, location, start_date, end_date)
-
-    if (set_experience == False):
-        print("\n|*| Set experience Error |*|")
-    
-    return set_experience
-
-def title(self):
-    profile_title = str(input("Enter a title for you profile: "))
-    
-    set_title = DB.set_title(profile_title)
-    return set_title
-
-def about(self):
-    profile_about = str(input("Tell Us About Yourself: "))
-    
-    set_title = DB.set_title(profile_title)
-    return set_title
+    print("+--------------------------------------------------+")
+    print("|            Enter Up To 3 Job Experiences         |")
+    print("+--------------------------------------------------+\n")
+    print("|*|   NOTE - Enter 'x' at any time to go back    |*|\n")
+    i = 0
+    job_list = ['First', 'Second', 'Third']
+    while i < 3:
+        print("+------------------------------+")
+        print("|     Enter {} Job Experience     |".format(job_list[i]))
+        print("+------------------------------+\n")
+        title = input("Enter Job Title: ")
+        if title == 'x':
+            return False
+        description = input("Enter Job Description: ")
+        if description == 'x':
+            return False
+        employer = input("Enter Employer For Job: ")
+        if employer == 'x':
+            return False
+        location = input("Enter Job Location: ")
+        if location == 'x':
+            return False
+        start_date = input("Enter the Date you Started: ")
+        if location == 'x':
+            return False
+        end_date = input("Enter The Date You Ended: ")
+        if end_date == 'x':
+            return False
+        # Add new job experience to Student
+        result = student.add_job_experience(title, employer, start_date, end_date, location, description)
+        # If add_job_experience not success
+        if not result:
+            print("\n|*| Maximum Number of Jobs |*|")
+            return False
+        # Save Update
+        DB.set_student(student)
+        # Next iteration
+        i+=1
+    return True
 
 
 def clear_accounts():
@@ -215,3 +272,9 @@ def clear_accounts():
 # TODO
 # Change Account Settings 
 # field is the settings type (e.g. )
+# words = 'a b, asasd c'
+# major = ''
+#     # Captilize each starting letter
+# for word in words.split():
+#     major += word.capitalize() + ' '
+# print(major)
