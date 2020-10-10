@@ -322,7 +322,7 @@ def display_profile(DB, student):
     print(" +---------------------------------------+")
 
     print("      ", fullName)
-    print("       Title: ", prof_title)
+    print("         ", prof_title)
     print(" +---------------------------------------+")
     print(" |                      .--------------. |")
     print(" |                      |      /~~\    | |") 
@@ -336,19 +336,20 @@ def display_profile(DB, student):
     print(" |                      `--------------' |")
     print(" +---------------------------------------+\n")
 
-    print("Profile Name: ", fullName, "\n")
-    print("Title: ", prof_title, "\n")
     print("About Me:\n", prof_about, "\n")
+    print("Education History")
+    print("-----------------\n")
     print("School: ", stu_university)
     print("Year: ", stu_schoolYear)
-    print("Major: ", stu_major)
-    print("Job Experience:\n")
+    print("Major: ", stu_major, "\n")
+    print(" Job Experience")
+    print("-----------------\n")
     counter = 0 #this counter keeps track of which section of job dictionary we are in
+    outer_counter = 1 # starting at one to label Job1, Job2, Job3
     for job in dict_Jobs:
-        print("Jobs")
         for val in job:
             if counter == 0:
-                print("Title: ", val)
+                print("Job Title ", outer_counter, ": ", val)
             elif counter == 1:
                 print("Employer: ", val)
             elif counter == 2:
@@ -360,9 +361,8 @@ def display_profile(DB, student):
             elif counter == 5:
                 print("Description: ", val) #text wrap
             counter += 1 #incrementing
-        print() #put spacing between each job
-    print(" +---------------------------------------+\n")
-        
+        outer_counter += 1
+        print() #put spacing between each job        
     
     print(" +-----------------------------+")
     print(" |        Edit Profile?        |")
