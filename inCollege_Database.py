@@ -108,7 +108,7 @@ class Database():
         self.save()
         print("\n... \n")
         time.sleep(1) #added this for effect, makes program wait for second then tells user account was created.
-        print("Account Succesfully Created!")
+        print("Account Succesfully Created!\n")
         time.sleep(1)
         return True
 
@@ -243,6 +243,7 @@ class Database():
         # Save change in DB file
         self.save()
         return True
+
     def set_student(self, student):
 
         if not isinstance(student, Student):

@@ -10,6 +10,7 @@ class Student():
         self.experience=[] # List of Jobs 3 Dicts with 
         self.education={} # Dict school name, degree, and years attended.
         self.friends = []
+        
     def update(self, **kwargs):
         self.__dict__.update(kwargs)
 
