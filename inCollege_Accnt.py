@@ -1,6 +1,8 @@
 import inCollege_Database as database
 import inCollege_CurrentUser as user
 import time
+import textwrap #This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)
+
 
 # function that validates a secure password
 def passwordChecker(password):
@@ -162,6 +164,7 @@ def update_profile_info(DB, student):
     # Save Student Update
     DB.set_student(student)
 
+    print()
     # Ask for About 
     new_profile_about = input("Enter the about section of your profile: ")
     if new_profile_about == 'x':
@@ -181,16 +184,19 @@ def update_profile_info(DB, student):
     if not education:
         return False
     return True
+
 #Getting School info from student
 def update_education_info(DB, student):
     # Init DB
     # DB = database.Database()
 
-    print("+--------------------------------------------------+")
-    print("|      Enter University, Major and School Year     |")
-    print("+--------------------------------------------------+\n")
-    print("|*|    NOTE - Enter 'x' at any time to go back   |*|\n")
+    # We don't need this because this function is a continuation of "update profile"
+    # print("+--------------------------------------------------+")
+    # print("|      Enter University, Major and School Year     |")
+    # print("+--------------------------------------------------+\n")
+    # print("|*|    NOTE - Enter 'x' at any time to go back   |*|\n")
 
+    print()
     # Get University input
     words = input("Enter your University: ")
     if words == 'x':
@@ -200,6 +206,7 @@ def update_education_info(DB, student):
     for word in words.split():
         university += word.capitalize() + ' '
     
+    print()
     # Get Major input
     words = input("Enter your Major: ")
     if words == 'x':
@@ -209,6 +216,7 @@ def update_education_info(DB, student):
     for word in words.split():
         major += word.capitalize() + ' '
     
+    print()
     # Get year input
     words = input("Enter Your Status Year (Freshman, Sophomore, Junior, Senior): ")
     if words == 'x':
@@ -271,19 +279,90 @@ def clear_accounts():
 
 # TODO display profile
 def display_profile(DB, student):
-    # ... Display Profile 
-    # Name 
-    # Title 
-    # About 
-    # Education
-    # Experience
     
-    print(" +-----------------------------+")
-    print(" |            Profile          |")
-    print(" +-----------------------------+")
+    # These will be populated after looping through 
+    # student object's dictionary
+    fullname = ""
+    prof_title = ""
+    prof_about = ""
+    dict_Jobs = ""
+    stu_university = ""
+    stu_major = ""
+    stu_schoolYear = ""
 
+    #looping through stud info to populate variables 
     for key, value in student.__dict__.items():
         print(key,': ', value)
+        if key == "firstname":
+            fullName = value
+        elif key == "lastname":
+            fullName = fullName + " " + value
+        elif key == "title":
+            prof_title = value
+        elif key == "about":
+            wrapper = textwrap.TextWrapper(width=41) #ensures the text does not exceed 41
+            prof_about = wrapper.fill(text=value) #when this prints, it will not exceed 41 chars
+        elif key == "education":
+            #since "education" key has a value that is a dict with other keys,
+            # we must extract those key's values using another for loop
+            # (in this case value is )
+            for val in value:
+                if val == "university":
+                    stu_university = val
+                elif val == "major":
+                    stu_major = val
+                elif val == "year":
+                    stu_schoolYear = val
+
+        elif key == "experience":
+            dict_Jobs = value
+
+    print(" +---------------------------------------+")
+    print(" |           inCollege Profile           |")
+    print(" +---------------------------------------+")
+
+    print("      ", fullName)
+    print("         ", prof_title)
+    print(" +---------------------------------------+")
+    print(" |                      .--------------. |")
+    print(" |                      |      /~~\    | |") 
+    print(" |     .........        |   | ( OO )   | |")
+    print(" |   ..............     |    \ \--/    | |")
+    print(" |   ..............     |      \II     | |")
+    print(" |   ................   |       <>\    | |")
+    print(" |   .............      |       <>  \  | |")
+    print(" |                      |      /  \    | |")
+    print(" |                      |     /    \   | |")
+    print(" |                      `--------------' |")
+    print(" +---------------------------------------+\n")
+
+    print("About Me:\n", prof_about, "\n")
+    print("Education History")
+    print("-----------------\n")
+    print("School: ", stu_university)
+    print("Year: ", stu_schoolYear)
+    print("Major: ", stu_major, "\n")
+    print(" Job Experience")
+    print("-----------------\n")
+    counter = 0 #this counter keeps track of which section of job dictionary we are in
+    outer_counter = 1 # starting at one to label Job1, Job2, Job3
+    for job in dict_Jobs:
+        for val in job:
+            if counter == 0:
+                print("Job Title ", outer_counter, ": ", val)
+            elif counter == 1:
+                print("Employer: ", val)
+            elif counter == 2:
+                print("Start Date: ", val)
+            elif counter == 3:
+                print("End Date: ", val)
+            elif counter == 4:
+                print("Location: ", val)
+            elif counter == 5:
+                print("Description: ", val) #text wrap
+            counter += 1 #incrementing
+        outer_counter += 1
+        print() #put spacing between each job        
     
     print(" +-----------------------------+")
     print(" |        Edit Profile?        |")
