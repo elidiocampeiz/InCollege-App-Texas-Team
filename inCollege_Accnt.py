@@ -1,5 +1,6 @@
 import inCollege_Database as database
 import inCollege_CurrentUser as user
+from inCollege_Student import *
 import time
 import textwrap #This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)
 
@@ -93,22 +94,29 @@ def create_account(DB):
             return False
 
     # Getting name
-    firstName = str(input("Enter First Name: "))
-    if (firstName == 'x'):
+    firstname = str(input("Enter First Name: "))
+    if (firstname == 'x'):
         return False
-    lastName = str(input("Enter Last Name: "))
-    if (lastName == 'x'):
+    lastname = str(input("Enter Last Name: "))
+    if (lastname == 'x'):
         return False
 
     # Try to create new student account in DB
-    create_account = DB.create_account(username, password, firstName, lastName)
+    create_account = DB.create_account(username, password, firstname, lastname)
     
     # Get student form DB to call update profile info
     student = DB.get_student_by_username(username)
+
     if not create_account or not student:
         print("\n|*| Create Account Error |*|")
         return False
     
+    # TODO: Addp functionality to add real friends
+    # Add Dummy friends 
+    student.add_dummy_friends()
+    # Save Dummy Friends
+    DB.set_student(student)
+
     # Get Profile Info
     update_profile_info(DB, student)
     
@@ -153,7 +161,7 @@ def post_job(fullname, DB):
 
 def update_profile_info(DB, student):
 
-    print("|*|     NOTE - Enter 'x' at any time to go back    |*|\n")
+    print("|*|     NOTE - Enter 'x' to go back and skipp    |*|\n")
     print("+--------------------------------------------------+")
     print("|             Update Profile Information           |")
     print("+--------------------------------------------------+\n")
@@ -239,12 +247,12 @@ def update_experience_info(DB, student):
     print("+--------------------------------------------------+")
     print("|            Enter Up To 3 Job Experiences         |")
     print("+--------------------------------------------------+\n")
-    print("|*|   NOTE - Enter 'x' at any time to go back    |*|\n")
+    print("|*|     NOTE - Enter 'x' to go back and skipp    |*|\n")
     i = 0
     job_list = ['First ', 'Second', 'Third ']
     while i < 3:
         print("+------------------------------------+")
-        print("|     Enter {} Job Experience     |".format(job_list[i]))
+        print("|     Enter {} Job Experience    |".format(job_list[i]))
         print("+------------------------------------+\n")
         title = input("Enter Job Title: ")
         if title == 'x':
@@ -281,100 +289,78 @@ def clear_accounts():
     database.Database
 
 # TODO display profile
-def display_profile(DB, student):
-    
-    # These will be populated after looping through 
+def display_profile(student):
+    # if student.username=='':
+    #     # Invalid Input all students must have a username Student 
+    #     return False
+     
     # student object's dictionary
-    fullname = ""
-    prof_title = ""
-    prof_about = ""
-    dict_Jobs = ""
-    stu_university = ""
-    stu_major = ""
-    stu_schoolYear = ""
+    fullname = student.firstname.capitalize() + ' ' + student.lastname.capitalize()
+    prof_title = student.title
+    prof_about = student.about
+    list_of_jobs = student.experience
+    # stu_education = student.get_education()
+    stu_university = student.get_education('university')
+    stu_major = student.get_education('major')
+    stu_schoolYear = student.get_education('year')
+    # 
+    print(" +----------------------------------------+ ")
+    print(" |            inCollege Profile           | ")
+    print(" +----------------------------------------+ ") # ' +' + 40 +  ' +'  = 44 chars
 
-    #looping through stud info to populate variables 
-    for key, value in student.__dict__.items():
-        print(key,': ', value)
-        if key == "firstname":
-            fullName = value
-        elif key == "lastname":
-            fullName = fullName + " " + value
-        elif key == "title":
-            prof_title = value
-        elif key == "about":
-            wrapper = textwrap.TextWrapper(width=41) #ensures the text does not exceed 41
-            prof_about = wrapper.fill(text=value) #when this prints, it will not exceed 41 chars
-        elif key == "education":
-            #since "education" key has a value that is a dict with other keys,
-            # we must extract those key's values using another for loop
-            # (in this case value is )
-            for val in value:
-                if val == "university":
-                    stu_university = val
-                elif val == "major":
-                    stu_major = val
-                elif val == "year":
-                    stu_schoolYear = val
+    print(' |', fullname.center(40-2, ' '), '| ')
+    print(' |', prof_title.center(40-2, ' '), '| ')
+    print(" +----------------------------------------+")
+    print(" |                       .--------------. |")
+    print(" |                       |      /~~\    | |") 
+    print(" |      .........        |   | ( OO )   | |")
+    print(" |    ..............     |    \ \--/    | |")
+    print(" |    ..............     |      \II     | |")
+    print(" |    ................   |       <>\    | |")
+    print(" |    .............      |       <>  \  | |")
+    print(" |                       |      /  \    | |")
+    print(" |                       |     /    \   | |")
+    print(" |                       `--------------' |")
+    print(" +----------------------------------------+\n")
 
-        elif key == "experience":
-            dict_Jobs = value
+    print(" +----------------------------------------+")
+    print(' |','About Me:'.center(40-2, ' '), '| ') 
+    print(" +----------------------------------------+")
+    print(' |', prof_about.center(40-2, ' '), '| ') # prof_about
+    print(" +----------------------------------------+\n")
 
-    print(" +---------------------------------------+")
-    print(" |           inCollege Profile           |")
-    print(" +---------------------------------------+")
+    print(" +----------------------------------------+")
+    print(" |           Education History            |")
+    print(" +----------------------------------------+")
+    print(' | School: ', stu_university.center(40-9-2, ' '), '| ')
+    print(" | Year: ", stu_schoolYear.center(40-7-2, ' '), '| ')
+    print(" | Major: ", stu_major.center(40-8-2, ' '), '| ')
+    print(" +----------------------------------------+")
+    print()
+    print(" +----------------------------------------+")
+    print(" |             Job Experience             |")
 
-    print("      ", fullName)
-    print("         ", prof_title)
-    print(" +---------------------------------------+")
-    print(" |                      .--------------. |")
-    print(" |                      |      /~~\    | |") 
-    print(" |     .........        |   | ( OO )   | |")
-    print(" |   ..............     |    \ \--/    | |")
-    print(" |   ..............     |      \II     | |")
-    print(" |   ................   |       <>\    | |")
-    print(" |   .............      |       <>  \  | |")
-    print(" |                      |      /  \    | |")
-    print(" |                      |     /    \   | |")
-    print(" |                      `--------------' |")
-    print(" +---------------------------------------+\n")
-
-    print("About Me:\n", prof_about, "\n")
-    print("Education History")
-    print("-----------------\n")
-    print("School: ", stu_university)
-    print("Year: ", stu_schoolYear)
-    print("Major: ", stu_major, "\n")
-    print(" Job Experience")
-    print("-----------------\n")
-    counter = 0 #this counter keeps track of which section of job dictionary we are in
-    outer_counter = 1 # starting at one to label Job1, Job2, Job3
-    for job in dict_Jobs:
-        for val in job:
-            if counter == 0:
-                print("Job Title ", outer_counter, ": ", val)
-            elif counter == 1:
-                print("Employer: ", val)
-            elif counter == 2:
-                print("Start Date: ", val)
-            elif counter == 3:
-                print("End Date: ", val)
-            elif counter == 4:
-                print("Location: ", val)
-            elif counter == 5:
-                print("Description: ", val) #text wrap
-            counter += 1 #incrementing
-        outer_counter += 1
-        print() #put spacing between each job        
     
+    for job_experience in list_of_jobs:
+        print(" +----------------------------------------+")
+        print(" | Job Title:  ", job_experience['title'].ljust(40-13-2, ' '), '| ')
+        print(" | Employer:   ", job_experience['employer'].ljust(40-13-2, ' '), '| ')
+        print(" | Start Date: ", job_experience['start_date'].ljust(40-13-2, ' '), '| ')
+        print(" | End Date:   ", job_experience['end_date'].ljust(40-13-2, ' '), '| ')
+        print(" | Location:   ", job_experience['location'].ljust(40-13-2, ' '), '| ')
+        print(" | Description:", job_experience['description'].ljust(40-13-2, ' '), '| ')
+        # print(' |', job_experience['description'].ljust(40-2, ' '), '| ')
     
-def edit_profile_menu(DB, student):
-    print(" +-----------------------------+")
-    print(" |        Edit Profile?        |")
-    print(" +-----------------------------+")
-    print(" | 1. Yes                      |")
-    print(" | x. Go Back                  |")
-    print(" +-----------------------------+")
+    print(" +----------------------------------------+ ")
+    print()
+    
+def edit_profile_menu( student):
+    print(" +----------------------------------------+ ")
+    print(" |            Edit Profile?               |")
+    print(" +----------------------------------------+ ")
+    print(" | 1. Yes                                 |")
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
 
     
     edit_selection = input('Enter Your Selection: ')
@@ -383,11 +369,62 @@ def edit_profile_menu(DB, student):
         print("|*| Edit Profile Under Construction |*|")
         print("+=====================================+\n")
         time.sleep(1)
+        return True
     elif edit_selection == 'x':
+        print("... Going Back\n")
+        time.sleep(1)
+        return False
+    else:
+        print("...Invalid Input\n")
+        time.sleep(1)
+        return True # continue loop in Home line 966
+
+def display_friend_profile(student):
+
+    display_profile(student)
+    print(" +----------------------------------------+")
+    print(" |          Enter 'x' to go back          |")
+    print(" +----------------------------------------+")
+
+    selection = input('Enter Your Selection: ')
+    if selection == 'x':
         print("... Going Back\n")
         time.sleep(1)
         return False
     else:
         print("...Invalid Input")
         time.sleep(1)
-        return True # continue loop in Home line 966
+        return True
+
+def diplay_friend_list(student):
+    print(" +----------------------------------------+ ")
+    print(" |            List of Friends             | ")
+    print(" +----------------------------------------+ ")
+    print(" |  Select Friend to view their profile   | ")
+    print(" +----------------------------------------+ ") # 2(' |') + 40('-') + 2('| ) chars
+    
+
+    for index, friend in enumerate(student.friends):
+        fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(   " |", sel_index, fullname.ljust(40-5, ' '),"| ")
+
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    
+    if index.isnumeric():
+        idx = int(index) - 1
+        if idx < len(student.friends):
+            while display_friend_profile(student.friends[idx]):
+                pass
+            return True
+    
+    print("...Invalid Input")
+    time.sleep(1)
+    return True 
+    

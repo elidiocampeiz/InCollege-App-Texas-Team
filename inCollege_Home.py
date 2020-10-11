@@ -959,24 +959,19 @@ def main ():
                         time.sleep(1)
                 sel = "" #resetting
             elif sel == "6":
-                print("+========================+")
-                print("|*| Under Construction |*|")
-                print("+========================+\n")
                 # loop while 
-                accnt.display_profile(db, theStudent)
+                accnt.display_profile(theStudent)
 
-                while accnt.edit_profile_menu(db, theStudent):
+                while accnt.edit_profile_menu(theStudent):
+                    accnt.display_profile(theStudent)
                     pass
                 
 
             elif sel == "7":
-                # TODO: Add dummy Students as friends in the Student constructor
-                # TODO: Display Friend List menu
-                # TODO: On Select Friend Display their profile
-                print("+====================================+")
-                print("|*| Friend List Under Construction |*|")
-                print("+====================================+\n") 
-            #Exit Program    
+                
+                while accnt.diplay_friend_list(theStudent):
+                    pass
+                  
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")
