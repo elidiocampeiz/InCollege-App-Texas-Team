@@ -96,7 +96,7 @@ class Student():
     # Test for return value 
     def get_experience(self, index=None):
         # return full expereince object
-        if index == None:
+        if index == None or index < 0:
             return self.experience 
         # return job at index
         if index < len(self.experience):

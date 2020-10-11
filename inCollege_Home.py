@@ -133,7 +133,6 @@ def main ():
             #Create an account
             elif sel == '2': 
                 accnt.create_account(db)
-
             #Find Someone You Know
             elif sel == '3': 
                 foundUser = db.search_users() #returns t / f
@@ -964,7 +963,9 @@ def main ():
                 print("|*| Under Construction |*|")
                 print("+========================+\n")
                 # loop while 
-                while accnt.display_profile(db, theStudent):
+                accnt.display_profile(db, theStudent)
+
+                while accnt.edit_profile_menu(db, theStudent):
                     pass
                 
 

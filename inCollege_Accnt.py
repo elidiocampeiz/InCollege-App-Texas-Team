@@ -102,6 +102,7 @@ def create_account(DB):
 
     # Try to create new student account in DB
     create_account = DB.create_account(username, password, firstName, lastName)
+    
     # Get student form DB to call update profile info
     student = DB.get_student_by_username(username)
     if not create_account or not student:
@@ -109,11 +110,12 @@ def create_account(DB):
         return False
     
     # Get Profile Info
-    profile_complete = update_profile_info(DB, student)
-    if not profile_complete:
-        print("\n|*| Complete Profile Later |*|")
+    update_profile_info(DB, student)
     
-    return profile_complete
+    # print("\n|*| You Can Change Profile Later! |*|")
+    
+    return True
+    # return create_account
 
 def post_job(fullname, DB):
     # Init DB
@@ -142,9 +144,10 @@ def post_job(fullname, DB):
         return False
 
     create_job_posting = DB.create_job_posting(title, description, employer, location, salary, fullname)
-
+    
     if (create_job_posting == False):
         print("\n|*| Create Job Posting Error |*|")
+    
     
     return create_job_posting
 
@@ -256,7 +259,7 @@ def update_experience_info(DB, student):
         if location == 'x':
             return False
         start_date = input("Enter the Date you Started: ")
-        if location == 'x':
+        if start_date == 'x':
             return False
         end_date = input("Enter The Date You Ended: ")
         if end_date == 'x':
@@ -266,7 +269,7 @@ def update_experience_info(DB, student):
         # If add_job_experience not success
         if not result:
             print("\n|*| Maximum Number of Jobs |*|")
-            return False
+            
         # Save Update
         DB.set_student(student)
         # Next iteration
@@ -364,6 +367,8 @@ def display_profile(DB, student):
         outer_counter += 1
         print() #put spacing between each job        
     
+    
+def edit_profile_menu(DB, student):
     print(" +-----------------------------+")
     print(" |        Edit Profile?        |")
     print(" +-----------------------------+")
@@ -386,4 +391,3 @@ def display_profile(DB, student):
         print("...Invalid Input")
         time.sleep(1)
         return True # continue loop in Home line 966
-        
