@@ -4,17 +4,18 @@ import inCollege_Database as database
 
 class User:
     def __init__(self, username="", db = database.Database()):
-        self.email = username
+        self.username = username
         self.db = db
         self.name = self.getUserName(username)
         # self.isEmpty = True if self.name == "" else False
 
     #This function assigns the users full name to name attribute
     def getUserName(self, username):
-        
-        for student in self.db.data["Students"]:
-            #looking for user with username
-            if student['username'] == username:
-                # concatenating first/last name
-                return student['firstname'] + " " + student['lastname']
+        self.db.load()
+        student = self.db.get_student_by_username(username)
+        if student:
+
+            self.student_data = student
+            return student.firstname + " " + student.lastname
+            
         return ""

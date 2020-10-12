@@ -1,6 +1,6 @@
 import pickle
 import time 
-
+from inCollege_Student import *
 #Dictionary data structure. Or set. I don't know.
 #Pickle saves the binary data of the python object.
 
@@ -9,10 +9,11 @@ class Database():
         self.filename = filename
         self.reset()
         self.load()
+        
 
     # Reset data
     def reset(self):
-        self.data = {"Students":[], "Jobs":[]}
+        self.data = {"Students":{}, "Jobs":[]}
         self.isFull = False
         # if the database file doesn't exist uncomment the next line
         # self.save()            
@@ -35,7 +36,7 @@ class Database():
         
         # If DB is empty create a "Students" section
         if "Students" not in self.data:
-            self.data["Students"] = []
+            self.data["Students"] = {}
 
         # If DB is empty create a "Jobs" section
         if "Jobs" not in self.data:
@@ -57,7 +58,7 @@ class Database():
     #     return self.data
 
 
-    # Create new student account
+    # Create new student account COMIT
     def create_account(self, new_username, new_password, new_firstname, new_lastname):
         
         # Load data from file
@@ -73,7 +74,7 @@ class Database():
 
         # New accounts have all guest control turned on
         # guest control is a dict {guest_control_type : boolean}
-        guest_control = {"email" : True, "SMS" : True,  "Targeted advertising" : True}
+        guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
         # laguage settings
         language = "English"
 
@@ -82,11 +83,18 @@ class Database():
 
         # Init new student 
         new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
-        
+        my_student = Student(**new_student)
         # Iterate through each student in "Students" section
-        for student in self.data["Students"]:
-            # If username already exists return false
-            if student['username'] == new_username:
+        # for student in self.data["Students"]:
+        #     # If username already exists return false
+        #     if student.username == new_username:
+        #         print("...")
+        #         time.sleep(1)
+        #         print('Username already in use')
+        #         time.sleep(1)
+        #         return False
+
+        if new_username in self.data["Students"].keys():
                 print("...")
                 time.sleep(1)
                 print('Username already in use')
@@ -94,13 +102,13 @@ class Database():
                 return False
         
         # Else append new student to the list
-        self.data["Students"].append(new_student)
-            
+        self.data["Students"][new_username] = my_student
+
         # Save data to file
         self.save()
         print("\n... \n")
         time.sleep(1) #added this for effect, makes program wait for second then tells user account was created.
-        print("Account Succesfully Created!")
+        print("Account Succesfully Created!\n")
         time.sleep(1)
         return True
 
@@ -136,16 +144,23 @@ class Database():
         if "Students" not in self.data:
             return False
         
-        # Iterate through each student in "Students" section
-        for student in self.data["Students"]:
-            # If username and password match, login succesful return True
-            if student['username'] == username and student['password'] == password:
-                print("\n...")
-                time.sleep(1)
-                print('Succesful login!\n')
-                time.sleep(1)
-                return True
-        
+        # # Iterate through each student in "Students" section
+        # for student in self.data["Students"]:
+        #     # If username and password match, login succesful return True
+        #     if student['username'] == username and student['password'] == password:
+        #         print("\n...")
+        #         time.sleep(1)
+        #         print('Succesful login!\n')
+        #         time.sleep(1)
+        #         return True
+        if self.data["Students"].get(username) != None:
+                student = self.data["Students"][username]
+                if student.password == password:
+                    print("\n...")
+                    time.sleep(1)
+                    print('Succesful login!\n')
+                    time.sleep(1)
+                    return True
         
         print("|*| No account found with this username and password combination |*|\n")
         return False
@@ -162,9 +177,9 @@ class Database():
         if lastname_search == 'x':
             return False
 
-        for student in self.data["Students"]:
+        for username, student in self.data["Students"].items():
             # If username already exists return false
-            if student['firstname'] == firstname_search and student['lastname'] == lastname_search:
+            if student.firstname == firstname_search and student.lastname == lastname_search:
                 return True
 
         #if we get to this point, the user was not founf
@@ -183,19 +198,24 @@ class Database():
     # else:
     #    assert result == False
     def get_student_by_username(self, username):
-
         # Load data
         self.load()
         # Get student by username
-        for student in self.data["Students"]:
-            # If username already exists return false
-            if student['username'] == username:
-                return student
+        # for student in self.data["Students"]:
+        #     # If username already exists return false
+        #     # if student['username'] == username:
+        #     if student.username == username:
+        #         return student
+        # return False
+        if username in self.data["Students"].keys():
+            student =  self.data["Students"][username]
+            return student
         return False
-    
 
 
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
+        if username == None or field ==None or value ==None:
+            return False
         data = self.data
         # Get student by username
         student = self.get_student_by_username(username)
@@ -223,3 +243,64 @@ class Database():
         # Save change in DB file
         self.save()
         return True
+
+    def set_student(self, student):
+
+        if not isinstance(student, Student):
+            return False
+        if self.data["Students"].get(student.username) == None:
+            return False
+        
+        self.data["Students"][student.username] = student
+        self.save()
+        return True
+# DB = Database()
+# DB.clear()
+# new_username='word2'
+# new_password='word'
+# new_firstname='word'
+# new_lastname='word'
+
+# DB.create_account( new_username, new_password, new_firstname, new_lastname)
+# # DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
+# myStudent = DB.get_student_by_username(new_username)
+
+# print(myStudent.firstname)
+# new_job = {
+#             'title' :'title',
+#             'employer' :'employer',
+#             'started' :'started',
+#             'ended' :'ended',
+#             'location' :'location',
+#             'description':'description',
+#         }
+# guest_control_field = 'SMS'
+# new_value = False
+# old_settings = myStudent.settings
+
+# new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+# new_guest_control[guest_control_field] = new_value
+# new_settings = old_settings.copy()
+
+# print(old_settings)
+# new_settings['guest control'] = new_guest_control
+# print(old_settings)
+# # print(myStudent.firstname)
+# # print(myStudent.experience)
+# print(myStudent.settings)
+# myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
+# print(myStudent.settings)
+# print(myStudent.firstname)
+# # DB.load()
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
+
+# print(DB.set_student(myStudent))
+
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
+
