@@ -13,7 +13,7 @@ class Database():
 
     # Reset data
     def reset(self):
-        self.data = {"Students":{}, "Jobs":[], 'Friend Request': {}}
+        self.data = {"Students":{}, "Jobs":[], "Friend Request":{}}
         self.isFull = False
         # if the database file doesn't exist uncomment the next line
         # self.save()            
@@ -42,7 +42,7 @@ class Database():
         if "Jobs" not in self.data:
             self.data["Jobs"] = []
         
-        # If there are 5 or more student accounts, the DB is full
+        # If there are 10 or more student accounts, the DB is full
         if len(self.data["Students"]) > 9:
                 self.isFull = True
         
@@ -254,24 +254,26 @@ class Database():
         self.data["Students"][student.username] = student
         self.save()
         return True
-
+    
+    #search the username by fields
     def search_by_field(self, field, value):
         self.load()
         for username, student in self.data['Student']:
-            if student.__dict__.get(field) and student.__dict__[field] == value:
+            if Student.__dict__.get(field) and Student.__dict__[field] == value:
                 return student
-        return False
+            return False
 
     def add_friend_requenst(self, to_username, from_username):
-        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
-        if self.data['Friend Request'].get(to_username) == None:
-            self.data['Friend Request'][to_username] = set(from_username)
-        elif self.data['Friend Request'][to_username].get(from_username) != None:
-            # Request already exists
-            return False
-        else:
-            self.data['Friend Request'][to_username].add(from_username)
-        return True
+            # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
+            if self.data['Friend Request'].get(to_username) == None:
+                self.data['Friend Request'][to_username] = set(from_username)
+            elif self.data['Friend Request'][to_username].get(from_username) != None:
+                # Request already exists
+                return False
+            else:
+                self.data['Friend Request'][to_username].add(from_username)
+            return True
+
     # Removes a reqest sent to to_username from from_username
     def remove_friend_requenst(self, to_username, from_username):
         # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
@@ -282,6 +284,9 @@ class Database():
         else:
             self.data['Friend Request'][to_username].remove(from_username)
             return True
+    
+
+    
 # DB = Database()
 # DB.clear()
 # new_username='word2'
@@ -332,3 +337,15 @@ class Database():
 #     print(new_settings)
 #     print(old_settings)
 
+DB = Database()
+DB.clear()
+new_username='word2'
+new_password='word'
+new_firstname='word'
+new_lastname='word'
+new_university = 'USF'
+new_major = 'CS'
+
+
+
+DB.search_by_field(new_university, new_major)

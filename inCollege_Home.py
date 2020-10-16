@@ -545,6 +545,7 @@ def main ():
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
+            print(" | 8. View Friends Requests     |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -559,8 +560,8 @@ def main ():
                 db = database.Database()
                 foundUser = db.search_users()
                 if foundUser is True:
-                    print("... User found in the inCollege System!")
-                    time.sleep(1)
+                    print("... User found in the inCollege System!")  
+                time.sleep(1)
                     
             # Learn a New Skill        
             elif sel == '3': 
