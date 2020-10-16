@@ -406,6 +406,7 @@ def diplay_friend_list(student):
 
     for index, friend in enumerate(student.friends):
         fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
+        #make them search by last 
         sel_index = str(index+1)+'.'
         # Chars:   2        3            40                  2
         print(   " |", sel_index, fullname.ljust(40-5, ' '),"| ")
