@@ -398,7 +398,7 @@ def display_friend_profile(student):
 
 def diplay_friend_list(student):
     print(" +----------------------------------------+ ")
-    print(" |            List of Friends             | ")
+    print(" |            Show my network             | ")
     print(" +----------------------------------------+ ")
     print(" |  Select Friend to view their profile   | ")
     print(" +----------------------------------------+ ") # 2(' |') + 40('-') + 2('| ) chars

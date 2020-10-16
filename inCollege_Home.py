@@ -545,6 +545,7 @@ def main ():
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
+            print(" | 8. Friend Requests           |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -561,7 +562,7 @@ def main ():
                 if foundUser is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)
-                    
+      
             # Learn a New Skill        
             elif sel == '3': 
                 print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -977,6 +978,29 @@ def main ():
                 print("       | Good Bye! |")
                 print("       + --------- +")
                 time.sleep(1)
+            elif sel == "8":
+                
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                flag = True
+                while flag is True:
+                     print("+---------------------------------+")
+                     print("|         Manage requests         |")
+                     print("+---------------------------------+")
+                     print("| 1. View friend requests         |")
+                     print("| 2. Accept friend requests       |")
+                     print("| 3. Remove friend requests       |")
+                     print("| x. Go back                      |")
+                     print("+---------------------------------+")
+                     sel = input("Enter Your Selection: ")
+                        #if sel == "1":
+                         #get all the friend request from DB set(usernames)
+                         #get all student objects from the usernames (get_student_by_username)
+                         
+                        #elif sel == "2":
+                        #elif sel == "3":
+                         #call search_by_field
+
+
 
                 # Ignore everything between '====='(Printing DB results)
                 # =========================================================

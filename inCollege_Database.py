@@ -43,7 +43,7 @@ class Database():
             self.data["Jobs"] = []
         
         # If there are 5 or more student accounts, the DB is full
-        if len(self.data["Students"]) > 4:
+        if len(self.data["Students"]) > 9:
                 self.isFull = True
         
     # Save data to file
@@ -164,7 +164,7 @@ class Database():
         
         print("|*| No account found with this username and password combination |*|\n")
         return False
-
+  
     def search_users(self):
 
         print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
