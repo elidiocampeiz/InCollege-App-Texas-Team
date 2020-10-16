@@ -143,3 +143,6 @@ class Student():
 
     def add_friend(self, friend):
         self.friends.append(friend)
+    
+    def remove_friend(self, friend):
+        self.friends.remove(friend)
