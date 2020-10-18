@@ -186,6 +186,7 @@ class Database():
         time.sleep(1)
         return False
 
+
     # Get Students data return student dict or false
     # Note: to test the function in use an if statement before the assert
     # e.g
@@ -259,7 +260,7 @@ class Database():
                 return student
         return False
 
-    def add_friend_requenst(self, to_username, from_username):
+    def add_friend_request(self, to_username, from_username):
         # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
         if self.data['Friend Request'].get(to_username) == None:
             self.data['Friend Request'][to_username] = set(from_username)
@@ -269,6 +270,7 @@ class Database():
         else:
             self.data['Friend Request'][to_username].add(from_username)
         return True
+
     # Removes a reqest sent to to_username from from_username
     def remove_friend_requenst(self, to_username, from_username):
         # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
@@ -279,6 +281,50 @@ class Database():
         else:
             self.data['Friend Request'][to_username].remove(from_username)
             return True
+
+    #This function allows user to search for friends by last name, university, or major.
+    #If there is a match the user is given to send a friend request. 
+    #If they send a friend request the function returns true.
+    #If they do not senf a friend request the funct    
+    def search_for_friends(self, curr_username):
+        print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+        search_value = input("\nType Here: ")
+        
+        if search_value == 'x':
+            return False
+
+        # initializing flag to false. If friend is found it is true.
+        found = False
+
+        print("\nSearch Results:")
+        #for students in the database
+        for username, student in self.data["Students"].items():
+            # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
+            if student.lastname == search_value or student.get_education()['university'] == search_value+" " or student.get_education()['major'] == search_value+" ":
+                found = True
+                print("Username: ", student.username, " | Name: ", student.firstname, " ", student.lastname)
+                print("University: ", student.get_education()['university'])
+                print("Major: ", student.get_education()['major'])
+                print("\nEnter \'y\' to send a request to ", student.username, " \nor anything else to continue...")
+                isRequest = input("Type Here: ")
+                if isRequest == "y":
+                    adding_friend = self.add_friend_request(student.username, curr_username)
+                    if adding_friend == True:
+                        print("Request Sent!")
+                        time.sleep(1)
+                    else:
+                        print("Request was already sent..")
+                        time.sleep(1)
+                
+        if found == False:
+            print("...")
+            time.sleep(1)
+            print("They are not yet a part of the InCollege system yet!\n")
+            time.sleep(1)
+            return False
+        else:
+            return True
+
 # DB = Database()
 # DB.clear()
 # new_username='word2'
@@ -294,7 +340,7 @@ class Database():
 # new_job = {
 #             'title' :'title',
 #             'employer' :'employer',
-#             'started' :'started',ß
+#             'started' :'started',
 #             'ended' :'ended',
 #             'location' :'location',
 #             'description':'description',

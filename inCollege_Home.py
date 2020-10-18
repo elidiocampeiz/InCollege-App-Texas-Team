@@ -545,7 +545,7 @@ def main ():
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
-            print(" | 8. Send Friend Request       |")
+            print(" | 8. Find Friends              |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -968,9 +968,25 @@ def main ():
                     pass
                 
             elif sel == "7":
-                
                 while accnt.diplay_friend_list(theStudent):
                     pass
+
+            elif sel == "8":
+                print("          + ------------ +")
+                print("          | FIND FRIENDS |         ")
+                print(" +----------------------------------+")
+                print(" | Search For friends by            |")
+                print(" | last name, university, or major  |")
+                print(" +----------------------------------+")
+                #search DB for student by various fields (calls search_by_field)
+                #check if student is not already in friend list
+                #call add student request
+                #display success or fail message
+                db = database.Database()
+                foundFriend = db.search_for_friends(theStudent.username)
+                if foundFriend is True:
+                    print("... User found in the inCollege System!")
+                    time.sleep(1)
                   
             elif sel == 'x':
                 print("       + --------- +")
