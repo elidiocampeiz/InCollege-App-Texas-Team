@@ -1,5 +1,4 @@
 import inCollege_Database as database
-import inCollege_CurrentUser as user
 from inCollege_Student import *
 import time
 import textwrap #This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)
@@ -428,3 +427,96 @@ def diplay_friend_list(student):
     time.sleep(1)
     return True 
     
+def display_accept_request_menu(DB, student, student_req):
+        fullname = student_req.firstname.capitalize() + ' ' + student_req.lastname.capitalize()
+        print(" +------------------------------------------------+ ")        
+        print(" {}'s Friend Requests".format(fullname))
+        print(" +------------------------------------------------+ ")
+        print(" | 1. Accept                                      |")
+        print(" | 2. Deny                                        |")
+        print(" | x. Go Back                                     |")
+        print(" +------------------------------------------------+ ")
+        selection = input("Enter Your Selection: ")
+        if selection == 'x':
+            return False
+        elif selection == '1':
+            # add student1 as friend of student2 and vice versa
+            student.add_friend(student_req)
+            student_req.add_friend(student)
+            # save them in DB
+            DB.set_student(student_req)
+            DB.set_student(student)
+            DB.remove_friend_requenst(student.username, student_req.username)
+        elif selection == '2':
+            DB.remove_friend_requenst(student.username, student_req.username)
+
+def diplay_friend_request_list(DB, student):
+    print(" +----------------------------------------------+ ")
+    print(" |           Pending Friend Requests            | ")
+    print(" +----------------------------------------------+ ")
+    print(" | Select Friend request to accept or delete it | ")
+    print(" +----------------------------------------------+ ") # 2(' |') + 46('-') + 2('| ) chars
+       
+
+    username_list = DB.data['Friend Requests'].get(student.username)
+    if username_list == None:
+        print(   " |", 'None'.ljust(46-6, ' '),"| ")
+        return False
+    students_list = []
+    for username in username_list:
+        user = DB.get_student_by_username(username)
+        if user:
+            students_list.append(user)
+        # Else means the from_username of the request belongs to a user that is not part of the DB anymore
+    for index, student_request in enumerate(students_list):
+
+        fullname = student_request.firstname.capitalize() + ' ' + student_request.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(   " |", sel_index, fullname.ljust(46-5, ' '),"| ")
+
+    print(" | x. Go Back                                   |")
+    print(" +----------------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    
+    if index.isnumeric():
+        idx = int(index) - 1
+        if idx < len(students_list):
+            while display_accept_request_menu(DB, student, students_list[idx]):
+                pass
+            return True
+    
+    print("...Invalid Input")
+    time.sleep(1)
+    return True 
+    
+    
+
+# DB = database.Database()
+# DB.clear()
+
+# username1='User1'
+# password1='word1'
+# firstname1='firstname1'
+# lastname1='lasttname1'
+
+# username2='User2'
+# password2='word2'
+# firstname2='firstname1'
+# lastname2='lasttname2'
+
+# DB.create_account( username1, password1, firstname1, lastname1)
+# DB.create_account( username2, password2, firstname2, lastname2)
+
+# myStudent = DB.get_student_by_username(username1)
+
+# DB.add_friend_requenst(username1, username2)
+# print(DB.data['Friend Requests'])
+
+# diplay_friend_request_list(DB, myStudent)
+# print(DB.data['Friend Requests'])
+
+# diplay_friend_list(myStudent)
