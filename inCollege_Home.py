@@ -535,6 +535,10 @@ def main ():
         # if User is logged in
         else:
 
+            while(accnt.diplay_friend_request_list(db, theStudent)):
+                pass
+
+
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
             print(" +------------------------------+")
@@ -982,8 +986,8 @@ def main ():
                 #check if student is not already in friend list
                 #call add student request
                 #display success or fail message
-                db = database.Database()
-                foundFriend = db.search_for_friends(theStudent.username)
+                # db = database.Database()
+                foundFriend = accnt.send_friend_request_menu(db,theStudent)
                 if foundFriend is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)

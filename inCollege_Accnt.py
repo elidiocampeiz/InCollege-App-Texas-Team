@@ -113,7 +113,7 @@ def create_account(DB):
     
     # TODO: Addp functionality to add real friends
     # Add Dummy friends 
-    student.add_dummy_friends()
+    # student.add_dummy_friends()
     # Save Dummy Friends
     DB.set_student(student)
 
@@ -427,4 +427,130 @@ def diplay_friend_list(student):
     print("...Invalid Input")
     time.sleep(1)
     return True 
+
+def display_accept_request_menu(DB, student, student_req):
+        fullname = student_req.firstname.capitalize() + ' ' + student_req.lastname.capitalize()
+        print(" +------------------------------------------------+ ")        
+        print(" {}'s Friend Requests".format(fullname))
+        print(" +------------------------------------------------+ ")
+        print(" | 1. Accept                                      |")
+        print(" | 2. Deny                                        |")
+        print(" | x. Go Back                                     |")
+        print(" +------------------------------------------------+ ")
+        selection = input("Enter Your Selection: ")
+        if selection == 'x':
+            return False # Returns to the previous menu
+        elif selection == '1':
+            # add student1 as friend of student2 and vice versa
+            student.add_friend(student_req)
+            student_req.add_friend(student)
+            # save them in DB
+            DB.set_student(student_req)
+            DB.set_student(student)
+            DB.remove_friend_request(student.username, student_req.username)
+        elif selection == '2':
+            DB.remove_friend_request(student.username, student_req.username)
+        else:
+            print("...Invalid Input")
+            time.sleep(1)
+            return True # run again invalid input
+        return False 
+
+def diplay_friend_request_list(DB, student):
+    username_list = DB.data['Friend Requests'].get(student.username)
+    if username_list == None:
+        return False
+    print(" +----------------------------------------------+ ")
+    print(" |           Pending Friend Requests            | ")
+    print(" +----------------------------------------------+ ")
+    print(" | Select Friend request to accept or delete it | ")
+    print(" +----------------------------------------------+ ") # 2(' |') + 46('-') + 2('| ) chars
     
+    students_list = []
+    for username in username_list:
+        user = DB.get_student_by_username(username)
+        if user:
+            students_list.append(user)
+        # Else means the from_username of the request belongs to a user that is not part of the DB anymore
+    for index, student_request in enumerate(students_list):
+
+        fullname = student_request.firstname.capitalize() + ' ' + student_request.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(   " |", sel_index, fullname.ljust(46-5, ' '),"| ")
+
+    print(" | x. To Quit                                   |")
+    print(" +----------------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    
+    if index.isnumeric():
+        idx = int(index) - 1
+        if idx < len(students_list):
+            while display_accept_request_menu(DB, student, students_list[idx]):
+                pass
+            return True
+    
+    print("...Invalid Input")
+    time.sleep(1)
+    return True 
+    
+     
+#This function allows user to search for friends by last name, university, or major.
+#If there is a match the user is given to send a friend request. 
+#If they send a friend request the function returns true.
+#If they do not senf a friend request the funct    
+
+def send_friend_request_menu(DB, mystudent):
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    search_value = input("\nType Here: ")
+    
+    if search_value == 'x':
+        return False
+
+    # initializing flag to false. If friend is found it is true.
+    found = False
+
+    print("\nSearch Results:")
+    #for students in the database
+    for username, student in DB.data["Students"].items():
+        # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
+        if student.username != mystudent.username and (student.lastname == search_value.capitalize() or student.lastname == search_value or student.get_education()['university'] == search_value.capitalize()+" " or student.get_education()['major'] == search_value.capitalize()+" "):
+            found = True
+            print("Username: ", student.username, " | Name: ", student.firstname, " ", student.lastname)
+            print("University: ", student.get_education()['university'])
+            print("Major: ", student.get_education()['major'])
+            
+            print("\nEnter \'y\' to send a request to ", student.username, " \nor anything else to continue...")
+            isRequest = input("Type Here: ")
+            # Check if students are already frieneds
+            is_friend = False
+            for friend in mystudent.friends:
+                if friend.username == student.username:
+                    print('\nYou are already friends!\n')
+                    time.sleep(1)
+                    is_friend = True
+                    break
+
+                    
+            if isRequest == "y" and not is_friend:
+                adding_friend = DB.add_friend_request(student.username, mystudent.username)
+                if adding_friend == True:
+                    print("Request Sent!\n")
+                    time.sleep(1)
+                else:
+                    print("Request was already sent...\n")
+                    time.sleep(1)
+    return found
+            
+    if found == False:
+        print("...")
+        time.sleep(1)
+        print("They are not yet a part of the InCollege system yet!\n")
+        time.sleep(1)
+        return False
+    else:
+        return True
+
