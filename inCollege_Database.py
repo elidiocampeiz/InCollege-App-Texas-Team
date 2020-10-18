@@ -252,26 +252,6 @@ class Database():
         self.save()
         return True
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
     def search_by_field(self, field, value):
         self.load()
         for username, student in self.data['Student']:
@@ -299,7 +279,6 @@ class Database():
         else:
             self.data['Friend Request'][to_username].remove(from_username)
             return True
->>>>>>> d6011407a894b25bf3747c78ebe73327f859009d
 # DB = Database()
 # DB.clear()
 # new_username='word2'
@@ -315,7 +294,7 @@ class Database():
 # new_job = {
 #             'title' :'title',
 #             'employer' :'employer',
-#             'started' :'started',
+#             'started' :'started',ß
 #             'ended' :'ended',
 #             'location' :'location',
 #             'description':'description',

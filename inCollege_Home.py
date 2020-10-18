@@ -967,18 +967,10 @@ def main ():
                     pass
                 
             elif sel == "7":
-<<<<<<< HEAD
-                #TODO Print friends, and  =view profile of the one you select
-                print()
-
-            
-            #Exit Program    
-=======
                 
                 while accnt.diplay_friend_list(theStudent):
                     pass
                   
->>>>>>> d6011407a894b25bf3747c78ebe73327f859009d
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")
