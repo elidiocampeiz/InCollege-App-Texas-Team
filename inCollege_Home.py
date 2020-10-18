@@ -133,7 +133,6 @@ def main ():
             #Create an account
             elif sel == '2': 
                 accnt.create_account(db)
-
             #Find Someone You Know
             elif sel == '3': 
                 foundUser = db.search_users() #returns t / f
@@ -961,15 +960,25 @@ def main ():
                 sel = "" #resetting
             elif sel == "6":
                 # loop while 
-                while accnt.display_profile(db, theStudent):
+                accnt.display_profile(theStudent)
+
+                while accnt.edit_profile_menu(theStudent):
+                    accnt.display_profile(theStudent)
                     pass
                 
             elif sel == "7":
+<<<<<<< HEAD
                 #TODO Print friends, and  =view profile of the one you select
                 print()
 
             
             #Exit Program    
+=======
+                
+                while accnt.diplay_friend_list(theStudent):
+                    pass
+                  
+>>>>>>> d6011407a894b25bf3747c78ebe73327f859009d
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")
