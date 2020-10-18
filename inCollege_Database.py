@@ -13,7 +13,7 @@ class Database():
 
     # Reset data
     def reset(self):
-        self.data = {"Students":{}, "Jobs":[], 'Friend Request': {}}
+        self.data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
         self.isFull = False
         # if the database file doesn't exist uncomment the next line
         # self.save()            
@@ -243,7 +243,8 @@ class Database():
         # Save change in DB file
         self.save()
         return True
-
+    
+    # update student instance 
     def set_student(self, student):
 
         if not isinstance(student, Student):
@@ -263,72 +264,29 @@ class Database():
         return False
 
     def add_friend_requenst(self, to_username, from_username):
-        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
-        if self.data['Friend Request'].get(to_username) == None:
-            self.data['Friend Request'][to_username] = set(from_username)
-        elif self.data['Friend Request'][to_username].get(from_username) != None:
-            # Request already exists
+        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
+        if self.data['Friend Requests'].get(to_username) == None:
+            self.data['Friend Requests'][to_username] = set()
+            self.data['Friend Requests'][to_username].add(from_username)
+        elif self.data['Friend Requests'][to_username].get(from_username) != None:
+            # Request already exists return false
             return False
-        else:
-            self.data['Friend Request'][to_username].add(from_username)
+        else: # add request to DB
+            self.data['Friend Requests'][to_username].add(from_username)
+        # Save DB
+        self.save()
         return True
     # Removes a reqest sent to to_username from from_username
     def remove_friend_requenst(self, to_username, from_username):
-        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
+        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
         
-        if self.data['Friend Request'].get(to_username) == None or self.data['Friend Request'][to_username].get(from_username) == None :
+        if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
             # Nothing to remove
+            
             return False
-        else:
-            self.data['Friend Request'][to_username].remove(from_username)
+        else: # Remove request from DB
+            self.data['Friend Requests'].pop(to_username)
+            # Save DB
+            self.save()
             return True
-# DB = Database()
-# DB.clear()
-# new_username='word2'
-# new_password='word'
-# new_firstname='word'
-# new_lastname='word'
-
-# DB.create_account( new_username, new_password, new_firstname, new_lastname)
-# # DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
-# myStudent = DB.get_student_by_username(new_username)
-
-# print(myStudent.firstname)
-# new_job = {
-#             'title' :'title',
-#             'employer' :'employer',
-#             'started' :'started',
-#             'ended' :'ended',
-#             'location' :'location',
-#             'description':'description',
-#         }
-# guest_control_field = 'SMS'
-# new_value = False
-# old_settings = myStudent.settings
-
-# new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
-# new_guest_control[guest_control_field] = new_value
-# new_settings = old_settings.copy()
-
-# print(old_settings)
-# new_settings['guest control'] = new_guest_control
-# print(old_settings)
-# # print(myStudent.firstname)
-# # print(myStudent.experience)
-# print(myStudent.settings)
-# myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
-# print(myStudent.settings)
-# print(myStudent.firstname)
-# # DB.load()
-# for username, student in DB.data['Students'].items():
-#     print(username, student.settings)
-#     print(new_settings)
-#     print(old_settings)
-
-# print(DB.set_student(myStudent))
-
-# for username, student in DB.data['Students'].items():
-#     print(username, student.settings)
-#     print(new_settings)
-#     print(old_settings)
-
+    
