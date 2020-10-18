@@ -545,6 +545,7 @@ def main ():
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
+            print(" | 8. Send Friend Request       |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
