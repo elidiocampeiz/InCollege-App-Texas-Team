@@ -9,7 +9,6 @@ class Database():
         self.filename = filename
         self.reset()
         self.load()
-        
 
     # Reset data
     def reset(self):
@@ -22,7 +21,6 @@ class Database():
     def clear(self):
         # Reset data
         self.reset()
-        # Clear file
         self.save()
 
     # Load data from file, with the option of usign an alternative file
@@ -41,6 +39,7 @@ class Database():
         # If DB is empty create a "Jobs" section
         if "Jobs" not in self.data:
             self.data["Jobs"] = []
+
         
         # If there are 5 or more student accounts, the DB is full
         if len(self.data["Students"]) > 9:
@@ -81,7 +80,7 @@ class Database():
         settings = {'guest control' : guest_control, "language" : language} 
         # language settings
 
-        # Init new student 
+        # Init new student  
         new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
         my_student = Student(**new_student)
         # Iterate through each student in "Students" section
@@ -95,9 +94,7 @@ class Database():
         #         return False
 
         if new_username in self.data["Students"].keys():
-                print("...")
-                time.sleep(1)
-                print('Username already in use')
+                print('Username already in use...')
                 time.sleep(1)
                 return False
         
@@ -164,7 +161,7 @@ class Database():
         
         print("|*| No account found with this username and password combination |*|\n")
         return False
-  
+
     def search_users(self):
 
         print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -188,6 +185,7 @@ class Database():
         print("They are not yet a part of the InCollege system yet!\n")
         time.sleep(1)
         return False
+
 
     # Get Students data return student dict or false
     # Note: to test the function in use an if statement before the assert
@@ -243,32 +241,35 @@ class Database():
         # Save change in DB file
         self.save()
         return True
-    
-    # update student instance 
+
     def set_student(self, student):
 
         if not isinstance(student, Student):
+            
             return False
         if self.data["Students"].get(student.username) == None:
+            print('error set student')
             return False
         
         self.data["Students"][student.username] = student
         self.save()
         return True
 
-    def search_by_field(self, field, value):
-        self.load()
-        for username, student in self.data['Student']:
-            if student.__dict__.get(field) and student.__dict__[field] == value:
-                return student
-        return False
+    # def search_by_field(self, field, value):
+    #     self.load()
+    #     for username, student in self.data['Student']:
+    #         if student.__dict__.get(field) and student.__dict__[field] == value:
+    #             return student
+    #     return False
 
-    def add_friend_requenst(self, to_username, from_username):
+    def add_friend_request(self, to_username, from_username):
+        if to_username == from_username:
+            return False
         # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
         if self.data['Friend Requests'].get(to_username) == None:
             self.data['Friend Requests'][to_username] = set()
             self.data['Friend Requests'][to_username].add(from_username)
-        elif self.data['Friend Requests'][to_username].get(from_username) != None:
+        elif from_username in self.data['Friend Requests'][to_username]:
             # Request already exists return false
             return False
         else: # add request to DB
@@ -276,17 +277,71 @@ class Database():
         # Save DB
         self.save()
         return True
+    
     # Removes a reqest sent to to_username from from_username
-    def remove_friend_requenst(self, to_username, from_username):
+    def remove_friend_request(self, to_username, from_username):
+        if to_username == from_username:
+            return False
         # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
-        
         if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
             # Nothing to remove
-            
             return False
-        else: # Remove request from DB
+        elif len( self.data['Friend Requests'][to_username]) > 1: # Remove request from DB
+            self.data['Friend Requests'][to_username].remove(from_username)
+        else:
             self.data['Friend Requests'].pop(to_username)
             # Save DB
-            self.save()
-            return True
+        self.save()
+        return True
     
+
+# DB = Database()
+# DB.clear()
+# new_username='word2'
+# new_password='word'
+# new_firstname='word'
+# new_lastname='word'
+
+# DB.create_account( new_username, new_password, new_firstname, new_lastname)
+# # DB.create_account( new_username+'0', new_password, new_firstname, new_lastname)
+# myStudent = DB.get_student_by_username(new_username)
+
+# print(myStudent.firstname)
+# new_job = {
+#             'title' :'title',
+#             'employer' :'employer',
+#             'started' :'started',
+#             'ended' :'ended',
+#             'location' :'location',
+#             'description':'description',
+#         }
+# guest_control_field = 'SMS'
+# new_value = False
+# old_settings = myStudent.settings
+
+# new_guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+# new_guest_control[guest_control_field] = new_value
+# new_settings = old_settings.copy()
+
+# print(old_settings)
+# new_settings['guest control'] = new_guest_control
+# print(old_settings)
+# # print(myStudent.firstname)
+# # print(myStudent.experience)
+# print(myStudent.settings)
+# myStudent.update(firstname='new_firstname',settings=new_settings, title='title', experience=[new_job])
+# print(myStudent.settings)
+# print(myStudent.firstname)
+# # DB.load()
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
+
+# print(DB.set_student(myStudent))
+
+# for username, student in DB.data['Students'].items():
+#     print(username, student.settings)
+#     print(new_settings)
+#     print(old_settings)
+

@@ -535,6 +535,10 @@ def main ():
         # if User is logged in
         else:
 
+            while(accnt.diplay_friend_request_list(db, theStudent)):
+                pass
+
+
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
             print(" +------------------------------+")
@@ -545,7 +549,7 @@ def main ():
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
-            print(" | 8. Friend Requests           |")
+            print(" | 8. Find Friends              |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -562,7 +566,7 @@ def main ():
                 if foundUser is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)
-      
+                    
             # Learn a New Skill        
             elif sel == '3': 
                 print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -967,40 +971,32 @@ def main ():
                     accnt.display_profile(theStudent)
                     pass
                 
-
             elif sel == "7":
-                
                 while accnt.diplay_friend_list(theStudent):
                     pass
+
+            elif sel == "8":
+                print("          + ------------ +")
+                print("          | FIND FRIENDS |         ")
+                print(" +----------------------------------+")
+                print(" | Search For friends by            |")
+                print(" | last name, university, or major  |")
+                print(" +----------------------------------+")
+                #search DB for student by various fields (calls search_by_field)
+                #check if student is not already in friend list
+                #call add student request
+                #display success or fail message
+                # db = database.Database()
+                foundFriend = accnt.send_friend_request_menu(db,theStudent)
+                if foundFriend is True:
+                    print("... User found in the inCollege System!")
+                    time.sleep(1)
                   
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")
                 print("       + --------- +")
                 time.sleep(1)
-            elif sel == "8":
-                
-                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
-                flag = True
-                while flag is True:
-                     print("+---------------------------------+")
-                     print("|         Manage requests         |")
-                     print("+---------------------------------+")
-                     print("| 1. View friend requests         |")
-                     print("| 2. Accept friend requests       |")
-                     print("| 3. Remove friend requests       |")
-                     print("| x. Go back                      |")
-                     print("+---------------------------------+")
-                     sel = input("Enter Your Selection: ")
-                        #if sel == "1":
-                         #get all the friend request from DB set(usernames)
-                         #get all student objects from the usernames (get_student_by_username)
-                         
-                        #elif sel == "2":
-                        #elif sel == "3":
-                         #call search_by_field
-
-
 
                 # Ignore everything between '====='(Printing DB results)
                 # =========================================================

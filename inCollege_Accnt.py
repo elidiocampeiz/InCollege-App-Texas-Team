@@ -1,4 +1,5 @@
 import inCollege_Database as database
+import inCollege_CurrentUser as user
 from inCollege_Student import *
 import time
 import textwrap #This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)
@@ -112,7 +113,7 @@ def create_account(DB):
     
     # TODO: Addp functionality to add real friends
     # Add Dummy friends 
-    student.add_dummy_friends()
+    # student.add_dummy_friends()
     # Save Dummy Friends
     DB.set_student(student)
 
@@ -397,7 +398,7 @@ def display_friend_profile(student):
 
 def diplay_friend_list(student):
     print(" +----------------------------------------+ ")
-    print(" |            Show my network             | ")
+    print(" |            List of Friends             | ")
     print(" +----------------------------------------+ ")
     print(" |  Select Friend to view their profile   | ")
     print(" +----------------------------------------+ ") # 2(' |') + 40('-') + 2('| ) chars
@@ -426,7 +427,7 @@ def diplay_friend_list(student):
     print("...Invalid Input")
     time.sleep(1)
     return True 
-    
+
 def display_accept_request_menu(DB, student, student_req):
         fullname = student_req.firstname.capitalize() + ' ' + student_req.lastname.capitalize()
         print(" +------------------------------------------------+ ")        
@@ -438,7 +439,7 @@ def display_accept_request_menu(DB, student, student_req):
         print(" +------------------------------------------------+ ")
         selection = input("Enter Your Selection: ")
         if selection == 'x':
-            return False
+            return False # Returns to the previous menu
         elif selection == '1':
             # add student1 as friend of student2 and vice versa
             student.add_friend(student_req)
@@ -446,22 +447,25 @@ def display_accept_request_menu(DB, student, student_req):
             # save them in DB
             DB.set_student(student_req)
             DB.set_student(student)
-            DB.remove_friend_requenst(student.username, student_req.username)
+            DB.remove_friend_request(student.username, student_req.username)
         elif selection == '2':
-            DB.remove_friend_requenst(student.username, student_req.username)
+            DB.remove_friend_request(student.username, student_req.username)
+        else:
+            print("...Invalid Input")
+            time.sleep(1)
+            return True # run again invalid input
+        return False 
 
 def diplay_friend_request_list(DB, student):
+    username_list = DB.data['Friend Requests'].get(student.username)
+    if username_list == None or len(username_list) < 1:
+        return False
     print(" +----------------------------------------------+ ")
     print(" |           Pending Friend Requests            | ")
     print(" +----------------------------------------------+ ")
     print(" | Select Friend request to accept or delete it | ")
     print(" +----------------------------------------------+ ") # 2(' |') + 46('-') + 2('| ) chars
-       
-
-    username_list = DB.data['Friend Requests'].get(student.username)
-    if username_list == None:
-        print(   " |", 'None'.ljust(46-6, ' '),"| ")
-        return False
+    
     students_list = []
     for username in username_list:
         user = DB.get_student_by_username(username)
@@ -475,9 +479,9 @@ def diplay_friend_request_list(DB, student):
         # Chars:   2        3            40                  2
         print(   " |", sel_index, fullname.ljust(46-5, ' '),"| ")
 
-    print(" | x. Go Back                                   |")
+    print(" | x. To Quit                                   |")
     print(" +----------------------------------------------+ ")
-    index = input("Enter Your Selection: ")
+    index = input("Enter Chooice: ")
     if index == 'x':
         return False
     # if index is a string of a number in range of the student.friends List
@@ -493,30 +497,59 @@ def diplay_friend_request_list(DB, student):
     time.sleep(1)
     return True 
     
+     
+#This function allows user to search for friends by last name, university, or major.
+#If there is a match the user is given to send a friend request. 
+#If they send a friend request the function returns true.
+#If they do not senf a friend request the funct    
+
+def send_friend_request_menu(DB, mystudent):
+    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+    search_value = input("\nType Here: ")
     
+    if search_value == 'x':
+        return False
 
-# DB = database.Database()
-# DB.clear()
+    # initializing flag to false. If friend is found it is true.
+    found = False
 
-# username1='User1'
-# password1='word1'
-# firstname1='firstname1'
-# lastname1='lasttname1'
+    print("\nSearch Results:")
+    #for students in the database
+    for username, student in DB.data["Students"].items():
+        # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
+        if student.username != mystudent.username and (student.lastname == search_value.capitalize() or student.lastname == search_value or student.get_education()['university'] == search_value.capitalize()+" " or student.get_education()['major'] == search_value.capitalize()+" "):
+            found = True
+            print("Username: ", student.username, " | Name: ", student.firstname, " ", student.lastname)
+            print("University: ", student.get_education()['university'])
+            print("Major: ", student.get_education()['major'])
+            
+            print("\nEnter \'y\' to send a request to ", student.username, " \nor anything else to continue...")
+            isRequest = input("Type Here: ")
+            # Check if students are already frieneds
+            is_friend = False
+            for friend in mystudent.friends:
+                if friend.username == student.username:
+                    print('\nYou are already friends!\n')
+                    time.sleep(1)
+                    is_friend = True
+                    break
 
-# username2='User2'
-# password2='word2'
-# firstname2='firstname1'
-# lastname2='lasttname2'
+                    
+            if isRequest == "y" and not is_friend:
+                adding_friend = DB.add_friend_request(student.username, mystudent.username)
+                if adding_friend == True:
+                    print("Request Sent!\n")
+                    time.sleep(1)
+                else:
+                    print("Request was already sent...\n")
+                    time.sleep(1)
+            
+    if found == False:
+        print("...")
+        time.sleep(1)
+        print("They are not yet a part of the InCollege system yet!\n")
+        time.sleep(1)
+        return False
+    else:
+        return True
 
-# DB.create_account( username1, password1, firstname1, lastname1)
-# DB.create_account( username2, password2, firstname2, lastname2)
-
-# myStudent = DB.get_student_by_username(username1)
-
-# DB.add_friend_requenst(username1, username2)
-# print(DB.data['Friend Requests'])
-
-# diplay_friend_request_list(DB, myStudent)
-# print(DB.data['Friend Requests'])
-
-# diplay_friend_list(myStudent)
