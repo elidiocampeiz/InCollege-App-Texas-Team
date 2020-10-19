@@ -458,7 +458,7 @@ def display_accept_request_menu(DB, student, student_req):
 
 def diplay_friend_request_list(DB, student):
     username_list = DB.data['Friend Requests'].get(student.username)
-    if username_list == None:
+    if username_list == None or len(username_list) < 1:
         return False
     print(" +----------------------------------------------+ ")
     print(" |           Pending Friend Requests            | ")
@@ -481,7 +481,7 @@ def diplay_friend_request_list(DB, student):
 
     print(" | x. To Quit                                   |")
     print(" +----------------------------------------------+ ")
-    index = input("Enter Your Selection: ")
+    index = input("Enter Chooice: ")
     if index == 'x':
         return False
     # if index is a string of a number in range of the student.friends List
@@ -543,7 +543,6 @@ def send_friend_request_menu(DB, mystudent):
                 else:
                     print("Request was already sent...\n")
                     time.sleep(1)
-    return found
             
     if found == False:
         print("...")

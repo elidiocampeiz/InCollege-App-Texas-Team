@@ -42,7 +42,7 @@ class Database():
 
         
         # If there are 5 or more student accounts, the DB is full
-        if len(self.data["Students"]) > 10:
+        if len(self.data["Students"]) > 9:
                 self.isFull = True
         
     # Save data to file
@@ -245,20 +245,22 @@ class Database():
     def set_student(self, student):
 
         if not isinstance(student, Student):
+            
             return False
         if self.data["Students"].get(student.username) == None:
+            print('error set student')
             return False
         
         self.data["Students"][student.username] = student
         self.save()
         return True
 
-    def search_by_field(self, field, value):
-        self.load()
-        for username, student in self.data['Student']:
-            if student.__dict__.get(field) and student.__dict__[field] == value:
-                return student
-        return False
+    # def search_by_field(self, field, value):
+    #     self.load()
+    #     for username, student in self.data['Student']:
+    #         if student.__dict__.get(field) and student.__dict__[field] == value:
+    #             return student
+    #     return False
 
     def add_friend_request(self, to_username, from_username):
         if to_username == from_username:
@@ -275,6 +277,7 @@ class Database():
         # Save DB
         self.save()
         return True
+    
     # Removes a reqest sent to to_username from from_username
     def remove_friend_request(self, to_username, from_username):
         if to_username == from_username:
