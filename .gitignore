@@ -1,2 +1,5 @@
 *.zip
 .DS_Store
+*.pyc
+TexasTeamChallenge2.zip
+/__pycache__

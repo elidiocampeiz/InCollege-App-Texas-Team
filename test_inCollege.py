@@ -4,7 +4,9 @@ import inCollege_Home as home
 import inCollege_CurrentUser as user
 import inCollege_Database as database
 import inCollege_CurrentUser as user
-
+from inCollege_Student import *
+import time
+time.sleep=lambda x:None
 
 # Test function that asserts whether the passwordChecker() function returned the correct value
 @pytest.mark.parametrize("test_password, expected", [("Abcdef1", True), ("Abcdefg", False), ("abcdef1", False), ("Abcde1", False), ("Abcdefghijklm1", False), ("Ab1asd2#", False), ("", False)])
@@ -66,8 +68,43 @@ def DB():
         "6_acc_password",
         "6_Firstname",
         "6_Lastname",
+        True
+    ),
+    (
+        "7_acc_username",
+        "7_acc_password",
+        "7_Firstname",
+        "7_Lastname",
+        True
+    ),
+    (
+        "8_acc_username",
+        "8_acc_password",
+        "8_Firstname",
+        "8_Lastname",
+        True
+    ),
+    (
+        "9_acc_username",
+        "9_acc_password",
+        "9_Firstname",
+        "9_Lastname",
+        True
+    ),
+    (
+        "10_acc_username",
+        "10_acc_password",
+        "10_Firstname",
+        "10_Lastname",
+        True
+    ),
+    (
+        "11_acc_username",
+        "11_acc_password",
+        "11_Firstname",
+        "11_Lastname",
         False
-    ), # The DB can only have 5 user accounts so if we try to create the 6th the create_account function returns false
+    ), # The DB can only have 10 user accounts so if we try to create the 6th the create_account function returns false
 
 ])
 def test_create_account(DB, username, password, firstname, lastname, expected):
@@ -110,35 +147,7 @@ def test_login(DB, username, password, expected):
     result = DB.login(username, password)
     assert result == expected
 
-# # Test function that selects a skill
-# @pytest.mark.parametrize("selection, expected",
-# [
-#     (0, False),
-#     (1, True),
-#     (2, True),
-#     (3, True),
-#     (4, True),
-#     (5, True),
-#     (6, False),
-# ])
-# def test_skillSelect(selection, expected):
-#     result = home.selectionScreen(selection)
-#     assert result == expected
-@pytest.mark.parametrize("selectionStr, expected",
-[
-    ('1', True),
-    ('2', True),
-    ('3', True),
-    ('4', True),
-    ('5', True),
-    ('x', False),
-])
-def test_skillSelect(monkeypatch, selectionStr, expected):
-    monkeypatch.setattr('builtins.input', lambda x: selectionStr)
-    result = home.skillScreen()
-    assert result == expected
 
-#Create Job testing
 @pytest.mark.parametrize("title, description, employer, location, salary, name_of_poster, expected",
  [
     # test a correct combination of posting job
@@ -157,20 +166,7 @@ def test_create_job_posting(DB, title, description, employer, location, salary, 
     result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster)
     assert result == expected
 
-# #Test login prompt
-# @pytest.mark.parametrize("selection, expected",
-# [
-#     (-1, False),
-#     (0, False),
-#     (1, True),
-#     (2, True),
-# ])
-# #Test function loginprompt, Not sure if its correctly tested
-# def test_login_prompt(selection, expected):
-#     result = home.login_prompt(selection)
-#     assert result == expected
 
-#for testing purposes
 #For multiple inputs create a function to be passed to the monkeypatch.setattr that return a string to the respective input call
 def fake_inputs(key, firstname, lastname):
     # Each Key has to be the same string as the respective input statement
@@ -221,14 +217,14 @@ def test_search_users(DB, monkeypatch, firstname, lastname, expected):
 
 def test_clear(DB):
     DB.clear()
-    reset_DB_data = {"Students":[], "Jobs":[]}
+    reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
     DB.load()
     assert DB.data == reset_DB_data
     assert DB.isFull == False
 
 def test_reset(DB):
     DB.reset()
-    reset_DB_data = {"Students":[], "Jobs":[]}
+    reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
     assert DB.data == reset_DB_data
     assert DB.isFull == False
 
@@ -247,20 +243,23 @@ def test_save(DB):
     DB.clear()
 
 # Create Account Test (inCollege_Acct.py)
-def create_accout_menu_fake_inputs(key, username, password, passwordCheck, firstname, lastname):
+def create_accout_menu_fake_inputs(key, new_username, new_password, passwordCheck, new_firstname, new_lastname):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
-        "Enter username: ": username,
-        "Enter password: ": password,
-        "Please enter new password: ": passwordCheck,
-        "Please enter first name: ": firstname,
-        "Please enter last name: ": lastname
+        "Enter username: ": new_username,
+        "Enter password: ": new_password,
+        "Enter New Password: ": passwordCheck,
+        "Enter First Name: ": new_firstname,
+        "Enter Last Name: ": new_lastname
+        
     }
+    if not key in prompt_to_return_val.keys():
+        return ''
     val = prompt_to_return_val[key]
     return val
 
 # Create Account Test
-@pytest.mark.parametrize("username, password, passwordCheck, firstname, lastname, expected",
+@pytest.mark.parametrize("new_username, new_password, passwordCheck, new_firstname, new_lastname, expected",
  [
     (
         "1accusername",
@@ -342,19 +341,60 @@ def create_accout_menu_fake_inputs(key, username, password, passwordCheck, first
     # The DB can only have 5 user accounts so if we try to create the 6th the create_account function returns false
     (
         "6_acc_username",
-        "6_Password",
-        "Pass163",
+        "6Password",
+        "Pass153",
         "6_Firstname",
         "6_Lastname",
-        False
+        True
     ),
+    (
+        "7_acc_username",
+        "7Password",
+        "Pass153",
+        "7_Firstname",
+        "7_Lastname",
+        True
+    ),
+    (
+        "8_acc_username",
+        "8Password",
+        "Pass153",
+        "8_Firstname",
+        "8_Lastname",
+        True
+    ),
+    (
+        "9_acc_username",
+        "9Password",
+        "Pass153",
+        "9_Firstname",
+        "9_Lastname",
+        True
+    ),
+    (
+        "10_acc_username",
+        "10Password",
+        "Pass153",
+        "10_Firstname",
+        "10_Lastname",
+        True
+    ),
+    (
+        "11_acc_username",
+        "11Password",
+        "Pass153",
+        "11_Firstname",
+        "11_Lastname",
+        False
+    ), # The DB can only have 10 user accounts so if we try to create the 6th the create_account function returns false
+
 ])
 
-def test_create_accout_menu(DB, monkeypatch, username, password, passwordCheck, firstname, lastname, expected ):
+def test_create_accout_menu(DB, monkeypatch, new_username, new_password, passwordCheck, new_firstname, new_lastname, expected ):
 
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
-        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, username, password, passwordCheck, firstname, lastname))
+        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, new_username, new_password, passwordCheck, new_firstname, new_lastname))
         # print('BREAKPOINT db is full ', DB.isFull, len(DB.data["Students"]) )
         result = accnt.create_account(DB)
         assert result == expected
@@ -405,7 +445,7 @@ def login_fake_inputs(key, username, password):
     # Todo: 3 more cases
 ])
 # Test Login Acc
-def test_login(DB, monkeypatch, username, password, expected):
+def test_login_menu(DB, monkeypatch, username, password, expected):
 
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
@@ -418,7 +458,7 @@ def test_login(DB, monkeypatch, username, password, expected):
             assert result == expected
         else:
             #print('result.name', result.name)
-            assert result.name != ''
+            assert result.username != ''
 
 
 def post_job_fake_inputs(key, title, description, employer, location, salary, expected):
@@ -435,7 +475,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
 
 # Post Job Parameters
 @pytest.mark.parametrize("title, description, employer, location, salary, fullname, expected",
-[
+ [
     # test a correct combination of jobs and names
     (
         "",
@@ -514,30 +554,12 @@ def test_post_job(monkeypatch, DB, title, description, employer, location, salar
         result = accnt.post_job(fullname, DB)
         assert result == expected
 
-# Test for User Class
-@pytest.mark.parametrize("username, expected",
- [
-    #Test correct first name from test_create_account
-    (
-        "1accusername",
-        "1Firstname 1Lastname",
-    ),
-    #Test a wrong combination of
-    (
-        "2_acc_username",
-        ""
-    ),
-    # Todo: 3 more cases
-])
-def test_getUserName(DB, username, expected):
-    myUser = user.User(username, DB)
-    assert expected == myUser.getUserName(username).strip()
 
 def intro_menu_fake_inputs(key, selection, validSelection):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
         "Enter Your Selection:\n":selection,
-        "Invalid Entry. Enter 0 or 1.":validSelection,
+        "Enter Your Selection: ":validSelection,
     }
     val = prompt_to_return_val[key]
     return val
@@ -576,9 +598,745 @@ def test_intro_menu(monkeypatch, selection, validSelection, expected):
         m.setattr('builtins.input', lambda x: intro_menu_fake_inputs(x, selection, validSelection))
         assert expected == home.mainMenuIntroMessage()
 
+@pytest.mark.parametrize("username, expected",
+ [
+    
+    (
+        "wrong_username",
+        False,
+    ),
+    (
+        "",
+        False,
+    ),
+    (
+        "1accusername",
+        True,
+    ),
+ 
+])
+#Test for get student by username
+def test_get_student_by_username(DB, username, expected):
+    student = DB.get_student_by_username(username)
+    if student:
+        assert student.username == username
+    else:
+        assert student == False
 
-# def test_hello(capsys, inputStr, expected):
-#     outputFunction(inputStr)
-#     captured_stdout, captured_stderr = capsys.readouterr()
-#     # You can use .strip here to eliminate '\n', or include it in the expected string
-#     assert captured_stdout.strip() == expected
+
+@pytest.mark.parametrize("username, update_dict , expected",
+ [
+        (
+            '1accusername',
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            },
+            True
+        ),
+        (
+            '1accusername',
+            {  
+                'title':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            True
+        ),
+        (
+            '1accusername',
+            {  
+                'About':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            True
+        ),
+        # Test a username that doesn't exist in DB
+        (
+            'wrong_username',
+            {  
+                'About':
+                {
+                    'Computer Science Student' 
+                }
+            },
+            False
+        ),
+        # Test a username da doesn't exist in DB
+        (
+            '',
+            {  
+                'settings':
+                {
+                    'guest control' : 
+                    {
+                        "Email" : False, 
+                        "SMS" : True,  
+                        "Targeted Advertising" : False
+                    },
+                    "language" : 'English'
+                }
+            },
+            False
+        )
+])
+def test_set_student(DB, username, update_dict, expected):
+    # Get student from DB
+    myStudent = DB.get_student_by_username(username)
+    # If get_student_by_username returns False (username is not in DB) construct an empty student (update should return False, expected value is False)
+    if not myStudent:
+        myStudent = Student(username=username)
+    # Update local student
+    myStudent.update(**update_dict)    
+    # Update student in DB 
+    result = DB.set_student(myStudent)
+    # Get student from DB 
+    new_Student = DB.get_student_by_username(username)
+    # IF update was correct, asser if each update in update_dict was performed
+    if result:
+        for key, updated_value in update_dict.items():
+            # print(myStudent.__dict__.get(key),updated_value )
+            assert (new_Student.__dict__.get(key) == updated_value) == expected
+    
+    # If update failed then it means Student wasn't in DB, expected should be false
+    assert result == expected
+
+# Fixture for defauld student object
+@pytest.fixture (scope = "module")
+def default_Student(DB): 
+    guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+    # laguage settings
+    language = "English"
+    settings = {'guest control' : guest_control, "language" : language} 
+    # language settings
+    # Init new student 
+    new_student = {'username':"1accusername", 'password':"New_password1",'firstname':"John", 'lastname':"Smith", 'settings': settings}
+    # my_student = Student(**new_student)
+    # return new_student
+
+    # Init Student 
+    student = Student(**new_student)
+    
+    # Add student to DB
+    DB.create_account(student.username, student.password, student.firstname, student.lastname)
+    
+    return student
+
+@pytest.fixture (scope = "module")
+def default_Student2(DB): 
+    guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+    # laguage settings
+    language = "English"
+    settings = {'guest control' : guest_control, "language" : language} 
+    # language settings
+    # Init new student 
+    new_student = {'username':"2accusername", 'password':"New_password1",'firstname':"John", 'lastname':"Smith", 'settings': settings}
+    # my_student = Student(**new_student)
+    # return new_student
+
+    # Init Student 
+    student = Student(**new_student)
+    # Add student to DB
+    DB.create_account(student.username, student.password, student.firstname, student.lastname)
+
+    return student
+
+
+@pytest.mark.parametrize(" update_dict",
+ [
+        
+    (
+        {
+            'settings':
+                {
+                    'guest control':
+                    {
+                        "Email": False,
+                        "SMS": True,
+                        "Targeted Advertising": False
+                    },
+                    "language": 'Spanish'
+                }
+        }
+    ),
+    (
+        {
+            'title': 'Computer Science Student'
+        }
+    ),
+    (
+        {
+            'About': 'Computer Science Student'  # doesn't matter what value is
+        }
+    ),
+    # Test a username da doesn't exist in DB
+    (
+        {
+            'About':'Computer Science Student'
+        }   
+    ),
+    # Test a username da doesn't exist in DB
+    (
+        {
+            'settings':
+            {
+                'guest control':
+                {
+                    "Email": False,
+                    "SMS": True,
+                    "Targeted Advertising": False
+                },
+                "language": 'English'
+            }
+        }
+    )
+])
+def test_student_update(default_Student, update_dict):
+    # student = Student(**default_Student)
+    # student = default_Student
+    default_Student.update(**update_dict)
+
+    for key, updated_value in update_dict.items():
+        print(default_Student.key)
+        assert default_Student.__dict__.get(key) == updated_value
+
+
+@pytest.mark.parametrize("title, employer, start_date, end_date, location, description, expected",
+ [
+    # Test 
+    (  
+        'title1',
+        'employer1',
+        'start_date1',
+        'end_date1',
+        'location1',
+        'description1',
+        True
+    ),
+    (  
+        'title2',
+        'employer2',
+        'start_date2',
+        'end_date2',
+        'location2',
+        'description2',
+        True
+    ),
+    (  
+        'title3',
+        'employer3',
+        'start_date3',
+        'end_date3',
+        'location3',
+        'description3',
+        True
+    ),
+    # Maximum of 3 Job Experiences -> False
+    (  
+        'title4',
+        'employer4',
+        'start_date4',
+        'end_date4',
+        'location4',
+        'description4',
+        False
+    ),
+])
+def test_student_add_job_experience(default_Student,title, employer, start_date, end_date, location, description, expected):
+    # student = default_Student
+
+    result = default_Student.add_job_experience(title, employer, start_date, end_date, location, description)
+    
+    assert result == expected
+
+@pytest.mark.parametrize("index, expected",
+ [
+    (
+        0,
+        True
+    ),
+    (
+        1,
+        True
+    ),
+    (
+        2,
+        True
+    ),
+    (
+        4,
+        False
+    ),
+])
+def test_student_get_experience(default_Student, index, expected):
+    
+    result = default_Student.get_experience(index)
+    if result:
+        assert isinstance(result, dict)
+    else:
+        assert result == expected
+
+@pytest.mark.parametrize("university, major, year",
+ [
+    (
+        'University of South Florida',
+        'Computer Science',
+        'Senior',
+    ),
+    (
+        'University of South Carolina',
+        'Computer Engineering',
+        'Freshman',
+    ),
+])
+def test_student_set_education(default_Student, university, major, year):
+    default_Student.education = {}
+    default_Student.set_education(university, major, year)
+    
+    assert default_Student.education['university'] == university
+    assert default_Student.education['major'] == major
+    assert default_Student.education['year'] == year
+
+@pytest.mark.parametrize("friend_username",
+ [
+    (
+        
+        'JohnSmith',
+    ),
+    (
+        
+        'JaneDoe',
+    ),
+    (
+        
+        'MarkPolo',
+    ),
+    (
+        
+        'MariaSilva',
+    ), 
+])
+def test_student_add_friend(default_Student, friend_username):
+    student_dict = default_Student.__dict__.copy()
+    student_dict['username'] = friend_username
+    friend = Student(**student_dict)
+    default_Student.add_friend(friend)
+
+    assert friend in default_Student.friends
+
+# title, about, university, major, year, job_title, employer, start_date, end_date, location, description
+def profile_fake_inputs(key, **kwargs):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {                                                                                # Avoid the error of trying to access a nonexistent key in kwargs using in line if 
+        # Keys if input() function                                          # Value depending on kwargs     # Use the same fake arguments to test all profile menus
+        "Enter a title for your profile: ":                                 kwargs['title']                 if kwargs.get('title')          != None else '',
+        "Enter the about section of your profile: ":                        kwargs['about']                 if kwargs.get('about')          != None else '',
+        "Enter your University: ":                                          kwargs['university']            if kwargs.get('university')     != None else '',
+        "Enter your Major: ":                                               kwargs['major']                 if kwargs.get('major')          != None else '',
+        "Enter Your Status Year (Freshman, Sophomore, Junior, Senior): ":   kwargs['year']                  if kwargs.get('year')           != None else '',
+        "Enter Job Title: ":                                                kwargs['job_title']             if kwargs.get('job_title')      != None else '',
+        "Enter Job Description: ":                                          kwargs['description']           if kwargs.get('description')    != None else '',
+        "Enter Employer For Job: ":                                         kwargs['employer']              if kwargs.get('employer')       != None else '',
+        "Enter Job Location: ":                                             kwargs['location']              if kwargs.get('location')       != None else '',
+        "Enter the Date you Started: ":                                     kwargs['start_date']            if kwargs.get('start_date')     != None else '',
+        "Enter The Date You Ended: ":                                       kwargs['end_date']              if kwargs.get('end_date')       != None else '',
+        
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+@pytest.mark.parametrize("title, about, university, major, year, job_title, employer, start_date, end_date, location, description, expected",
+ [
+    (
+        
+        'title1', 'about1', 'university1', 'major1', 'year1', 'job_title1', 'employer1', 'start_date1', 'end_date1', 'location1', 'description1', True,
+    ),
+    (
+        
+        'title2', 'about2', 'university2', 'major2', 'year2', 'job_title2', 'employer2', 'start_date2', 'end_date2', 'location2', 'description2', True,
+    ),
+    (
+        
+        'title3', 'about3', 'university3', 'major3', 'year3', 'job_title3', 'employer3', 'start_date3', 'end_date3', 'location3', 'description3', True,
+    ),
+    (
+        
+        'x', 'about4', 'university4', 'major4', 'year4', 'job_title4', 'employer4', 'start_date4', 'end_date4', 'location4', 'description4', False,
+    ),
+    (
+        
+        'title5', 'x', 'university5', 'major5', 'year5', 'job_title5', 'employer5', 'start_date5', 'end_date5', 'location5', 'description5', False,
+    ),
+    (
+        
+        'title6', 'about6', 'x', 'major6', 'year6', 'job_title6', 'employer6', 'start_date6', 'end_date6', 'location6', 'description6', False,
+    ),
+    (
+        
+        'title7', 'about7', 'university7', 'x', 'year7', 'job_title7', 'employer7', 'start_date7', 'end_date7', 'location7', 'description7', False,
+    ),
+    (
+        
+        'title8', 'about8', 'university8', 'major8', 'x', 'job_title8', 'employer8', 'start_date8', 'end_date8', 'location8', 'description8', False,
+    ),
+    (
+        
+        'title9', 'about9', 'university9', 'major9', 'year9', 'x', 'employer9', 'start_date9', 'end_date9', 'location9', 'description9', False,
+    ),
+    (
+        
+        'title10', 'about10', 'university10', 'major10', 'year10', 'job_title10', 'x', 'start_date10', 'end_date10', 'location10', 'description10', False,
+    ),
+    (
+        
+        'title11', 'about11', 'university11', 'major11', 'year11', 'job_title11', 'employer11', 'x', 'end_date11', 'location11', 'description11', False,
+    ),
+    (
+        
+        'title12', 'about12', 'university12', 'major12', 'year12', 'job_title12', 'employer12', 'start_date12', 'x', 'location12', 'description12', False,
+    ),
+    (
+        
+        'title13', 'about13', 'university13', 'major13', 'year13', 'job_title13', 'employer13', 'start_date13', 'end_date13', 'x', 'description13', False,
+    ),
+    (
+        
+        'title14', 'about14', 'university14', 'major14', 'year14', 'job_title14', 'employer14', 'start_date14', 'end_date14', 'location14', 'x', False,
+    ),
+])
+def test_update_profile_info(DB, default_Student, monkeypatch, title, about, university, major, year, job_title, employer, start_date, end_date, location, description, expected):
+    
+    
+    with monkeypatch.context() as m:
+        # the x parameter of the lambda function becomes the key used to access each respective input call
+        kwargs={'title':title, 'about':about, 'university':university, 'major':major, 'year':year, 'job_title':job_title, 'employer':employer, 'start_date':start_date, 'end_date':end_date, 'location':location, 'description':description}
+        m.setattr('builtins.input', lambda x: profile_fake_inputs(x, **kwargs))
+
+        result = accnt.update_profile_info(DB, default_Student)
+        assert result == expected
+        
+@pytest.mark.parametrize(" university, major, year, expected",
+ [
+    (
+        
+        'university1', 'major1', 'year1', True,
+    ),
+    (
+        
+        'x', 'major1', 'year1', False,
+    ),
+    (
+        
+        'university1', 'x', 'year1', False,
+    ),
+    (
+        
+        'university1', 'major1', 'x', False,
+    ),
+])
+def test_update_education_info(DB, default_Student, monkeypatch, university, major, year, expected):
+    
+    
+    with monkeypatch.context() as m:
+        # the x parameter of the lambda function becomes the key used to access each respective input call
+        kwargs={ 'university':university, 'major':major, 'year':year }
+        m.setattr('builtins.input', lambda x: profile_fake_inputs(x, **kwargs))
+
+        result = accnt.update_education_info(DB, default_Student)
+        assert result == expected
+        
+
+@pytest.mark.parametrize(" job_title, employer, start_date, end_date, location, description, expected",
+ [
+    (
+        
+        'job_title1', 'employer1', 'start_date1', 'end_date1', 'location1', 'description1', True,
+    ),
+    (
+        
+        'x', 'employer2', 'start_date2', 'end_date2', 'location2', 'description2', False,
+    ),
+    (
+        
+        'job_title3', 'x', 'start_date3', 'end_date3', 'location3', 'description3', False,
+    ),
+    (
+        
+        'job_title4', 'employer4', 'x', 'end_date4', 'location4', 'description4', False,
+    ),
+    (
+        
+        'job_title5', 'employer5', 'start_date5', 'x', 'location5', 'description5', False,
+    ),
+    (
+        
+        'job_title6', 'employer6', 'start_date6', 'end_date6', 'x', 'description6', False,
+    ),
+    (
+        
+        'job_title7', 'employer7', 'start_date57', 'end_date7', 'location7', 'x', False,
+    ),
+])
+def test_update_experience_info(DB, default_Student, monkeypatch, job_title, employer, start_date, end_date, location, description, expected):
+    
+    
+    with monkeypatch.context() as m:
+        # the x parameter of the lambda function becomes the key used to access each respective input call
+        kwargs={ 'job_title':job_title, 'employer':employer, 'start_date':start_date, 'end_date':end_date, 'location':location, 'description':description}
+        m.setattr('builtins.input', lambda x: profile_fake_inputs(x, **kwargs))
+
+        result = accnt.update_experience_info(DB, default_Student)
+        assert result == expected
+        
+# test add_dummy_friends function
+def test_add_dummy_friends(default_Student):
+    # Delete all friends
+    default_Student.friends = []
+    # functions adds 2 dummy friends to the Student
+    default_Student.add_dummy_friends()
+    # Assert frinds lentgh is not zero
+    assert len(default_Student.friends) > 0
+
+
+# def edit_profile_fake_inputs(key, selection):
+#     # Each Key has to be the same string as the respective input statement
+#     prompt_to_return_val = {
+#         "Enter Your Selection: ":selection,
+#     }
+#     val = prompt_to_return_val[key]
+#     return val
+
+@pytest.mark.parametrize("selection, expected",
+ [
+    (
+        
+        '1', True,
+    ),
+    (
+        
+        'x', False,
+    ),
+    (
+        
+        'worng_string',  True,
+    ),
+])
+def test_edit_profile_menu(monkeypatch, default_Student, selection, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: selection)
+        result = accnt.edit_profile_menu(default_Student)
+        assert result == expected 
+
+@pytest.mark.parametrize("selection, expected",
+ [
+    (
+        
+        'x', False,
+    ),
+    (
+        
+        'random_string',  True,
+    ),
+])
+def test_display_friend_profile(monkeypatch, default_Student, selection, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: selection)
+        result = accnt.display_friend_profile(default_Student)
+        assert result == expected
+
+@pytest.mark.parametrize("selection, expected",
+ [
+    (
+        
+        '1', True,
+    ),
+    (
+        
+        '2', True,
+    ),
+    (
+        
+        'x', False,
+    ),
+    (
+        
+        'worng_string',  True,
+    ),
+])
+def test_diplay_friend_list(monkeypatch, default_Student, selection, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: selection)
+        result = accnt.display_friend_profile(default_Student)
+        assert result == expected
+
+# test that uses capsys to capture the output of print functions 
+# such that we can test whether display_profile printed anything
+def test_display_profile(capsys, default_Student):
+    accnt.display_profile(default_Student)
+    captured = capsys.readouterr()
+    assert captured.out != ''
+
+@pytest.mark.parametrize("to_username, from_username, expected",
+ [
+    (
+        
+        'username1','username2', True, # 2nd if -> New valid request
+    ),
+    (
+        
+        'username1','username2', False, # 3rd if -> Request already exists return false
+    ),
+    (
+        
+        'username1','username3', True, # 4th if -> additional valid request
+    ),
+    (
+        
+        'username1','username1',  False, # 1st if -> invalid request
+    ),
+])
+def test_add_friend_request(DB, to_username, from_username, expected):
+    result = DB.add_friend_request(to_username, from_username)
+    assert result == expected
+
+@pytest.mark.parametrize("to_username, from_username, expected",
+ [
+    (
+        
+        'username1','username2', True, # 3nd if -> More than one Request with to_username
+    ),
+    (
+        
+        'username1','username2', False, # 2th if -> # Nothing to remove with from_username
+    ),
+    (
+        
+        'username1','username3', True, # 4rd if -> Last Request with to_username
+    ),
+    (
+        
+        'username1','username3', False, # 2th if -> # Nothing to remove with to_username
+    ),
+    (
+        
+        '','username3', False, # 2th if -> # Nothing to remove with invalid to_username
+    ),
+    (
+        
+        'username1','username1',  False, # 1st if -> invalid removal 
+    ),
+])
+def test_remove_friend_request(DB, to_username, from_username, expected):
+    result = DB.remove_friend_request(to_username, from_username)
+    assert result == expected
+
+def friend_request_menu_fake_inputs(key, search_value, isRequest, ):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "\nType Here: ":            search_value,
+        "Type Here: ":              isRequest,
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+@pytest.mark.parametrize("isRequest, search_value, expected",
+ [
+    (
+        
+        'y','University of Central Florida', False, # inalid Search
+    ),
+    (
+        
+        'y','Smith', True, # Found 
+    ),
+    (
+        
+        'x','Smith', True, # Found but request already created
+    ),
+    (
+        
+        'x','CS', False, # 4rd if -> Last Request with to_username
+    ),
+    
+])
+def test_send_friend_request_menu(monkeypatch, DB, default_Student, default_Student2, search_value, isRequest, expected):
+    # a = DB.set_student(default_Student)
+    # b = DB.set_student(default_Student2)
+    
+    # print(a,b)
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: friend_request_menu_fake_inputs(x, search_value, isRequest))
+        result = accnt.send_friend_request_menu(DB, default_Student2)
+        assert result == expected
+
+def diplay_friend_request_list_fake_inputs(key, request_list_selection, accept_selection ):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "Enter Your Selection: ":   accept_selection, # 1 or 2 or x
+        "Enter Chooice: ":          request_list_selection, # number (1) or x
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+@pytest.mark.parametrize("request_list_selection, accept_selection, expected",
+ [
+    (
+        
+        '1','1', True, # Select Accept Request 1 
+    ),
+    (
+        
+        '1','1', False, # no pending requests
+    ),
+    (
+        
+        'x','1', False, # Quit
+    ),
+    
+])
+def test_diplay_friend_request_list(monkeypatch, DB, default_Student, default_Student2,request_list_selection, accept_selection, expected):
+    
+    # DB.add_friend_request(default_Student.username, 'fakeusername2')
+    # print('lenth: ',len( DB.data['Friend Requests'][default_Student.username]))
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: diplay_friend_request_list_fake_inputs(x, request_list_selection, accept_selection))
+        result = accnt.diplay_friend_request_list(DB, default_Student)
+        assert result == expected
+
+
+
+@pytest.mark.parametrize("request_list_selection, accept_selection, expected",
+ [
+    (
+        
+        '1','1', False, # Select Accept Request 1 
+    ),
+    (
+        
+        '1','1', False, # no pending requests
+    ),
+    (
+        
+        'x','4', True, # invalid input selection
+    ),
+    
+])
+def test_diplay_friend_request_list(monkeypatch, DB, default_Student, default_Student2,request_list_selection, accept_selection, expected):
+    
+    DB.add_friend_request(default_Student.username, default_Student2.username)
+    # print('lenth: ',len( DB.data['Friend Requests'][default_Student.username]))
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: diplay_friend_request_list_fake_inputs(x, request_list_selection, accept_selection))
+        result = accnt.display_accept_request_menu(DB, default_Student, default_Student2)
+        assert result == expected
