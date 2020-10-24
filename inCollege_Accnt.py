@@ -119,7 +119,7 @@ def create_account(DB):
 
     # TODO: Addp functionality to add real friends
     # Add Dummy friends
-    # student.add_dummy_friends()
+    student.add_dummy_friends()
     # Save Dummy Friends
     DB.set_student(student)
 
@@ -132,7 +132,7 @@ def create_account(DB):
     # return create_account
 
 
-def post_job(fullname, DB):
+def post_job(fullname, username, DB):
     # Init DB
     # DB = database.Database()
 
@@ -159,12 +159,158 @@ def post_job(fullname, DB):
         return False
 
     create_job_posting = DB.create_job_posting(
-        title, description, employer, location, salary, fullname)
+        title, description, employer, location, salary, fullname, username)
 
     if (create_job_posting == False):
         print("\n|*| Create Job Posting Error |*|")
 
     return create_job_posting
+
+
+def remove_job(username, jobTitle, DB):
+    # print("Attempting to remove job...")
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            # print("Job found!")
+            # print(job)
+            if job['poster_id'] == username:
+                print("Job poster verified!")
+                DB.remove_job_posting(job)
+                return True
+    return False
+
+
+# This function searches for job in database using job title.
+# It will return true if the job title entered
+# by the user results in an existing match, and false otherwise
+# It then prints out the details of the Job
+
+
+def display_job_info(DB, jobTitle):
+
+    # will be true if there is a match
+    isFound = False
+
+    # searching for jobtitle match
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            print()
+            print("Title: ", job['title'])
+            print("Description: ", job['description'])
+            print("Employer: ", job['employer'])
+            print("Location: ", job['location'])
+            print("Salary: ", job['salary'])
+            isFound = True
+
+    return isFound
+
+
+def date_checker(date_input):
+    date = date_input.split("/")
+    month = int(date[0])
+    day = int(date[1])
+    year = int(date[2])
+
+    if (month < 1 or month > 12):
+        print("Invalid month input. The month cannot exceed 12 nor be less than 1.")
+        return False
+    if (day < 1 or day > 31):
+        print("Invalid day input. The day cannot exceed 31 nor be less than 1.")
+        return False
+    if (year < 2010 or year > 2030):
+        print("Invalid year input. The year cannot exceed 2030 nor be earlier than 2010.")
+        return False
+    return True
+
+
+# This function returns true upon successful completion of whole application
+# returns false if only part of the application is filled
+# if they already applied for the job it returns false
+def apply_for_job(DB, jobTitle, username):
+
+    # Checking if user has already applied
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            # testing, prints all users who have applied
+            # print(job['users_applications'])
+            for vals in job['users_applied']:
+                if vals['username'] == username:
+                    print("Application Denied - Already Applied")
+                    return False
+
+    hasApplied = False
+
+    print("Enter x at any time to cancel")
+    print("      +-----------------+")
+    print("     | Job Application |")
+    print("      +-----------------+")
+    print()
+    print("Enter datesin the following format")
+    print("mm/dd/yyyy")
+    print()
+    grad_date = input("Enter Graduation Date: ")
+    valid_date = date_checker(grad_date)
+
+    if grad_date == "x":
+        return False
+
+    while (valid_date == False):  # If false, keep looping until it is true.
+        grad_date = input("Enter Graduation Date: ")
+        if grad_date == "x":
+            return False
+        valid_date = date_checker(grad_date)
+
+    strt_date = input("Enter Date to Begin Work: ")
+    valid_date2 = date_checker(strt_date)
+
+    if strt_date == "x":
+        return False
+
+    while (valid_date2 == False):
+        strt_date = input("Enter Graduation Date: ")
+        if strt_date == "x":
+            return False
+        valid_date2 = date_checker(strt_date)
+
+    why_me = input(" Describe why you are fit for the job: ")
+    if why_me == "x":
+        return False
+
+    # Creating dictionary with values
+    users_application = {'username': username,
+                         'graduationdate': grad_date, 'startdate': strt_date, 'whyme': why_me}
+    # locating job
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            print("Job found")
+            job['users_applied'].append(users_application)
+            print("TEST: User Appended")
+            hasApplied = True
+
+    DB.save()
+    return hasApplied
+
+
+def save_job(DB, jobTitle, username):
+
+    # Checking if user has already saved
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            for vals in job['users_saved']:
+                if vals == username:
+                    print("Save Denied - Already Saved")
+                    return False
+
+    hasSaved = False
+
+    # locating job
+    for job in DB.data["Jobs"]:
+        if job['title'] == jobTitle:
+            job['users_saved'].append(username)
+            hasSaved = True
+
+    DB.save()
+    return hasSaved
 
 
 def update_profile_info(DB, student):
@@ -453,133 +599,69 @@ def diplay_friend_list(student):
     return True
 
 
-def display_accept_request_menu(DB, student, student_req):
-    fullname = student_req.firstname.capitalize(
-    ) + ' ' + student_req.lastname.capitalize()
-    print(" +------------------------------------------------+ ")
-    print(" {}'s Friend Requests".format(fullname))
-    print(" +------------------------------------------------+ ")
-    print(" | 1. Accept                                      |")
-    print(" | 2. Deny                                        |")
-    print(" | x. Go Back                                     |")
-    print(" +------------------------------------------------+ ")
-    selection = input("Enter Your Selection: ")
-    if selection == 'x':
-        return False  # Returns to the previous menu
-    elif selection == '1':
-        # add student1 as friend of student2 and vice versa
-        student.add_friend(student_req)
-        student_req.add_friend(student)
-        # save them in DB
-        DB.set_student(student_req)
-        DB.set_student(student)
-        DB.remove_friend_request(student.username, student_req.username)
-    elif selection == '2':
-        DB.remove_friend_request(student.username, student_req.username)
-    else:
-        print("...Invalid Input")
-        time.sleep(1)
-        return True  # run again invalid input
-    return False
-
-
-def diplay_friend_request_list(DB, student):
-    username_list = DB.data['Friend Requests'].get(student.username)
-    if username_list == None or len(username_list) < 1:
-        return False
-    print(" +----------------------------------------------+ ")
-    print(" |           Pending Friend Requests            | ")
-    print(" +----------------------------------------------+ ")
-    print(" | Select Friend request to accept or delete it | ")
-    # 2(' |') + 46('-') + 2('| ) chars
-    print(" +----------------------------------------------+ ")
-
-    students_list = []
-    for username in username_list:
-        user = DB.get_student_by_username(username)
-        if user:
-            students_list.append(user)
-        # Else means the from_username of the request belongs to a user that is not part of the DB anymore
-    for index, student_request in enumerate(students_list):
-
-        fullname = student_request.firstname.capitalize(
-        ) + ' ' + student_request.lastname.capitalize()
+def diplay_job_list(student, DB):
+    # print(" +----------------------------------------+ ")
+    # print(" |            List of Friends             | ")
+    # print(" +----------------------------------------+ ")
+    # print(" |  Select Friend to view their profile   | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    # print(" +----------------------------------------+ ")
+    # Below is the new
+    print("          +---------------+")
+    print("          |  Job Listing  |         ")
+    print("+----------------------------------+")
+    print("|      Job Titles Listed Below     |")
+    print("+----------------------------------+")
+    for index, jobs in DB.data["Jobs"]:
+        indication = ""
         sel_index = str(index+1)+'.'
-        # Chars:   2        3            40                  2
-        print(" |", sel_index, fullname.ljust(46-5, ' '), "| ")
+        for vals in jobs['users_applied']:
+            # means user has already applied
+            if vals['username'] == student.username:
+                indication = "(Applied)"
+        print("| ", sel_index, jobs['title'], indication)
 
-    print(" | x. To Quit                                   |")
-    print(" +----------------------------------------------+ ")
-    index = input("Enter Chooice: ")
+    print("+----------------------------------+")
+    print("| To see more about a specific job,|")
+    print("| type out the Job Title below;    |")
+    print("| or type x to go back.            |")
+    print("+----------------------------------+")
+
+    index = input("Enter Your Selection: ")
     if index == 'x':
         return False
-    # if index is a string of a number in range of the student.friends List
 
     if index.isnumeric():
         idx = int(index) - 1
-        if idx < len(students_list):
-            while display_accept_request_menu(DB, student, students_list[idx]):
-                pass
-            return True
+        if idx < len(DB.data["Jobs"]):
+            return idx
 
     print("...Invalid Input")
     time.sleep(1)
     return True
 
+    # above is the new
 
-# This function allows user to search for friends by last name, university, or major.
-# If there is a match the user is given to send a friend request.
-# If they send a friend request the function returns true.
-# If they do not senf a friend request the funct
+#    for index, friend in enumerate(student.friends):
+#        fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
+#        sel_index = str(index+1)+'.'
+#        # Chars:   2        3            40                  2
+#        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
 
-def send_friend_request_menu(DB, mystudent):
-    print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
-    search_value = input("\nType Here: ")
+#    print(" | x. Go Back                             |")
+#    print(" +----------------------------------------+ ")
+#    index = input("Enter Your Selection: ")
+#    if index == 'x':
+#        return False
+    # if index is a string of a number in range of the student.friends List
 
-    if search_value == 'x':
-        return False
+#    if index.isnumeric():
+#        idx = int(index) - 1
+#        if idx < len(student.friends):
+#            while display_friend_profile(student.friends[idx]):
+#                pass
+#            return True
 
-    # initializing flag to false. If friend is found it is true.
-    found = False
-
-    print("\nSearch Results:")
-    # for students in the database
-    for username, student in DB.data["Students"].items():
-        # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
-        if student.username != mystudent.username and (student.lastname == search_value.capitalize() or student.lastname == search_value or student.get_education()['university'] == search_value.capitalize()+" " or student.get_education()['major'] == search_value.capitalize()+" "):
-            found = True
-            print("Username: ", student.username, " | Name: ",
-                  student.firstname, " ", student.lastname)
-            print("University: ", student.get_education()['university'])
-            print("Major: ", student.get_education()['major'])
-
-            print("\nEnter \'y\' to send a request to ",
-                  student.username, " \nor anything else to continue...")
-            isRequest = input("Type Here: ")
-            # Check if students are already frieneds
-            is_friend = False
-            for friend in mystudent.friends:
-                if friend.username == student.username:
-                    print('\nYou are already friends!\n')
-                    time.sleep(1)
-                    is_friend = True
-                    break
-
-            if isRequest == "y" and not is_friend:
-                adding_friend = DB.add_friend_request(
-                    student.username, mystudent.username)
-                if adding_friend == True:
-                    print("Request Sent!\n")
-                    time.sleep(1)
-                else:
-                    print("Request was already sent...\n")
-                    time.sleep(1)
-
-    if found == False:
-        print("...")
-        time.sleep(1)
-        print("They are not yet a part of the InCollege system yet!\n")
-        time.sleep(1)
-        return False
-    else:
-        return True
+#    print("...Invalid Input")
+#    time.sleep(1)
+#    return True

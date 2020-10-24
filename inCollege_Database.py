@@ -1,8 +1,9 @@
 import pickle
-import time 
+import time
 from inCollege_Student import *
-#Dictionary data structure. Or set. I don't know.
-#Pickle saves the binary data of the python object.
+# Dictionary data structure. Or set. I don't know.
+# Pickle saves the binary data of the python object.
+
 
 class Database():
     def __init__(self, filename='database'):
@@ -12,11 +13,12 @@ class Database():
 
     # Reset data
     def reset(self):
-        self.data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
-        self.isFull = False
+        self.data = {"Students": {}, "Jobs": [], 'Friend Request': {}}
+        self.accFull = False
+        self.jobFull = False
         # if the database file doesn't exist uncomment the next line
-        # self.save()            
-        
+        # self.save()
+
     # Clear Database
     def clear(self):
         # Reset data
@@ -25,13 +27,13 @@ class Database():
 
     # Load data from file, with the option of usign an alternative file
     def load(self, filename=None):
-        if filename!=None: 
+        if filename != None:
             self.filename = filename
-        
+
         # Load data from file
         with open(self.filename, 'rb') as database_file:
             self.data = pickle.load(database_file)
-        
+
         # If DB is empty create a "Students" section
         if "Students" not in self.data:
             self.data["Students"] = {}
@@ -40,31 +42,33 @@ class Database():
         if "Jobs" not in self.data:
             self.data["Jobs"] = []
 
-        
-        # If there are 5 or more student accounts, the DB is full
+        # If there are 10 or more student accounts, the acc DB is full
         if len(self.data["Students"]) > 9:
-                self.isFull = True
-        
+            self.accFull = True
+
+        # If there are 10 or more jobs posted, the job DB is full.
+        if len(self.data["Jobs"]) > 9:
+            self.jobFull = True
+
     # Save data to file
     def save(self):
         with open(self.filename, 'wb') as database_file:
             pickle.dump(self.data, database_file)
-    
+
     # # Get all data
     # def get_data(self):
     #     # Load data
     #     self.load()
     #     return self.data
 
-
     # Create new student account COMIT
     def create_account(self, new_username, new_password, new_firstname, new_lastname):
-        
+
         # Load data from file
         self.load()
 
         # If DB is full return False
-        if self.isFull == True:
+        if self.accFull == True:
             print("...")
             time.sleep(1)
             print('|*| Error: Maximum Number of Accounts Already Taken |*|')
@@ -73,15 +77,17 @@ class Database():
 
         # New accounts have all guest control turned on
         # guest control is a dict {guest_control_type : boolean}
-        guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+        guest_control = {"Email": True, "SMS": True,
+                         "Targeted Advertising": True}
         # laguage settings
         language = "English"
 
-        settings = {'guest control' : guest_control, "language" : language} 
+        settings = {'guest control': guest_control, "language": language}
         # language settings
 
-        # Init new student  
-        new_student = {'username':new_username, 'password':new_password,'firstname':new_firstname, 'lastname':new_lastname, 'settings': settings}
+        # Init new student
+        new_student = {'username': new_username, 'password': new_password,
+                       'firstname': new_firstname, 'lastname': new_lastname, 'settings': settings}
         my_student = Student(**new_student)
         # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
@@ -94,33 +100,45 @@ class Database():
         #         return False
 
         if new_username in self.data["Students"].keys():
-                print('Username already in use...')
-                time.sleep(1)
-                return False
-        
+            print('Username already in use...')
+            time.sleep(1)
+            return False
+
         # Else append new student to the list
         self.data["Students"][new_username] = my_student
 
         # Save data to file
         self.save()
         print("\n... \n")
-        time.sleep(1) #added this for effect, makes program wait for second then tells user account was created.
+        # added this for effect, makes program wait for second then tells user account was created.
+        time.sleep(1)
         print("Account Succesfully Created!\n")
         time.sleep(1)
         return True
 
-    def create_job_posting(self, title, description, employer, location, salary, name_of_poster):
+    def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username):
 
-        if title == '' or description == '' or employer == '' or location == '' or salary == '' or salary == '' or name_of_poster == '':
+        if title == '' or description == '' or employer == '' or location == '' or salary == '' or name_of_poster == '' or poster_username == '':
             return False
-        #loading data from file
+        # loading data from file
         self.load()
+
+        if self.jobFull == True:  # If there's already ten jobs posted, it won't let them post more
+            print("...")
+            time.sleep(1)
+            print('|*| Error: Maximum Number of Jobs Already Posted |*|')
+            time.sleep(1)
+            return False
 
         # Init new job posting
         new_job = {'title': title, 'description': description, 'employer': employer,
-                       'location': location, 'salary': salary, 'name_of_poster': name_of_poster}
+                   'location': location, 'salary': salary, 'name_of_poster': name_of_poster,
+                   'users_applied': [],
+                   'users_saved': [],
+                   'poster_id': poster_username}
+        # users applied, and saved above will be users who applied to or saved the job posting
 
-        #Appending new job to list
+        # Appending new job to list
         self.data["Jobs"].append(new_job)
 
         # Save data to file
@@ -131,16 +149,22 @@ class Database():
         time.sleep(1)
         return True
 
+    def remove_job_posting(self, job):
+        self.data["Jobs"].remove(job)
+        print("Job removed?")
+        self.save()
+        return True
+
     # Login function
     def login(self, username, password):
-        
+
         # Load data
         self.load()
 
         # if there is no student section there is not student account
         if "Students" not in self.data:
             return False
-        
+
         # # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
         #     # If username and password match, login succesful return True
@@ -151,14 +175,14 @@ class Database():
         #         time.sleep(1)
         #         return True
         if self.data["Students"].get(username) != None:
-                student = self.data["Students"][username]
-                if student.password == password:
-                    print("\n...")
-                    time.sleep(1)
-                    print('Succesful login!\n')
-                    time.sleep(1)
-                    return True
-        
+            student = self.data["Students"][username]
+            if student.password == password:
+                print("\n...")
+                time.sleep(1)
+                print('Succesful login!\n')
+                time.sleep(1)
+                return True
+
         print("|*| No account found with this username and password combination |*|\n")
         return False
 
@@ -179,13 +203,12 @@ class Database():
             if student.firstname == firstname_search and student.lastname == lastname_search:
                 return True
 
-        #if we get to this point, the user was not founf
+        # if we get to this point, the user was not founf
         print("...")
         time.sleep(1)
         print("They are not yet a part of the InCollege system yet!\n")
         time.sleep(1)
         return False
-
 
     # Get Students data return student dict or false
     # Note: to test the function in use an if statement before the assert
@@ -195,6 +218,7 @@ class Database():
     #   assert result.username == username
     # else:
     #    assert result == False
+
     def get_student_by_username(self, username):
         # Load data
         self.load()
@@ -206,13 +230,12 @@ class Database():
         #         return student
         # return False
         if username in self.data["Students"].keys():
-            student =  self.data["Students"][username]
+            student = self.data["Students"][username]
             return student
         return False
 
-
     def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
-        if username == None or field ==None or value ==None:
+        if username == None or field == None or value == None:
             return False
         data = self.data
         # Get student by username
@@ -234,10 +257,10 @@ class Database():
         # Else (e.i. if its a username, password, firstname or lastname update)
         else:
             student[field] = value
-        
+
         data["Students"][idx] = student
         # Update self.data
-        self.data = data 
+        self.data = data
         # Save change in DB file
         self.save()
         return True
@@ -245,55 +268,88 @@ class Database():
     def set_student(self, student):
 
         if not isinstance(student, Student):
-            
             return False
         if self.data["Students"].get(student.username) == None:
-            print('error set student')
             return False
-        
+
         self.data["Students"][student.username] = student
         self.save()
         return True
 
-    # def search_by_field(self, field, value):
-    #     self.load()
-    #     for username, student in self.data['Student']:
-    #         if student.__dict__.get(field) and student.__dict__[field] == value:
-    #             return student
-    #     return False
+    def search_by_field(self, field, value):
+        self.load()
+        for username, student in self.data['Student']:
+            if student.__dict__.get(field) and student.__dict__[field] == value:
+                return student
+        return False
 
     def add_friend_request(self, to_username, from_username):
-        if to_username == from_username:
+        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
+        if self.data['Friend Request'].get(to_username) == None:
+            self.data['Friend Request'][to_username] = set(from_username)
+        elif self.data['Friend Request'][to_username].get(from_username) != None:
+            # Request already exists
             return False
-        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
-        if self.data['Friend Requests'].get(to_username) == None:
-            self.data['Friend Requests'][to_username] = set()
-            self.data['Friend Requests'][to_username].add(from_username)
-        elif from_username in self.data['Friend Requests'][to_username]:
-            # Request already exists return false
-            return False
-        else: # add request to DB
-            self.data['Friend Requests'][to_username].add(from_username)
-        # Save DB
-        self.save()
+        else:
+            self.data['Friend Request'][to_username].add(from_username)
         return True
-    
+
     # Removes a reqest sent to to_username from from_username
-    def remove_friend_request(self, to_username, from_username):
-        if to_username == from_username:
-            return False
-        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
-        if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
+    def remove_friend_requenst(self, to_username, from_username):
+        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
+
+        if self.data['Friend Request'].get(to_username) == None or self.data['Friend Request'][to_username].get(from_username) == None:
             # Nothing to remove
             return False
-        elif len( self.data['Friend Requests'][to_username]) > 1: # Remove request from DB
-            self.data['Friend Requests'][to_username].remove(from_username)
         else:
-            self.data['Friend Requests'].pop(to_username)
-            # Save DB
-        self.save()
-        return True
-    
+            self.data['Friend Request'][to_username].remove(from_username)
+            return True
+
+    # This function allows user to search for friends by last name, university, or major.
+    # If there is a match the user is given to send a friend request.
+    # If they send a friend request the function returns true.
+    # If they do not senf a friend request the funct
+    def search_for_friends(self, curr_username):
+        print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
+        search_value = input("\nType Here: ")
+
+        if search_value == 'x':
+            return False
+
+        # initializing flag to false. If friend is found it is true.
+        found = False
+
+        print("\nSearch Results:")
+        # for students in the database
+        for username, student in self.data["Students"].items():
+            # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
+            if student.lastname == search_value or student.get_education()['university'] == search_value+" " or student.get_education()['major'] == search_value+" ":
+                found = True
+                print("Username: ", student.username, " | Name: ",
+                      student.firstname, " ", student.lastname)
+                print("University: ", student.get_education()['university'])
+                print("Major: ", student.get_education()['major'])
+                print("\nEnter \'y\' to send a request to ",
+                      student.username, " \nor anything else to continue...")
+                isRequest = input("Type Here: ")
+                if isRequest == "y":
+                    adding_friend = self.add_friend_request(
+                        student.username, curr_username)
+                    if adding_friend == True:
+                        print("Request Sent!")
+                        time.sleep(1)
+                    else:
+                        print("Request was already sent..")
+                        time.sleep(1)
+
+        if found == False:
+            print("...")
+            time.sleep(1)
+            print("They are not yet a part of the InCollege system yet!\n")
+            time.sleep(1)
+            return False
+        else:
+            return True
 
 # DB = Database()
 # DB.clear()
@@ -344,4 +400,3 @@ class Database():
 #     print(username, student.settings)
 #     print(new_settings)
 #     print(old_settings)
-

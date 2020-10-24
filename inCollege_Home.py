@@ -4,7 +4,6 @@
 import inCollege_Accnt as accnt
 import inCollege_Database as database
 import inCollege_CurrentUser as user
-import inCollege_JobMenu as job
 import time
 
 # Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
@@ -539,9 +538,6 @@ def main():
         # if User is logged in
         else:
 
-            while(accnt.diplay_friend_request_list(db, theStudent)):
-                pass
-
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
             print(" +------------------------------+")
@@ -558,9 +554,339 @@ def main():
             print("")
             sel = input("Enter Your Selection: ")
 
-            # Opens Job Menu
+            # Jobs
             if sel == '1':
-                job.jobMenu(theStudent.name, db)
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                flag = True
+                while flag is True:
+                    print("            +--------+")
+                    print("            |  Jobs  |         ")
+                    print(" +------------------------------+")
+                    print(" | 1. Post a Job                |")
+                    print(" | 2. See Job Listing           |")
+                    print(" | 3. Jobs Already Applied For  |")
+                    print(" | 4. Jobs Not Yet Applied For  |")
+                    print(" | 5. Saved (Maybe Apply Later) |")
+                    print(" | 6. Remove a Job You Posted   |")
+                    print(" | x. Go Back                   |")
+                    print(" +------------------------------+")
+
+                    sel = input("Make a selection: ")
+
+                    # Post a job
+                    if sel == '1':
+                        accnt.post_job(
+                            theStudent.firstname+" "+theStudent.lastname, theStudent.username, db)
+
+                    # See Job Listing
+                    elif sel == "2":
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("          +---------------+")
+                            print("          |  Job Listing  |         ")
+                            print("+----------------------------------+")
+                            print("|      Job Titles Listed Below     |")
+                            print("+----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                indication = ""
+                                for vals in jobs['users_applied']:
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        indication = "(Applied)"
+                                print("|----> ", jobs['title'], indication)
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Jobs Already Applied For
+                    elif sel == "3":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # Need to show jobs
+                        # Press Job to expand it
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("   +---------------------------+")
+                            print("   |  Job Already Applied For  |   ")
+                            print("+----------------------------------+")
+                            print("|      Job Titles Listed Below     |")
+                            print("+----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                for vals in jobs['users_applied']:
+                                    # if the user saved the job
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Jobs Not Yet Applied For
+                    elif sel == "4":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # expand
+                        # option to save / apply
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("   +-----------------------------+")
+                            print("   |  Jobs: Not Yet Applied For  | ")
+                            print("+-----------------------------------+")
+                            print("|      Job Titles Listed Below      |")
+                            print("+-----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                theFlag = True
+                                for vals in jobs['users_applied']:
+                                    # if the user saved the job
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        theFlag = False
+                                if theFlag:
+                                    print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Saved Jobs
+                    elif sel == "5":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # expand
+                        # option to apply for the job
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("          +---------------+")
+                            print("          |  Jobs Saved  |         ")
+                            print("+---------------------------------------+")
+                            print("|     Saved Job Titles Listed Below     |")
+                            print("+---------------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                for val in jobs['users_saved']:
+                                    # if the user saved the job
+                                    if val == theStudent.username:
+                                        print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a saved job,   |")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|x. Continue without applying |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    elif sel == "6":
+                        print("          +---------------+")
+                        print("          |  Job Listing  |         ")
+                        print("+----------------------------------+")
+                        print("|      Job Titles Listed Below     |")
+                        print("+----------------------------------+")
+                        for jobs in db.data["Jobs"]:
+                            indication = ""
+                            for vals in jobs['users_applied']:
+                                # means user has already applied
+                                if vals['username'] == theStudent.username:
+                                    indication = "(Applied)"
+                            print("|----> ", jobs['title'], indication)
+
+                        print("+----------------------------------+")
+                        print("| To see more about a specific job,|")
+                        print("| type out the Job Title below;    |")
+                        print("| or type x to go back.            |")
+                        print("+----------------------------------+")
+                        print("")
+                        jobTitle = input(
+                            "Please select a job to remove by inputting its full title: ")
+                        accnt.remove_job(theStudent.username, jobTitle, db)
+
+                    elif sel == 'x':
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+                sel = ""  # resetting
 
             # Find someone you know
             elif sel == '2':
@@ -1006,8 +1332,8 @@ def main():
                 # check if student is not already in friend list
                 # call add student request
                 # display success or fail message
-                # db = database.Database()
-                foundFriend = accnt.send_friend_request_menu(db, theStudent)
+                db = database.Database()
+                foundFriend = db.search_for_friends(theStudent.username)
                 if foundFriend is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)
