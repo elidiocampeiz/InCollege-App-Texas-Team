@@ -279,7 +279,7 @@ def apply_for_job(DB, jobTitle, username):
         return False
 
     while (valid_date == False):  # If false, keep looping until it is true.
-        grad_date = input("Enter Graduation Date: ")
+        grad_date = input("Reenter Graduation Date: ")
         if grad_date == "x":
             return False
         valid_date = date_checker(grad_date)
@@ -291,7 +291,7 @@ def apply_for_job(DB, jobTitle, username):
         return False
 
     while (valid_date2 == False):
-        strt_date = input("Enter Graduation Date: ")
+        strt_date = input("Reenter Date to Begin Work: ")
         if strt_date == "x":
             return False
         valid_date2 = date_checker(strt_date)
@@ -756,7 +756,7 @@ def diplay_job_list(student, DB):
     print("+----------------------------------+")
     print("|      Job Titles Listed Below     |")
     print("+----------------------------------+")
-    for index, jobs in DB.data["Jobs"]:
+    for index, jobs in enumerate(DB.data["Jobs"]):
         indication = ""
         sel_index = str(index+1)+'.'
         for vals in jobs['users_applied']:

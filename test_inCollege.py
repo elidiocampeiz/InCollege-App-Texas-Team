@@ -268,8 +268,44 @@ def test_create_job_posting(DB, title, description, employer, location, salary, 
     assert result == expected
 
 ############ TEST REMOVE JOB POSTING ############
+@pytest.mark.parametrize(" username, jobTitle, expected",
+ [
+    (
+        '10_username_of_poster',
+        '10_title',
+        True
+    ),
+    # Test a valid username that is not the poster
+    (
+        '1_username_of_poster',
+        '10_title',
+        False
+    ),
+    # Test an invalid username 
+    (
+        'invalid_username',
+        '10_title',
+        False
+    ),
+    # Test an invalid title 
+    (
+        '10_username_of_poster',
+        'invalid_title',
+        False
+    ),
 
-#For multiple inputs create a function to be passed to the monkeypatch.setattr that return a string to the respective input call
+ ])
+# Test Accnt function that searches, validates and removes job posting
+def test_remove_job(DB, username, jobTitle, expected):
+    result = accnt.remove_job(username, jobTitle, DB)
+    assert result == expected
+
+# Test database function that removes job posting
+def test_remove_job_posting(DB):
+    for job in DB.data["Jobs"]:
+        assert DB.remove_job_posting(job) == True
+
+# For multiple inputs create a function to be passed to the monkeypatch.setattr that return a string to the respective input call
 def fake_inputs(key, firstname, lastname):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
@@ -1460,3 +1496,240 @@ def test_diplay_friend_request_list(monkeypatch, DB, default_Student, default_St
         m.setattr('builtins.input', lambda x: diplay_friend_request_list_fake_inputs(x, request_list_selection, accept_selection))
         result = accnt.display_accept_request_menu(DB, default_Student, default_Student2)
         assert result == expected
+
+def apply_for_job_fake_inputs(key, graduation_date, graduation_date2, start_date, start_date2, why_me):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "Enter Graduation Date: ":graduation_date,
+        "Reenter Graduation Date: ":graduation_date2,
+        "Enter Date to Begin Work: ":start_date,
+        "Reenter Date to Begin Work: ":start_date2,
+        "Describe why you are fit for the job: ":why_me,
+    }
+    val = prompt_to_return_val[key]
+    return val
+
+
+@pytest.mark.parametrize(" jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected",
+ [
+    (
+        
+        'job_title1', 
+        'username', 
+        '01/01/2020', 
+        '01/01/2020', 
+        '02/01/2020', 
+        '02/01/2020', 
+        'whyMe1', 
+        True,
+    ),
+    # Already applied -> False
+    (
+        'job_title1', 
+        'username', 
+        '01/01/2020', 
+        '01/01/2020', 
+        '02/01/2020', 
+        '02/01/2020', 
+        'whyMe1', 
+        False,
+    ),
+    (
+        'job_title2', 
+        'username2', 
+        '01/01',         # grad_date check
+        '01/01/2020', 
+        '02/01',         # start_date check
+        '02/01/2020', 
+        'whyMe2', 
+        True,
+    ),
+    # Incomplete application -> False
+    (
+        'job_title2', 
+        'username2', 
+        'x',            # Exit
+        '01/01/2020', 
+        '02/01', 
+        '02/01/2020', 
+        'whyMe2', 
+        False,
+    ),
+    # Incomplete application -> False
+    (
+        'job_title2', 
+        'username2', 
+        '01/01',        # invalid date
+        'x',            # Exit 
+        '02/01', 
+        '02/01/2020', 
+        'whyMe2', 
+        False,
+    ),
+    # Incomplete application -> False
+    (
+        'job_title2', 
+        'username2', 
+        '01/01/2020', 
+        '01/01/2020', 
+        'x',            # Exit
+        '02/01/2020', 
+        'whyMe2', 
+        False,
+    ),
+    # Incomplete application -> False
+    (
+        'job_title2', 
+        'username2', 
+        '01/01/2020', 
+        '01/01/2020', 
+        '02/01',        # invalid date
+        'x',            # Exit
+        'whyMe2', 
+        False,
+    ),
+    # Incomplete application -> False
+    (
+        'job_title2', 
+        'username2', 
+        '01/01/2020', 
+        '01/01/2020', 
+        '02/01/2020', 
+        '02/01/2020', 
+        'x',            # Exit
+        False,
+    ),
+])
+def test_apply_for_job(monkeypatch, DB, jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: apply_for_job_fake_inputs(x, graduation_date, graduation_date2, start_date, start_date2, why_me))
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
+        result = accnt.apply_for_job(DB, jobTitle, username)
+        
+        assert result == expected
+
+@pytest.mark.parametrize("jobTitle, username, expected",
+ [
+    (
+        
+        'jobTitle1','username1', True, # -> True
+    ),
+    (
+        
+        'jobTitle1','username1', False, # Already saved -> False
+    ),
+    (
+        
+        'wrong_jobTitle','username2', False, # wrong jobTitle -> False
+    ),
+])
+def test_save_job(DB, jobTitle, username, expected):
+    
+    if expected:
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
+    result = accnt.save_job(DB, jobTitle, username)
+    
+    assert result == expected
+
+@pytest.mark.parametrize("jobTitle, expected", 
+[
+    (
+        "jobTitle1", True
+    ), 
+    (
+        "wrong_jobTitle", False
+    )
+])
+def test_display_job_info(DB, jobTitle, expected):
+    result = accnt.display_job_info(DB, jobTitle)
+    assert result == expected
+
+@pytest.mark.parametrize("selection, expected", 
+[
+    (
+        "5", True
+    ), 
+    (
+        "2", True
+    ), 
+    (
+        "0", False
+    ), 
+    (
+        "13asasd", True
+    ), 
+    (
+        "x", False
+    ), 
+    
+])
+def test_diplay_job_list(monkeypatch, default_Student, DB, selection, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: selection)
+        result = accnt.diplay_job_list(default_Student, DB)
+        if isinstance(result, int):
+            assert result < len(DB.data["Jobs"])
+        else:
+            assert result == expected
+
+#Test data_format
+@pytest.mark.parametrize("test_date_input, expected", 
+[
+    (
+        "0d/14/2015", False
+    ), 
+    (
+        "25614/2015", False
+    ), 
+    (
+        "04/0/2015", False
+    ),
+    (
+        "0434/2015", False
+    ),
+    (
+        "04/14/2015", True
+    ),
+])
+def test_date_checker(test_date_input, expected):
+    result = accnt.data_format(test_date_input)
+    assert result == expected
+
+#Test date_checker
+@pytest.mark.parametrize("test_date_input, expected", 
+[
+    (
+        "00/14/2015", False
+    ), 
+    (
+        "25/14/2015", False
+    ), 
+    (
+         "04/00/2015", False
+    ),
+    (
+        "04/34/2015", False
+    ),
+    (
+        "04/14/2005", False
+    ), 
+    (
+        "04/14/2040", False
+    ),
+    (
+        "04/14/2015", True
+    ),
+])
+def test_date_checker(test_date_input, expected):
+    result = accnt.date_checker(test_date_input)
+    assert result == expected
+
+# Test EPIC 6 TODO:
+# test_remove_job_posting   (database)  DONE
+# test_remove_job           (acct)      DONE
+# test_date_checker         (acct)      DONE
+# test_data_format          (acct)      DONE
+# test_apply_for_job        (acct)      DONE
+# test_save_job             (acct)      DONE
+# test_diplay_job_list      (acct)      DONE
+# test_display_job_info     (acct)      DONE
