@@ -1,3 +1,6 @@
+
+#Call whatever you believe student should have
+# Either get a value or an empty string and this is accomplished by 
 class Student():
     # def __init__(self, username, password, firstname='', lastname=''):
     def __init__(self, **kwargs):
@@ -11,8 +14,12 @@ class Student():
         self.education={} # Dict school name, degree, and years attended.
         self.friends = []
         
+    #self.__dict__ classes in python have dictionaries underneath their variables
+    #Takes the key args 
+    # print(aStudent.__dict__) would give {'i_var': 2}
     def update(self, **kwargs):
         self.__dict__.update(kwargs)
+
 
     def __getattr__(self, name):
         if self.__dict__.get(name) != None:
