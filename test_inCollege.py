@@ -1461,9 +1461,54 @@ def test_diplay_friend_request_list(monkeypatch, DB, default_Student, default_St
         result = accnt.display_accept_request_menu(DB, default_Student, default_Student2)
         assert result == expected
 
+#Test data_format
+@pytest.mark.parametrize("test_date_input, expected", 
+[
+    (
+        "0d/14/2015", False
+    ), 
+    (
+        "25614/2015", False
+    ), 
+    (
+         "04/0/2015", False
+    ),
+    (
+        "0434/2015", False
+    ),
+    (
+        "04/14/2015", True
+    ),
+])
+def test_date_checker(test_date_input, expected):
+    result = accnt.data_format(test_date_input)
+    assert result == expected
 
-@pytest.mark.parametrize("test_password, expected", [("Abcdef1", True), ("Abcdefg", False), ("abcdef1", False), ("Abcde1", False), ("Abcdefghijklm1", False), ("Ab1asd2#", False), ("", False)])
-def test_passwordChecker(test_password, expected):
-    # passwordChecker() takes a string and returns true if it meets all the requirements for a secure password and false otherwise
-    result = accnt.passwordChecker(test_password)
+#Test date_checker
+@pytest.mark.parametrize("test_date_input, expected", 
+[
+    (
+        "00/14/2015", False
+    ), 
+    (
+        "25/14/2015", False
+    ), 
+    (
+         "04/00/2015", False
+    ),
+    (
+        "04/34/2015", False
+    ),
+    (
+        "04/14/2005", False
+    ), 
+    (
+        "04/14/2040", False
+    ),
+    (
+        "04/14/2015", True
+    ),
+])
+def test_date_checker(test_date_input, expected):
+    result = accnt.date_checker(test_date_input)
     assert result == expected
