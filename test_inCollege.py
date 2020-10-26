@@ -752,7 +752,6 @@ def default_Student2(DB):
 
     return student
 
-
 @pytest.mark.parametrize(" update_dict",
  [
         
