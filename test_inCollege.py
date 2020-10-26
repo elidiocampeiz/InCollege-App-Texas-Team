@@ -148,7 +148,7 @@ def test_login(DB, username, password, expected):
     assert result == expected
 
 
-@pytest.mark.parametrize("title, description, employer, location, salary, name_of_poster, expected",
+@pytest.mark.parametrize("title, description, employer, location, salary, name_of_poster, poster_username, expected",
  [
     # test a correct combination of posting job
     (
@@ -158,14 +158,116 @@ def test_login(DB, username, password, expected):
         "1_location",
         "1_salary",
         "1_name_of_poster",
+        "1_username_of_poster",
         True
+    ),
+    (
+        "2_title",
+        "2_description",
+        "2_employer",
+        "2_location",
+        "2_salary",
+        "2_name_of_poster",
+        "2_username_of_poster",
+        True
+    ),
+    (
+        "3_title",
+        "3_description",
+        "3_employer",
+        "3_location",
+        "3_salary",
+        "3_name_of_poster",
+        "3_username_of_poster",
+        True
+    ),
+    (
+        "4_title",
+        "4_description",
+        "4_employer",
+        "4_location",
+        "4_salary",
+        "4_name_of_poster",
+        "4_username_of_poster",
+        True
+    ),
+    (
+        "5_title",
+        "5_description",
+        "5_employer",
+        "5_location",
+        "5_salary",
+        "5_name_of_poster",
+        "5_username_of_poster",
+        True
+    ),
+    (
+        "6_title",
+        "6_description",
+        "6_employer",
+        "6_location",
+        "6_salary",
+        "6_name_of_poster",
+        "6_username_of_poster",
+        True
+    ),
+    (
+        "7_title",
+        "7_description",
+        "7_employer",
+        "7_location",
+        "7_salary",
+        "7_name_of_poster",
+        "7_username_of_poster",
+        True
+    ),
+    (
+        "8_title",
+        "8_description",
+        "8_employer",
+        "8_location",
+        "8_salary",
+        "8_name_of_poster",
+        "8_username_of_poster",
+        True
+    ),
+    (
+        "9_title",
+        "9_description",
+        "9_employer",
+        "9_location",
+        "9_salary",
+        "9_name_of_poster",
+        "9_username_of_poster",
+        True
+    ),
+    (
+        "10_title",
+        "10_description",
+        "10_employer",
+        "10_location",
+        "10_salary",
+        "10_name_of_poster",
+        "10_username_of_poster",
+        True
+    ),
+    (
+        "11_title",
+        "11_description",
+        "11_employer",
+        "11_location",
+        "11_salary",
+        "11_name_of_poster",
+        "11_username_of_poster",
+        False
     ),
 ])
 
-def test_create_job_posting(DB, title, description, employer, location, salary, name_of_poster, expected):
-    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster)
+def test_create_job_posting(DB, title, description, employer, location, salary, name_of_poster, poster_username, expected):
+    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username)
     assert result == expected
 
+############ TEST REMOVE JOB POSTING ############
 
 #For multiple inputs create a function to be passed to the monkeypatch.setattr that return a string to the respective input call
 def fake_inputs(key, firstname, lastname):
@@ -220,13 +322,15 @@ def test_clear(DB):
     reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
     DB.load()
     assert DB.data == reset_DB_data
-    assert DB.isFull == False
+    assert DB.accFull == False
+    assert DB.jobFull == False
 
 def test_reset(DB):
     DB.reset()
     reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
     assert DB.data == reset_DB_data
-    assert DB.isFull == False
+    assert DB.accFull == False
+    assert DB.jobFull == False
 
 def test_load(DB):
     filename = DB.filename
@@ -474,7 +578,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
     return val
 
 # Post Job Parameters
-@pytest.mark.parametrize("title, description, employer, location, salary, fullname, expected",
+@pytest.mark.parametrize("title, description, employer, location, salary, fullname, username_of_poster, expected",
  [
     # test a correct combination of jobs and names
     (
@@ -484,6 +588,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "1_salary",
         "1_fullname",
+        "1_username_of_poster",
         False
     ),
     # test a correct combination of jobs and names
@@ -494,6 +599,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "1_salary",
         "1_fullname",
+        "1_username_of_poster",
         False
     ),
     # test a correct combination of jobs and names
@@ -504,6 +610,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "1_salary",
         "1_fullname",
+        "1_username_of_poster",
         False
     ),
     # test a correct combination of jobs and names
@@ -514,6 +621,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "",
         "1_salary",
         "1_fullname",
+        "1_username_of_poster",
         False
     ),
     # test a correct combination of jobs and names
@@ -524,6 +632,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "",
         "1_fullname",
+        "1_username_of_poster",
         False
     ),
     # test a correct combination of jobs and names
@@ -534,6 +643,7 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "1_salary",
         "",
+        "1_username_of_poster",
         False
     ),
     (
@@ -543,15 +653,26 @@ def post_job_fake_inputs(key, title, description, employer, location, salary, ex
         "1_location",
         "1_salary",
         "1_fullname",
+        "",
+        False
+    ),
+    (
+        "1_title",
+        "1_description",
+        "1_employer",
+        "1_location",
+        "1_salary",
+        "1_fullname",
+        "1_username_of_poster",
         True
     ),
 ])
 #Post Job Test
-def test_post_job(monkeypatch, DB, title, description, employer, location, salary, fullname, expected ):
+def test_post_job(monkeypatch, DB, title, description, employer, location, salary, fullname, username_of_poster, expected ):
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
         m.setattr('builtins.input', lambda x: post_job_fake_inputs(x, title, description, employer, location, salary, expected))
-        result = accnt.post_job(fullname, DB)
+        result = accnt.post_job(fullname, username_of_poster, DB)
         assert result == expected
 
 
