@@ -1724,12 +1724,3 @@ def test_date_checker(test_date_input, expected):
     result = accnt.date_checker(test_date_input)
     assert result == expected
 
-# Test EPIC 6 TODO:
-# test_remove_job_posting   (database)  DONE
-# test_remove_job           (acct)      DONE
-# test_date_checker         (acct)      DONE
-# test_data_format          (acct)      DONE
-# test_apply_for_job        (acct)      DONE
-# test_save_job             (acct)      DONE
-# test_diplay_job_list      (acct)      DONE
-# test_display_job_info     (acct)      DONE
