@@ -13,7 +13,7 @@ class Database():
 
     # Reset data
     def reset(self):
-        self.data = {"Students": {}, "Jobs": [], 'Friend Request': {}}
+        self.data = {"Students": {}, "Jobs": [], 'Friend Requests': {}}
         self.accFull = False
         self.jobFull = False
         # if the database file doesn't exist uncomment the next line
@@ -164,7 +164,7 @@ class Database():
         # if there is no student section there is not student account
         if "Students" not in self.data:
             return False
-
+        
         # # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
         #     # If username and password match, login succesful return True
@@ -218,7 +218,6 @@ class Database():
     #   assert result.username == username
     # else:
     #    assert result == False
-
     def get_student_by_username(self, username):
         # Load data
         self.load()
@@ -234,36 +233,36 @@ class Database():
             return student
         return False
 
-    def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
-        if username == None or field == None or value == None:
-            return False
-        data = self.data
-        # Get student by username
-        student = self.get_student_by_username(username)
-        # If student not found return false
-        if not student:
-            return False
-        # index of student
-        idx = data["Students"].index(student)
+    # def update_student(self, username, field, value, setting_field=None, guest_control_field=None):
+    #     if username == None or field == None or value == None:
+    #         return False
+    #     data = self.data
+    #     # Get student by username
+    #     student = self.get_student_by_username(username)
+    #     # If student not found return false
+    #     if not student:
+    #         return False
+    #     # index of student
+    #     idx = data["Students"].index(student)
 
-        # if its a settings update
-        if field == "settings" and setting_field != None:
-            # if its a notification
-            if setting_field == 'guest control':
-                student[field][setting_field][guest_control_field] = value
-            # if its a language update
-            else:
-                student[field][setting_field] = value
-        # Else (e.i. if its a username, password, firstname or lastname update)
-        else:
-            student[field] = value
+    #     # if its a settings update
+    #     if field == "settings" and setting_field != None:
+    #         # if its a notification
+    #         if setting_field == 'guest control':
+    #             student[field][setting_field][guest_control_field] = value
+    #         # if its a language update
+    #         else:
+    #             student[field][setting_field] = value
+    #     # Else (e.i. if its a username, password, firstname or lastname update)
+    #     else:
+    #         student[field] = value
 
-        data["Students"][idx] = student
-        # Update self.data
-        self.data = data
-        # Save change in DB file
-        self.save()
-        return True
+    #     data["Students"][idx] = student
+    #     # Update self.data
+    #     self.data = data
+    #     # Save change in DB file
+    #     self.save()
+    #     return True
 
     def set_student(self, student):
 
@@ -276,81 +275,68 @@ class Database():
         self.save()
         return True
 
-    def search_by_field(self, field, value):
-        self.load()
-        for username, student in self.data['Student']:
-            if student.__dict__.get(field) and student.__dict__[field] == value:
-                return student
-        return False
+    # def search_by_field(self, field, value):
+    #     self.load()
+    #     for username, student in self.data['Student']:
+    #         if student.__dict__.get(field) and student.__dict__[field] == value:
+    #             return student
+    #     return False
 
     def add_friend_request(self, to_username, from_username):
-        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
-        if self.data['Friend Request'].get(to_username) == None:
-            self.data['Friend Request'][to_username] = set(from_username)
-        elif self.data['Friend Request'][to_username].get(from_username) != None:
-            # Request already exists
+        if to_username == from_username:
             return False
-        else:
-            self.data['Friend Request'][to_username].add(from_username)
+        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
+        if self.data['Friend Requests'].get(to_username) == None:
+            self.data['Friend Requests'][to_username] = set()
+            self.data['Friend Requests'][to_username].add(from_username)
+        elif from_username in self.data['Friend Requests'][to_username]:
+            # Request already exists return false
+            return False
+        else: # add request to DB
+            self.data['Friend Requests'][to_username].add(from_username)
+        # Save DB
+        self.save()
         return True
-
+    
     # Removes a reqest sent to to_username from from_username
-    def remove_friend_requenst(self, to_username, from_username):
-        # All request are stored as key values in self.data['Friend Request']: {'to_username', {'from_username1', 'from_username2', ...}}
-
-        if self.data['Friend Request'].get(to_username) == None or self.data['Friend Request'][to_username].get(from_username) == None:
+    def remove_friend_request(self, to_username, from_username):
+        if to_username == from_username:
+            return False
+        # All request are stored as key values in self.data['Friend Requests']: {'to_username', {'from_username1', 'from_username2', ...}}
+        if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
             # Nothing to remove
             return False
+        elif len( self.data['Friend Requests'][to_username]) > 1: # Remove request from DB
+            self.data['Friend Requests'][to_username].remove(from_username)
         else:
-            self.data['Friend Request'][to_username].remove(from_username)
+            self.data['Friend Requests'].pop(to_username)
+            # Save DB
+        self.save()
+        return True
+
+def send_message(sender, recipient):
+
+    print(" +----------------------------------------+")
+    print(" |          Enter 'x' to go back          |")
+    print(" +----------------------------------------+")
+    
+    print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
+    
+    message_body = input("Enter Message Here: ")# get user message
+    if message_body == "x":
+        return False
+    else:
+        message = [sender, message_body]            # put msg in dict with student object
+        isAdded = add_message(recipient, message)
+        if isAdded:
+            print("Message sent successfully!")
+            self.save() #saving database
             return True
-
-    # This function allows user to search for friends by last name, university, or major.
-    # If there is a match the user is given to send a friend request.
-    # If they send a friend request the function returns true.
-    # If they do not senf a friend request the funct
-    def search_for_friends(self, curr_username):
-        print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
-        search_value = input("\nType Here: ")
-
-        if search_value == 'x':
+        else:
             return False
 
-        # initializing flag to false. If friend is found it is true.
-        found = False
-
-        print("\nSearch Results:")
-        # for students in the database
-        for username, student in self.data["Students"].items():
-            # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
-            if student.lastname == search_value or student.get_education()['university'] == search_value+" " or student.get_education()['major'] == search_value+" ":
-                found = True
-                print("Username: ", student.username, " | Name: ",
-                      student.firstname, " ", student.lastname)
-                print("University: ", student.get_education()['university'])
-                print("Major: ", student.get_education()['major'])
-                print("\nEnter \'y\' to send a request to ",
-                      student.username, " \nor anything else to continue...")
-                isRequest = input("Type Here: ")
-                if isRequest == "y":
-                    adding_friend = self.add_friend_request(
-                        student.username, curr_username)
-                    if adding_friend == True:
-                        print("Request Sent!")
-                        time.sleep(1)
-                    else:
-                        print("Request was already sent..")
-                        time.sleep(1)
-
-        if found == False:
-            print("...")
-            time.sleep(1)
-            print("They are not yet a part of the InCollege system yet!\n")
-            time.sleep(1)
-            return False
-        else:
-            return True
-
+def add_message(recipient, message):
+    recipient.data["Messages"]
 # DB = Database()
 # DB.clear()
 # new_username='word2'

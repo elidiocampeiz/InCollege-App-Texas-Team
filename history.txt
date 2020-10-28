@@ -1,43 +1,42 @@
-commit b4ba75b2553a46d108540769d763934608212376 (HEAD -> master, tag: 201011Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Sun Oct 11 23:17:36 2020 -0400
+commit acc6f9628dee70adb0b03aee95ed98b73d39422c (HEAD -> master, tag: 201025Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sun Oct 25 22:19:52 2020 -0400
 
     Sunday commit
 
-commit b018e371246415297f9cd14e54840856eed039e9 (tag: 201010Texas)
+commit e1c166d549ff10f32bef89aa6ec751d671ef04ce (tag: 201024Texas)
 Merge: 0fed589 6395438
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Sat Oct 10 23:17:20 2020 -0400
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 24 10:10:43 2020 -0400
 
     Saturday commit
 
-commit 0fed589c8d02f261a8ed7740752087c64639054f (tag: 201009Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Fri Oct 9 22:56:09 2020 -0400
+commit 083f691501022e744befa5a198f283a34bf95d10 (tag: 201023Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Fri Oct 23 17:18:47 2020 -0400
 
-    Friday commit
+    Epic 6 - Testing
 
-commit 6395438c725ab9bc1caf7209101a1904d67056cf (tag: 201008Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Thu Oct 8 22:54:14 2020 -0400
+commit 021773e4aac7feef59841d79863257f588a3cdcc (tag: 201022Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Thu Oct 22 20:31:51 2020 -0400
 
     Thursday commit
 
-commit 1eadf193bb49fbfecd36d694a82987bfc803714e (tag: 201007Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Wed Oct 7 13:22:32 2020 -0400
+commit 1eadf193bb49fbfecd36d694a82987bfc803714e (tag: 201021Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Wed Oct 21 22:57:33 2020 -0400
 
     Wednesday commit
 
-commit e52e921d2596ce112a799afe32574a55fe590456 (tag: 201006Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Tue Oct 6 13:13:56 2020 -0400
+commit e6a0dbd1f40c05beeefc4c1afaa4603908982b57 (tag: 201020Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Tue Oct 20 21:06:36 2020 -0400
 
     Tuesday commit
 
-commit 0ec9b604b616eed8bf812afa37b8f260c3baf427 (tag: 201005Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Mon Oct 5 11:38:33 2020 -0400
+commit a2610f2c7972e25716dd39aede359389d03c488d (tag: 201019Texas)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Mon Oct 19 14:45:33 2020 -0400
 
     Monday commit
-

@@ -13,6 +13,7 @@ class Student():
         self.experience=[] # List of Jobs 3 Dicts with 
         self.education={} # Dict school name, degree, and years attended.
         self.friends = []
+        self.messages = []
         
     #self.__dict__ classes in python have dictionaries underneath their variables
     #Takes the key args 
@@ -146,7 +147,9 @@ class Student():
         student_friend_2.add_job_experience('Software Engineering Intern', 'Google', '05/01/2020', '08/01/2020', 'Bay Area, LA, CA', 'Developed really cool Software at Google')
         self.add_friend(student_friend_2)
         
-        
 
     def add_friend(self, friend):
         self.friends.append(friend)
+
+    def add_message(self, message):
+        self.messages.append(message)
