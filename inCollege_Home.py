@@ -1346,7 +1346,7 @@ def main():
                     if sel == '1':
 
                         #TODO if user is plus member can send message to anyone
-                        while accnt.diplay_sendMessage_list(database, theStudent):
+                        while accnt.diplay_sendMessage_list(db, theStudent):
                             pass
 
                     # Inbox
