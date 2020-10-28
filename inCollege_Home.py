@@ -1,4 +1,4 @@
-# Front page
+# Front page $
 # Displays the selected options (and sub-options, if applies)
 # calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
