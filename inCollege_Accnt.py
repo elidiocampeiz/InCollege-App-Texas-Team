@@ -665,7 +665,7 @@ def diplay_inbox(student):
     print(" +----------------------------------------+ ")
 
     for index, message in enumerate(student.messages): #each message is a dict
-        sender = list(message.keys())[0] #setting to first arg of dict which is student obj (first key)
+        sender = message[0] #arg at 0 is a student object
         sender_fullname = sender.firstname.capitalize() + ' ' + sender.lastname.capitalize()
         sel_index = str(index+1)+'.'
         # Chars:   2        3            40                  2
@@ -679,7 +679,7 @@ def diplay_inbox(student):
     # if index is a string of a number in range of the student.friends List
     if index.isnumeric():
         idx = int(index) - 1
-        if idx < len(student.friends):
+        if idx < len(student.messages):
             
             msgContainer = student.messages[idx]
             sender = msgContainer[0]
@@ -697,7 +697,8 @@ def diplay_inbox(student):
             selection = input("Enter Selection: ")
 
             if selection == "1":
-                print("You wanna delete")
+                student.messages.pop(idx)
+                print("\n\nMessage successfully deleted\n\n")
             elif selection == "x":
                 print("You wanna go back")
 
