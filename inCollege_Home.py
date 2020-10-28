@@ -1,4 +1,4 @@
-# Front page $
+# Front page 
 # Displays the selected options (and sub-options, if applies)
 # calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
@@ -550,6 +550,7 @@ def main():
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
             print(" | 8. Find Friends              |")
+            print(" | 9. Messaging                 |")
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
@@ -1325,7 +1326,43 @@ def main():
                 if foundFriend is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)
-                  
+
+            # Messaging
+            elif sel == "9":
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                flag = True
+                while flag is True:
+                    print("          +-------------+")
+                    print("          |  Messaging  |         ")
+                    print(" +------------------------------+")
+                    print(" | 1. Send Message              |")
+                    print(" | 2. Inbox                     |")
+                    print(" | x. Go Back                   |")
+                    print(" +------------------------------+")
+
+                    sel = input("Make a selection: ")
+
+                    # Send Message
+                    if sel == '1':
+
+                        #TODO if user is plus member can send message to anyone
+                        while accnt.diplay_sendMessage_list(database, theStudent):
+                            pass
+
+                    # Inbox
+                    elif sel == "2":      
+                        while accnt.diplay_inbox(theStudent):
+                            pass
+                    elif sel == 'x':
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+
+                sel = ""  # resetting
+
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")

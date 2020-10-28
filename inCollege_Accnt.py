@@ -469,9 +469,6 @@ def update_experience_info(DB, student):
 def clear_accounts():
     database.Database
 
-# TODO display profile
-
-
 def display_profile(student):
     # if student.username=='':
     #     # Invalid Input all students must have a username Student
@@ -612,6 +609,102 @@ def diplay_friend_list(student):
     time.sleep(1)
     return True 
 
+#Prints the student's friends and asks which one's he would like to send a message to
+#TODO make a conditional statement in this function that takes care of plus members who can message anyone
+def diplay_sendMessage_list(DB, student):
+    print(" +----------------------------------------+ ")
+    print(" |             Send Message               | ")
+    print(" +----------------------------------------+ ")
+    print(" |  Select a user to message              | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    print(" +----------------------------------------+ ")
+
+    for index, friend in enumerate(student.friends):
+        fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    if index.isnumeric():
+        idx = int(index) - 1
+
+        #Sending Message....
+        if idx < len(student.friends):
+            recipient = student.friends[idx] #is student object
+            print("|*| NOTE - Enter 'x' to cancel message |*|\n")
+            print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
+            
+            message_body = input("Enter Message Here: ")# get user's message
+            if message_body == "x":
+                return False
+            else:
+                message = [student, message_body]           
+                recipient.add_message(message)              # Add to recipient's messages
+                DB.set_student(recipient)           #saving student's method info in database
+                print("Message sent successfully!")
+                return True
+            
+    print("...Invalid Input")
+    time.sleep(1)
+    return True 
+
+        
+def diplay_inbox(student):
+    print(" +----------------------------------------+ ")
+    print(" |                Inbox                   | ")
+    print(" +----------------------------------------+ ")
+    print(" |  Users listed here have messaged you,  | ")
+    print(" |  Select a message to view or delete.   | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    print(" +----------------------------------------+ ")
+
+    for index, message in enumerate(student.messages): #each message is a dict
+        sender = list(message.keys())[0] #setting to first arg of dict which is student obj (first key)
+        sender_fullname = sender.firstname.capitalize() + ' ' + sender.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(" |", sel_index, sender_fullname.ljust(40-5, ' '), "| ")
+
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    if index.isnumeric():
+        idx = int(index) - 1
+        if idx < len(student.friends):
+            
+            msgContainer = student.messages[idx]
+            sender = msgContainer[0]
+            messageBody = msgContainer[1]
+            print("Message from ", sender.firstname.capitalize())
+            print()
+            print("\t", messageBody)
+
+            print()
+            print(" +-----------------------------------+")
+            print(" |     Enter '1' to delete Message   |")
+            print(" |     Enter 'x' to go back          |")
+            print(" +-----------------------------------+")
+
+            selection = input("Enter Selection: ")
+
+            if selection == "1":
+                print("You wanna delete")
+            elif selection == "x":
+                print("You wanna go back")
+
+
+
+
+
 def display_accept_request_menu(DB, student, student_req):
         fullname = student_req.firstname.capitalize() + ' ' + student_req.lastname.capitalize()
         print(" +------------------------------------------------+ ")        
@@ -641,7 +734,7 @@ def display_accept_request_menu(DB, student, student_req):
         return False 
 
 def diplay_friend_request_list(DB, student):
-    username_list = DB.data['Friend Requests'].get(student.username)
+    username_list = DB.data['Friend Requests'].get(student.username) #gets 
     if username_list == None or len(username_list) < 1:
         return False
     print(" +----------------------------------------------+ ")
