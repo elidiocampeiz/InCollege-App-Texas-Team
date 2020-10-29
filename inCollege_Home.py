@@ -1,4 +1,4 @@
-# Front page 
+# Front page
 # Displays the selected options (and sub-options, if applies)
 # calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
@@ -433,19 +433,22 @@ def main():
                         print(" +-------------------------+")
                         print(" |     Privacy Policy      |")
                         print(" +-------------------------+\n")
-                        print("For policy in Pirvacy, please refer back to the User agreement \n")
+                        print(
+                            "For policy in Pirvacy, please refer back to the User agreement \n")
                         flag2 = True
                         while flag2 is True:
-                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            targeted_advertising = "ON" if settings['guest control'][
+                                'Targeted Advertising'] == True else "OFF"
                             SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
                             email = "ON" if settings['guest control']['Email'] == True else "OFF"
                             print("+--------------------------+")
                             print("| Default Guest Controls:  |")
                             print("+--------------------------+")
-                            # the Menu is Aligned 
+                            # the Menu is Aligned
                             print(f"| Email:       {email}          |")
                             print(f"| SMS:         {SMS}          |")
-                            print(f"| Advertising: {targeted_advertising}          |")
+                            print(
+                                f"| Advertising: {targeted_advertising}          |")
                             print("| x. Go Back               |")
                             print("+--------------------------+\n")
                             sel = input("Enter Your Selection: ")
@@ -487,9 +490,9 @@ def main():
                         """
                         print(cookieprivacy)
 
-
                     elif sel == "7":
-                        print("For policy in brands, please refer back to the User agreement ")
+                        print(
+                            "For policy in brands, please refer back to the User agreement ")
 
                     elif sel == "8":
                         flag2 = True
@@ -538,6 +541,7 @@ def main():
             while(accnt.diplay_friend_request_list(db, theStudent)):
                 pass
 
+            inbox_contents = accnt.display_number_in_inbox(theStudent)
 
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
@@ -1105,17 +1109,19 @@ def main():
                         print(" +-------------------------+\n")
                         print("Our Privacy Policy is written here...\n")
                         flag2 = True
-                        
+
                         while flag2 is True:
-                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            targeted_advertising = "ON" if settings['guest control'][
+                                'Targeted Advertising'] == True else "OFF"
                             SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
                             email = "ON" if settings['guest control']['Email'] == True else "OFF"
-                            # the Menu is Aligned 
+                            # the Menu is Aligned
                             print("+------------------------------+")
                             print("|    Current Guest Controls:   |")
                             print(f"| Email:       {email}              |")
                             print(f"| SMS:         {SMS}              |")
-                            print(f"| Advertising: {targeted_advertising}              |")
+                            print(
+                                f"| Advertising: {targeted_advertising}              |")
                             print("+------------------------------+")
                             print("|     Edit Guest Controls?     |")
                             print("+------------------------------+")
@@ -1145,10 +1151,10 @@ def main():
                                         break
                                     elif selection == '1':
                                         guest_control_field = 'Email'
-                                    
+
                                     elif selection == '2':
                                         guest_control_field = 'SMS'
-                                        
+
                                     elif selection == '3':
                                         guest_control_field = 'Targeted Advertising'
 
@@ -1158,14 +1164,22 @@ def main():
                                         continue
                                     value_update_flag = True
                                     while value_update_flag:
-                                        print("+------------------------------------+")
-                                        print("|   Choose New Guest Control Value   |")
-                                        print("+------------------------------------+")
-                                        print("| 1. ON                              |")
-                                        print("| 2. OFF                             |")
-                                        print("| x. Go Back                         |")
-                                        print("+------------------------------------+")
-                                        new_selected_value = input("Enter Your Selection: ")
+                                        print(
+                                            "+------------------------------------+")
+                                        print(
+                                            "|   Choose New Guest Control Value   |")
+                                        print(
+                                            "+------------------------------------+")
+                                        print(
+                                            "| 1. ON                              |")
+                                        print(
+                                            "| 2. OFF                             |")
+                                        print(
+                                            "| x. Go Back                         |")
+                                        print(
+                                            "+------------------------------------+")
+                                        new_selected_value = input(
+                                            "Enter Your Selection: ")
                                         new_value = True
                                         if new_selected_value == 'x':
                                             value_update_flag = False
@@ -1184,27 +1198,28 @@ def main():
                                             new_value = False
                                         # Get shallow copy of current settings
                                         new_settings = settings.copy()
-                                        # Get new guest controls 
+                                        # Get new guest controls
                                         new_guest_control = new_settings['guest control']
                                         # Update new guest controls
                                         new_guest_control[guest_control_field] = new_value
                                         # Update new settings
                                         new_settings['guest control'] = new_guest_control
                                         # Update user object
-                                        theStudent.update(settings=new_settings)
+                                        theStudent.update(
+                                            settings=new_settings)
                                         # Update Student in DB
                                         db.set_student(theStudent)
                                         # Update Stundet Object
-                                        theStudent = db.get_student_by_username(theStudent.username)
+                                        theStudent = db.get_student_by_username(
+                                            theStudent.username)
                                         # Update settings
                                         settings = theStudent.settings
-                                        # Update Global Setings 
+                                        # Update Global Setings
                                         # print(settings)
                                         # set flags to false
                                         value_update_flag = False
                                         guest_control_flag = False
 
-                                    
                             elif sel == "x":
                                 flag2 = False
                                 print("... Going Back")
@@ -1248,7 +1263,8 @@ def main():
                                     print("| 2. Spanish                      |")
                                     print("| x. Go Back                      |")
                                     print("+---------------------------------+")
-                                    new_language_selection = input("Enter Your Selection: ")
+                                    new_language_selection = input(
+                                        "Enter Your Selection: ")
                                     if new_language_selection == 'x':
                                         print("... Going Back")
                                         time.sleep(1)
@@ -1272,11 +1288,12 @@ def main():
                                     # Update Student in DB
                                     db.set_student(theStudent)
                                     # Update Stundet Object
-                                    theStudent = db.get_student_by_username(theStudent.username)
+                                    theStudent = db.get_student_by_username(
+                                        theStudent.username)
                                     # Update settings
                                     settings = theStudent.settings
                                     # updated_user = user.User(theUser.username)
-                                    # Update Global Setings 
+                                    # Update Global Setings
                                     language_update_flag = False
                             elif sel == "x":
                                 flag2 = False
@@ -1297,15 +1314,15 @@ def main():
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                sel = "" #resetting
+                sel = ""  # resetting
             elif sel == "6":
-                # loop while 
+                # loop while
                 accnt.display_profile(theStudent)
 
                 while accnt.edit_profile_menu(theStudent):
                     accnt.display_profile(theStudent)
                     pass
-                
+
             elif sel == "7":
                 while accnt.diplay_friend_list(theStudent):
                     pass
@@ -1317,12 +1334,12 @@ def main():
                 print(" | Search For friends by            |")
                 print(" | last name, university, or major  |")
                 print(" +----------------------------------+")
-                #search DB for student by various fields (calls search_by_field)
-                #check if student is not already in friend list
-                #call add student request
-                #display success or fail message
+                # search DB for student by various fields (calls search_by_field)
+                # check if student is not already in friend list
+                # call add student request
+                # display success or fail message
                 # db = database.Database()
-                foundFriend = accnt.send_friend_request_menu(db,theStudent)
+                foundFriend = accnt.send_friend_request_menu(db, theStudent)
                 if foundFriend is True:
                     print("... User found in the inCollege System!")
                     time.sleep(1)
@@ -1345,12 +1362,12 @@ def main():
                     # Send Message
                     if sel == '1':
 
-                        #TODO if user is plus member can send message to anyone
+                        # TODO if user is plus member can send message to anyone
                         while accnt.diplay_sendMessage_list(db, theStudent):
                             pass
 
                     # Inbox
-                    elif sel == "2":      
+                    elif sel == "2":
                         while accnt.diplay_inbox(theStudent):
                             pass
                     elif sel == 'x':

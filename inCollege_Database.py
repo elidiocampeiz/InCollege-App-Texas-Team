@@ -62,7 +62,7 @@ class Database():
     #     return self.data
 
     # Create new student account COMIT
-    def create_account(self, new_username, new_password, new_firstname, new_lastname):
+    def create_account(self, new_username, new_password, new_firstname, new_lastname, plus_status):
 
         # Load data from file
         self.load()
@@ -87,7 +87,8 @@ class Database():
 
         # Init new student
         new_student = {'username': new_username, 'password': new_password,
-                       'firstname': new_firstname, 'lastname': new_lastname, 'settings': settings}
+                       'firstname': new_firstname, 'lastname': new_lastname,
+                       'settings': settings, 'status': plus_status}
         my_student = Student(**new_student)
         # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
@@ -164,7 +165,7 @@ class Database():
         # if there is no student section there is not student account
         if "Students" not in self.data:
             return False
-        
+
         # # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
         #     # If username and password match, login succesful return True
@@ -292,12 +293,12 @@ class Database():
         elif from_username in self.data['Friend Requests'][to_username]:
             # Request already exists return false
             return False
-        else: # add request to DB
+        else:  # add request to DB
             self.data['Friend Requests'][to_username].add(from_username)
         # Save DB
         self.save()
         return True
-    
+
     # Removes a reqest sent to to_username from from_username
     def remove_friend_request(self, to_username, from_username):
         if to_username == from_username:
@@ -306,7 +307,7 @@ class Database():
         if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
             # Nothing to remove
             return False
-        elif len( self.data['Friend Requests'][to_username]) > 1: # Remove request from DB
+        elif len(self.data['Friend Requests'][to_username]) > 1:  # Remove request from DB
             self.data['Friend Requests'][to_username].remove(from_username)
         else:
             self.data['Friend Requests'].pop(to_username)
@@ -314,26 +315,30 @@ class Database():
         self.save()
         return True
 
+
 def send_message(sender, recipient):
 
     print(" +----------------------------------------+")
     print(" |          Enter 'x' to go back          |")
     print(" +----------------------------------------+")
-    
-    print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
-    
-    message_body = input("Enter Message Here: ")# get user message
+
+    print("Sending message to ", recipient.firstname,
+          " ", recipient.lastname, "\n\n")
+
+    message_body = input("Enter Message Here: ")  # get user message
     if message_body == "x":
         return False
     else:
-        message = [sender, message_body]            # put msg in dict with student object
+        # put msg in dict with student object
+        message = [sender, message_body]
         isAdded = add_message(recipient, message)
         if isAdded:
             print("Message sent successfully!")
-            self.save() #saving database
+            self.save()  # saving database
             return True
         else:
             return False
+
 
 def add_message(recipient, message):
     recipient.data["Messages"]
