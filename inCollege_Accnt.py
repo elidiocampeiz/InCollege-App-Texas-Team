@@ -654,10 +654,16 @@ def diplay_sendMessage_list(DB, student):  # Needs Plus functionality DEFCON1
     username = []
     if(student.status == True):  # Modification by Nicholas
         index = 0
-        for student in DB.data["Students"]:
-            fullname = student.firstname.capitalize() + ' ' + student.lastname.capitalize()
+        for stud in DB.data["Students"].items():
+            #fullname = student.firstname.capitalize() + ' ' + student.lastname.capitalize()
+            # So this part doesn't want to behave for some reason.
+            # print(val["firstname"])
+            # The below should really work but doesn't for some reason, despite working elsewhere (in... send_friend_request_menu or something)
+            fname = stud.firstname.capitalize()
+            lname = stud.lastname.capitalize()
+            fullname = fname + ' ' + lname
             sel_index = str(index+1)+'.'
-            username[index] = student.username
+            username[index] = stud['username']
             print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
             index += 1
     else:
