@@ -62,7 +62,7 @@ class Database():
     #     return self.data
 
     # Create new student account COMIT
-    def create_account(self, new_username, new_password, new_firstname, new_lastname):
+    def create_account(self, new_username, new_password, new_firstname, new_lastname, plus):
 
         # Load data from file
         self.load()
@@ -87,7 +87,8 @@ class Database():
 
         # Init new student
         new_student = {'username': new_username, 'password': new_password,
-                       'firstname': new_firstname, 'lastname': new_lastname, 'settings': settings}
+                       'firstname': new_firstname, 'lastname': new_lastname, 'settings': settings,
+                       'status': plus}
         my_student = Student(**new_student)
         # Iterate through each student in "Students" section
         # for student in self.data["Students"]:

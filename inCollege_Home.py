@@ -535,8 +535,12 @@ def main():
         # if User is logged in
         else:
 
+            #Displaying friend requests
             while(accnt.diplay_friend_request_list(db, theStudent)):
                 pass
+
+            #Printing out how many messages are in the users inbox    
+            isMessage = accnt.display_number_in_inbox(theStudent)
 
 
             print("         + ----------- +")
@@ -1344,10 +1348,10 @@ def main():
 
                     # Send Message
                     if sel == '1':
-
-                        #TODO if user is plus member can send message to anyone
-                        while accnt.diplay_sendMessage_list(db, theStudent):
-                            pass
+                        if theStudent.status == True:
+                            accnt.diplay_sendMessage_list_plus(db, theStudent)
+                        else:
+                            accnt.diplay_sendMessage_list(db, theStudent)
 
                     # Inbox
                     elif sel == "2":      

@@ -107,26 +107,43 @@ def create_account(DB):
     if (lastname == 'x'):
         return False
 
+    plusDone = False
+    while (plusDone == False):
+        plusChoice = input("Would you like to become a Plus Member for the low monthly price of $10?\n" +
+                           "Plus members get special benefits including the ability to send a message to anyone within InCollege.\n" +
+                           "Note: Standard members are still able to send messages but they are limited to friends only. Other features may apply.\n" +
+                           "Please input 'Y' if you would like to become a Plus Member, input 'N' if you would prefer to be a Standard Member: ")[0]
+        if (plusChoice == 'y' or plusChoice == 'Y'):
+            plus = True
+            plusDone = True
+        elif (plusChoice == 'n' or plusChoice == 'N'):
+            plus = False
+            plusDone = True
+        else:
+            print("We're sorry, but that is not a valid input. Please try again.")
+            plusDone = False
+
     # Try to create new student account in DB
-    create_account = DB.create_account(username, password, firstname, lastname)
+    create_account = DB.create_account(
+        username, password, firstname, lastname, plus)
     # Get student form DB to call update profile info
     student = DB.get_student_by_username(username)
 
     if not create_account or not student:
         print("\n|*| Create Account Error |*|")
         return False
-    
+
     # TODO: Addp functionality to add real friends
-    # Add Dummy friends 
+    # Add Dummy friends
     # student.add_dummy_friends()
     # Save Dummy Friends
     DB.set_student(student)
 
     # Get Profile Info
     update_profile_info(DB, student)
-    
+
     # print("\n|*| You Can Change Profile Later! |*|")
-    
+
     return True
     # return create_account
 
@@ -193,12 +210,23 @@ def remove_job(username, jobTitle, DB):
     return False
 
 
+# This SHOULD tell you how many messages are in the inbox. Does not currently support...
+def display_number_in_inbox(student):
+    # ...differentiation between read/unread, but that can be easily modified.
+    count = len(student.messages)
+    # for message in enumerate(student.messages):
+    #     if (message[0]):
+    #         count += 1
+    if (count > 0):
+        print("You have ", count, " messages in your inbox.\n")
+        return True
+    else:
+        return False
+
 # This function searches for job in database using job title.
 # It will return true if the job title entered
 # by the user results in an existing match, and false otherwise
 # It then prints out the details of the Job
-
-
 def display_job_info(DB, jobTitle):
 
     # will be true if there is a match
@@ -608,6 +636,68 @@ def diplay_friend_list(student):
     print("...Invalid Input")
     time.sleep(1)
     return True 
+
+def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCON1
+    print(" +----------------------------------------+ ")
+    print(" |             Send Message               | ")
+    print(" +----------------------------------------+ ")
+    print(" |  Select a user to message              | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    print(" +----------------------------------------+ ")
+    # used for tracking down a given student in a list of ALL students accessed by a Plus Member
+    username = []
+    index = 0
+
+    #this references which user to send message to
+    dictOfUsers = DB.data["Students"]
+    for k in dictOfUsers.keys():
+        username.append(k)
+        index += 1
+    index = 0
+
+    #iterating through dictionary
+    for index, stud in enumerate(dictOfUsers):
+        fname = dictOfUsers[stud].firstname.capitalize()
+        lname = dictOfUsers[stud].lastname.capitalize()
+        fullname = fname + ' ' + lname
+        sel_index = str(index+1)+'.'
+        username[index] = dictOfUsers[stud].username
+        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    if index.isnumeric():
+        idx = int(index) - 1
+
+        if idx < len(DB.data["Students"]):
+            # in theory, this might let you take the
+            recipient_un = username[idx]
+            recipient = DB.get_student_by_username(recipient_un)
+            print("|*| NOTE - Enter 'x' to cancel message |*|\n")
+            print("Sending message to ", recipient.firstname,
+                    " ", recipient.lastname, "\n\n")
+
+            # get user's message
+            message_body = input("Enter Message Here: ")
+            if message_body == "x":
+                return False
+            else:
+                message = [student, message_body]
+                # Add to recipient's messages
+                recipient.add_message(message)
+                # saving student's method info in database
+                DB.set_student(recipient)
+                print("Message sent successfully!")
+                return True
+
+    print("...Invalid Input")
+    time.sleep(1)
+    return True
+
 
 #Prints the student's friends and asks which one's he would like to send a message to
 #TODO make a conditional statement in this function that takes care of plus members who can message anyone
