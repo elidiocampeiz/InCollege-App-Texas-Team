@@ -1,3 +1,5 @@
+
+#No Longer Using this class shifted to student class
 #This file contains the class of the user that is currently logged into inCollege
 
 import inCollege_Database as database

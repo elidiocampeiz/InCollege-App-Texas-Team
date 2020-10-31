@@ -3,7 +3,7 @@
 # calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
 import inCollege_Database as database
-import inCollege_CurrentUser as user
+#import inCollege_CurrentUser as user
 import time
 
 # Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
