@@ -1351,7 +1351,7 @@ def main():
 
                     # Inbox
                     elif sel == "2":      
-                        while accnt.diplay_inbox(theStudent):
+                        while accnt.diplay_inbox(theStudent, db):
                             pass
                     elif sel == 'x':
                         flag = False

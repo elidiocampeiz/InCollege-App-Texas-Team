@@ -636,26 +636,33 @@ def diplay_sendMessage_list(DB, student):
 
         #Sending Message....
         if idx < len(student.friends):
-            recipient = student.friends[idx] #is student object
-            print("|*| NOTE - Enter 'x' to cancel message |*|\n")
-            print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
-            
-            message_body = input("Enter Message Here: ")# get user's message
-            if message_body == "x":
+            isSent = send_message(student, student.friends[idx], DB)
+            if isSent == "x":
                 return False
             else:
-                message = [student, message_body]           
-                recipient.add_message(message)              # Add to recipient's messages
-                DB.set_student(recipient)           #saving student's method info in database
-                print("Message sent successfully!")
                 return True
             
     print("...Invalid Input")
     time.sleep(1)
     return True 
 
+#returns true if message is successfully sent, false otherwise
+def send_message(student, recipient, DB):
+    print("\n|*| NOTE - Enter 'x' to cancel message |*|\n")
+    print("|*|Sending message to ", recipient.firstname, " ", recipient.lastname, "|*|\n")
+
+    message_body = input("Enter Message Here: ")# get user's message
+    if message_body == "x":
+        return False
+    else:
+        message = [student, message_body]           
+        recipient.add_message(message)              # Add to recipient's messages
+        DB.set_student(recipient)           #saving student's method info in database
+        print("\n... message sent successfully!\n")
+        time.sleep(1)
+        return True
         
-def diplay_inbox(student):
+def diplay_inbox(student, DB):
     print(" +----------------------------------------+ ")
     print(" |                Inbox                   | ")
     print(" +----------------------------------------+ ")
@@ -689,18 +696,27 @@ def diplay_inbox(student):
             print("\t", messageBody)
 
             print()
-            print(" +-----------------------------------+")
-            print(" |     Enter '1' to delete Message   |")
-            print(" |     Enter 'x' to go back          |")
-            print(" +-----------------------------------+")
+            print(" +--------------------------------------+")
+            print(" |   Enter '1' to delete Message        |")
+            print(" |   Enter '2' to reply                 |")
+            print(" |   Enter 'x' to go back to Messaging  |")
+            print(" +--------------------------------------+")
 
             selection = input("Enter Selection: ")
 
             if selection == "1":
                 student.messages.pop(idx)
                 print("\n\nMessage successfully deleted\n\n")
+                return True
+            elif selection == "2":
+                isSent = send_message(student, student.friends[idx], DB)
+                if isSent:
+                    return True
+                else:
+                    return False #if message was not sent
+                
             elif selection == "x":
-                print("You wanna go back")
+                return False #user wants to go back to message menu
 
 
 
