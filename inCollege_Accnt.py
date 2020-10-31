@@ -659,8 +659,9 @@ def diplay_sendMessage_list(DB, student):  # Needs Plus functionality DEFCON1
             # So this part doesn't want to behave for some reason.
             # print(val["firstname"])
             # The below should really work but doesn't for some reason, despite working elsewhere (in... send_friend_request_menu or something)
-            fname = stud.firstname.capitalize()
-            lname = stud.lastname.capitalize()
+            print(stud)
+            fname = stud['firstname']
+            lname = stud['lastname']
             fullname = fname + ' ' + lname
             sel_index = str(index+1)+'.'
             username[index] = stud['username']
