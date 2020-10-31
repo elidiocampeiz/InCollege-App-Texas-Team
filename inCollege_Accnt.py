@@ -643,7 +643,7 @@ def diplay_friend_list(student):
 # Modified by Nicholas Boswell 10/28/20
 
 
-def diplay_sendMessage_list(DB, student):  # Needs Plus functionality DEFCON1
+def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCON1
     print(" +----------------------------------------+ ")
     print(" |             Send Message               | ")
     print(" +----------------------------------------+ ")
@@ -652,27 +652,23 @@ def diplay_sendMessage_list(DB, student):  # Needs Plus functionality DEFCON1
     print(" +----------------------------------------+ ")
     # used for tracking down a given student in a list of ALL students accessed by a Plus Member
     username = []
-    if(student.status == True):  # Modification by Nicholas
-        index = 0
-        for stud in DB.data["Students"].items():
-            #fullname = student.firstname.capitalize() + ' ' + student.lastname.capitalize()
-            # So this part doesn't want to behave for some reason.
-            # print(val["firstname"])
-            # The below should really work but doesn't for some reason, despite working elsewhere (in... send_friend_request_menu or something)
-            print(stud)
-            fname = stud['firstname']
-            lname = stud['lastname']
-            fullname = fname + ' ' + lname
-            sel_index = str(index+1)+'.'
-            username[index] = stud['username']
-            print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
-            index += 1
-    else:
-        for index, friend in enumerate(student.friends):
-            fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
-            sel_index = str(index+1)+'.'
-            # Chars:   2        3            40                  2
-            print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+    index = 0
+
+    #this references which user to send message to
+    dictOfUsers = DB.data["Students"]
+    for k in dictOfUsers.keys():
+        username.append(k)
+        index += 1
+    index = 0
+
+    #iterating through dictionary
+    for index, stud in enumerate(dictOfUsers):
+        fname = dictOfUsers[stud].firstname.capitalize()
+        lname = dictOfUsers[stud].lastname.capitalize()
+        fullname = fname + ' ' + lname
+        sel_index = str(index+1)+'.'
+        username[index] = dictOfUsers[stud].username
+        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
 
     print(" | x. Go Back                             |")
     print(" +----------------------------------------+ ")
@@ -682,54 +678,84 @@ def diplay_sendMessage_list(DB, student):  # Needs Plus functionality DEFCON1
     # if index is a string of a number in range of the student.friends List
     if index.isnumeric():
         idx = int(index) - 1
-        # Sending Messsage for Plus Member...
-        if(student.status == True):  # Modification by Nicholas
-            if idx < len(DB.data["Students"]):
-                # in theory, this might let you take the
-                recipient_un = username[idx]
-                recipient = DB.get_student_by_username(recipient_un)
-                print("|*| NOTE - Enter 'x' to cancel message |*|\n")
-                print("Sending message to ", recipient.firstname,
-                      " ", recipient.lastname, "\n\n")
 
-                # get user's message
-                message_body = input("Enter Message Here: ")
-                if message_body == "x":
-                    return False
-                else:
-                    message = [student, message_body]
-                    # Add to recipient's messages
-                    recipient.add_message(message)
-                    # saving student's method info in database
-                    DB.set_student(recipient)
-                    print("Message sent successfully!")
-                    return True
+        if idx < len(DB.data["Students"]):
+            # in theory, this might let you take the
+            recipient_un = username[idx]
+            recipient = DB.get_student_by_username(recipient_un)
+            print("|*| NOTE - Enter 'x' to cancel message |*|\n")
+            print("Sending message to ", recipient.firstname,
+                    " ", recipient.lastname, "\n\n")
 
-        # Sending Message for Standard Member....
-        else:
-            if idx < len(student.friends):
-                recipient = student.friends[idx]  # is student object
-                print("|*| NOTE - Enter 'x' to cancel message |*|\n")
-                print("Sending message to ", recipient.firstname,
-                      " ", recipient.lastname, "\n\n")
-
-                # get user's message
-                message_body = input("Enter Message Here: ")
-                if message_body == "x":
-                    return False
-                else:
-                    message = [student, message_body]
-                    # Add to recipient's messages
-                    recipient.add_message(message)
-                    # saving student's method info in database
-                    DB.set_student(recipient)
-                    print("Message sent successfully!")
-                    return True
+            # get user's message
+            message_body = input("Enter Message Here: ")
+            if message_body == "x":
+                return False
+            else:
+                message = [student, message_body]
+                # Add to recipient's messages
+                recipient.add_message(message)
+                # saving student's method info in database
+                DB.set_student(recipient)
+                print("Message sent successfully!")
+                return True
 
     print("...Invalid Input")
     time.sleep(1)
     return True
 
+
+#For non-plus users
+def diplay_sendMessage_list(DB, student):
+    print(" +----------------------------------------+ ")
+    print(" |             Send Message               | ")
+    print(" +----------------------------------------+ ")
+    print(" |  Select a user to message              | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    print(" +----------------------------------------+ ")
+
+    for index, friend in enumerate(student.friends):
+        fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
+        sel_index = str(index+1)+'.'
+        # Chars:   2        3            40                  2
+        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+
+    print(" | x. Go Back                             |")
+    print(" +----------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    if index.isnumeric():
+        idx = int(index) - 1
+
+        #Sending Message....
+        if idx < len(student.friends):
+            isSent = send_message(student, student.friends[idx], DB)
+            if isSent == "x":
+                return False
+            else:
+                return True
+            
+    print("...Invalid Input")
+    time.sleep(1)
+    return True 
+
+#returns true if message is successfully sent, false otherwise
+def send_message(student, recipient, DB):
+    print("\n|*| NOTE - Enter 'x' to cancel message |*|\n")
+    print("|*|Sending message to ", recipient.firstname, " ", recipient.lastname, "|*|\n")
+
+    message_body = input("Enter Message Here: ")# get user's message
+    if message_body == "x":
+        return False
+    else:
+        message = [student, message_body]           
+        recipient.add_message(message)              # Add to recipient's messages
+        DB.set_student(recipient)           #saving student's method info in database
+        print("\n... message sent successfully!\n")
+        time.sleep(1)
+        return True
 
 def diplay_inbox(student):
     print(" +----------------------------------------+ ")
