@@ -315,29 +315,30 @@ class Database():
         self.save()
         return True
 
-def send_message(sender, recipient):
+# def send_message(sender, recipient):
 
-    print(" +----------------------------------------+")
-    print(" |          Enter 'x' to go back          |")
-    print(" +----------------------------------------+")
+#     print(" +----------------------------------------+")
+#     print(" |          Enter 'x' to go back          |")
+#     print(" +----------------------------------------+")
     
-    print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
+#     print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
     
-    message_body = input("Enter Message Here: ")# get user message
-    if message_body == "x":
-        return False
-    else:
-        message = [sender, message_body]            # put msg in dict with student object
-        isAdded = add_message(recipient, message)
-        if isAdded:
-            print("Message sent successfully!")
-            self.save() #saving database
-            return True
-        else:
-            return False
+#     message_body = input("Enter Message Here: ")# get user message
+#     if message_body == "x":
+#         return False
+#     else:
+#         message = [sender, message_body]            # put msg in dict with student object
+#         isAdded = recipient.add_message( message)
+#         if isAdded:
+#             print("Message sent successfully!")
+            
+#             return True
+#         else:
+#             return False
 
-def add_message(recipient, message):
-    recipient.data["Messages"]
+# def add_message(recipient, message):
+#     recipient.data["Messages"]
+
 # DB = Database()
 # DB.clear()
 # new_username='word2'

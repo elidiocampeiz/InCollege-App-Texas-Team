@@ -26,90 +26,101 @@ def DB():
 
 
 # Create Account Test
-@pytest.mark.parametrize("username, password, firstname, lastname, expected",
+@pytest.mark.parametrize("username, password, firstname, lastname, plus, expected",
  [
     (
         "1_acc_username",
         "1_acc_password",
         "1_Firstname",
         "1_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "2_acc_username",
         "2_acc_password",
         "2_Firstname",
         "2_Lastname",
-        True
+        False,
+        True,
     ),
     (
         "3_acc_username",
         "3_acc_password",
         "3_Firstname",
         "3_Lastname",
-        True
+        False,
+        True,
     ),
     (
         "4_acc_username",
         "4_acc_password",
         "4_Firstname",
         "4_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "5_acc_username",
         "5_acc_password",
         "5_Firstname",
         "5_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "6_acc_username",
         "6_acc_password",
         "6_Firstname",
         "6_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "7_acc_username",
         "7_acc_password",
         "7_Firstname",
         "7_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "8_acc_username",
         "8_acc_password",
         "8_Firstname",
         "8_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "9_acc_username",
         "9_acc_password",
         "9_Firstname",
         "9_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "10_acc_username",
         "10_acc_password",
         "10_Firstname",
         "10_Lastname",
-        True
+        True,
+        True,
     ),
     (
         "11_acc_username",
         "11_acc_password",
         "11_Firstname",
         "11_Lastname",
-        False
+        True,
+        False,
     ), # The DB can only have 10 user accounts so if we try to create the 6th the create_account function returns false
 
 ])
-def test_create_account(DB, username, password, firstname, lastname, expected):
+def test_create_account(DB, username, password, firstname, lastname, plus, expected):
     # create_account() create returning true if the account exists and false otherwise
-    result = DB.create_account(username, password, firstname, lastname)
+    result = DB.create_account(username, password, firstname, lastname, plus)
     assert result == expected
 
 # Create Account Test
@@ -383,15 +394,15 @@ def test_save(DB):
     DB.clear()
 
 # Create Account Test (inCollege_Acct.py)
-def create_accout_menu_fake_inputs(key, new_username, new_password, passwordCheck, new_firstname, new_lastname):
+def create_accout_menu_fake_inputs(key, new_username, new_password, passwordCheck, new_firstname, new_lastname,plus ='Y'):
     # Each Key has to be the same string as the respective input statement
     prompt_to_return_val = {
         "Enter username: ": new_username,
         "Enter password: ": new_password,
         "Enter New Password: ": passwordCheck,
         "Enter First Name: ": new_firstname,
-        "Enter Last Name: ": new_lastname
-        
+        "Enter Last Name: ": new_lastname,
+       "Would you like to become a Plus Member for the low monthly price of $10?\nPlus members get special benefits including the ability to send a message to anyone within InCollege.\nNote: Standard members are still able to send messages but they are limited to friends only. Other features may apply.\nPlease input 'Y' if you would like to become a Plus Member, input 'N' if you would prefer to be a Standard Member: ": plus, 
     }
     if not key in prompt_to_return_val.keys():
         return ''
@@ -534,7 +545,7 @@ def test_create_accout_menu(DB, monkeypatch, new_username, new_password, passwor
 
     with monkeypatch.context() as m:
         # the x parameter of the lambda function becomes the key used to access each respective input call
-        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, new_username, new_password, passwordCheck, new_firstname, new_lastname))
+        m.setattr('builtins.input', lambda x: create_accout_menu_fake_inputs(x, new_username, new_password, passwordCheck, new_firstname, new_lastname)) # NOTE: THE PLUS VARIABLE DEFAULTS TO 'Y' since its not important for the function functionality
         # print('BREAKPOINT db is full ', DB.isFull, len(DB.data["Students"]) )
         result = accnt.create_account(DB)
         assert result == expected
@@ -886,7 +897,7 @@ def default_Student(DB):
     student = Student(**new_student)
     
     # Add student to DB
-    DB.create_account(student.username, student.password, student.firstname, student.lastname)
+    DB.create_account(student.username, student.password, student.firstname, student.lastname, False)
     
     return student
 
@@ -905,7 +916,7 @@ def default_Student2(DB):
     # Init Student 
     student = Student(**new_student)
     # Add student to DB
-    DB.create_account(student.username, student.password, student.firstname, student.lastname)
+    DB.create_account(student.username, student.password, student.firstname, student.lastname, True)
 
     return student
 
@@ -1724,3 +1735,34 @@ def test_date_checker(test_date_input, expected):
     result = accnt.date_checker(test_date_input)
     assert result == expected
 
+#Test Student add_message
+@pytest.mark.parametrize("message", 
+[
+    (
+        "MESSAGE1",
+    ), 
+    (
+        "MESSAGE2",
+    ), 
+    (
+        "MESSAGE3",
+    ),
+    (
+        "MESSAGE4",
+    ),
+    (
+         "",
+    ),
+])
+def test_student_add_message(default_Student, message):
+    default_Student.add_message(message)
+    
+    assert message in default_Student.messages
+
+
+# Sprint 7
+# TODO: test_diplay_sendMessage_list_plus   (ACCT) 
+# TODO: test_diplay_sendMessage_list        (ACCT)
+# TODO: test_send_message                   (ACCT)
+# TODO: test_diplay_inbox                   (ACCT)
+# DONE: test_add_message                    (Student)

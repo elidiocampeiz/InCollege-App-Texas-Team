@@ -109,10 +109,7 @@ def create_account(DB):
 
     plusDone = False
     while (plusDone == False):
-        plusChoice = input("Would you like to become a Plus Member for the low monthly price of $10?\n" +
-                           "Plus members get special benefits including the ability to send a message to anyone within InCollege.\n" +
-                           "Note: Standard members are still able to send messages but they are limited to friends only. Other features may apply.\n" +
-                           "Please input 'Y' if you would like to become a Plus Member, input 'N' if you would prefer to be a Standard Member: ")[0]
+        plusChoice = input("Would you like to become a Plus Member for the low monthly price of $10?\nPlus members get special benefits including the ability to send a message to anyone within InCollege.\nNote: Standard members are still able to send messages but they are limited to friends only. Other features may apply.\nPlease input 'Y' if you would like to become a Plus Member, input 'N' if you would prefer to be a Standard Member: ")[0]
         if (plusChoice == 'y' or plusChoice == 'Y'):
             plus = True
             plusDone = True
@@ -147,11 +144,10 @@ def create_account(DB):
     return True
     # return create_account
 
-    # TODO: Addp functionality to add real friends
     # Add Dummy friends
-    student.add_dummy_friends()
+    #student.add_dummy_friends()
     # Save Dummy Friends
-    DB.set_student(student)
+    #DB.set_student(student)
 
     # Get Profile Info
     update_profile_info(DB, student)
@@ -646,23 +642,25 @@ def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCO
     print(" +----------------------------------------+ ")
     # used for tracking down a given student in a list of ALL students accessed by a Plus Member
     username = []
-    index = 0
+    #index = 0
 
-    #this references which user to send message to
+    # this references which user to send message to
     dictOfUsers = DB.data["Students"]
     for k in dictOfUsers.keys():
-        username.append(k)
-        index += 1
-    index = 0
+        if k != student.username:
+            username.append(k)
+        #index += 1
+    #index = 0
 
     #iterating through dictionary
-    for index, stud in enumerate(dictOfUsers):
-        fname = dictOfUsers[stud].firstname.capitalize()
-        lname = dictOfUsers[stud].lastname.capitalize()
-        fullname = fname + ' ' + lname
-        sel_index = str(index+1)+'.'
-        username[index] = dictOfUsers[stud].username
-        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+    for index, student_username in enumerate(username):
+        if student_username!= student.username:
+            fname = dictOfUsers[student_username].firstname.capitalize()
+            lname = dictOfUsers[student_username].lastname.capitalize()
+            fullname = fname + ' ' + lname
+            sel_index = str(index+1)+'.'
+            
+            print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
 
     print(" | x. Go Back                             |")
     print(" +----------------------------------------+ ")
@@ -736,7 +734,7 @@ def diplay_sendMessage_list(DB, student):
     time.sleep(1)
     return True 
 
-#returns true if message is successfully sent, false otherwise
+# returns true if message is successfully sent, false otherwise
 def send_message(student, recipient, DB):
     print("\n|*| NOTE - Enter 'x' to cancel message |*|\n")
     print("|*|Sending message to ", recipient.firstname, " ", recipient.lastname, "|*|\n")
@@ -799,7 +797,7 @@ def diplay_inbox(student, DB):
                 print("\n\nMessage successfully deleted\n\n")
                 return True
             elif selection == "2":
-                isSent = send_message(student, student.friends[idx], DB)
+                isSent = send_message(student, student.messages[idx][0], DB)
                 if isSent:
                     return True
                 else:
