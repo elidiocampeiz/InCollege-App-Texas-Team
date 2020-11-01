@@ -1751,7 +1751,7 @@ def test_date_checker(test_date_input, expected):
         "MESSAGE4",
     ),
     (
-         "",
+        "",
     ),
 ])
 def test_student_add_message(default_Student, message):
@@ -1762,22 +1762,101 @@ def test_student_add_message(default_Student, message):
 @pytest.mark.parametrize("message, expected", 
 [
     (
-        "MESSAGE1",True
+        "MESSAGE1", True
     ), 
     (
-        "xMESSAGE2",True
-    )
+        "xMESSAGE2", True
+    ),
     (
-         "x",False
+        "x", False
     ),
 ])
-def test_send_message(monkeypatch ,default_Student, default_Student2, DB, message, expected):
+def test_send_message(monkeypatch, default_Student, default_Student2, DB, message, expected):
     with monkeypatch.context() as m:
         m.setattr('builtins.input', lambda x: message)
-        # TODO: Finish Test
+        result = accnt.send_message(default_Student, default_Student2, DB)
+        assert result == expected
 # Sprint 7
-# TODO: test_diplay_sendMessage_list_plus   (ACCT) 
-# TODO: test_diplay_sendMessage_list        (ACCT)
-# TODO: test_send_message                   (ACCT)
-# TODO: test_diplay_inbox                   (ACCT)
+
+def send_message_fake_inputs( key, selection1, message, selection2='1'):
+    # Each Key has to be the same string as the respective input statement
+    prompt_to_return_val = {
+        "Enter Your Selection: ":selection1, # index selection
+        "Enter Message Here: ":message, # message 
+        "Enter Selection: ": selection2,
+    }
+    val = prompt_to_return_val[key]
+    return val
+@pytest.mark.parametrize("selection,message, expected", 
+[
+    (
+        '1', "MESSAGE1", True
+    ), 
+    (
+        '1', "xMESSAGE2", True
+    ),
+    (
+        'x', "xMESSAGE2", False
+    ),
+    (
+         '1', "x", False
+    ),
+])
+def test_diplay_sendMessage_list_plus(monkeypatch, DB, default_Student, selection, message, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: send_message_fake_inputs(x, selection, message))
+        result = accnt.diplay_sendMessage_list_plus(DB, default_Student)
+        assert result == expected
+
+@pytest.mark.parametrize("selection,message, expected", 
+[
+    (
+        '1', "MESSAGE1", True
+    ), 
+    (
+        '1', "xMESSAGE2", True
+    ),
+    (
+        'x', "xMESSAGE2", False
+    ),
+])
+def test_diplay_sendMessage_list_plus(monkeypatch, DB, default_Student, selection, message, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: send_message_fake_inputs(x, selection, message))
+        result = accnt.diplay_sendMessage_list(DB, default_Student)
+        assert result == expected
+
+@pytest.mark.parametrize("selection1 ,selection2, message, expected", 
+ [
+    (
+        '1','1', "MESSAGE1", True
+    ), 
+    (
+        '1','2', "xMESSAGE2", True
+    ),
+    (
+        'x','1', "xMESSAGE2", False
+    ),
+    (
+         '1','x', "MESSAGE3", False
+    ),
+    (
+         '1','2', "x", False
+    ),
+    (
+         '1','1', "x", True
+    ),
+])
+def test_diplay_inbox(monkeypatch, DB, default_Student, default_Student2, selection1, selection2, message, expected):
+    
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: send_message_fake_inputs(x, selection1, message, selection2))
+        accnt.send_message(default_Student, default_Student2, DB) 
+        result = accnt.diplay_inbox(default_Student2, DB)
+        assert result == expected
+
+# DONE: test_diplay_sendMessage_list_plus   (ACCT) 
+# TODO: test_diplay_sendMessage_list        (ACCT)(Daria)
+# DONE: test_send_message                   (ACCT)(Daria)
+# DONE: test_diplay_inbox                   (ACCT)
 # DONE: test_add_message                    (Student)
