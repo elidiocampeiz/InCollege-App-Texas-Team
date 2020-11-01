@@ -697,8 +697,8 @@ def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCO
     return True
 
 
-#Prints the student's friends and asks which one's he would like to send a message to
-#TODO make a conditional statement in this function that takes care of plus members who can message anyone
+# Prints the student's friends and asks which one's he would like to send a message to
+# TODO make a conditional statement in this function that takes care of plus members who can message anyone
 def diplay_sendMessage_list(DB, student):
     print(" +----------------------------------------+ ")
     print(" |             Send Message               | ")

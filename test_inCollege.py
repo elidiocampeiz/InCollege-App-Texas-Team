@@ -1759,7 +1759,22 @@ def test_student_add_message(default_Student, message):
     
     assert message in default_Student.messages
 
-
+@pytest.mark.parametrize("message, expected", 
+[
+    (
+        "MESSAGE1",True
+    ), 
+    (
+        "xMESSAGE2",True
+    )
+    (
+         "x",False
+    ),
+])
+def test_send_message(monkeypatch ,default_Student, default_Student2, DB, message, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: message)
+        # TODO: Finish Test
 # Sprint 7
 # TODO: test_diplay_sendMessage_list_plus   (ACCT) 
 # TODO: test_diplay_sendMessage_list        (ACCT)
