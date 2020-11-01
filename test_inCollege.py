@@ -1818,7 +1818,7 @@ def test_diplay_sendMessage_list_plus(monkeypatch, DB, default_Student, selectio
     ),
     (
         'x', "xMESSAGE2", False
-    ),
+    ), 
 ])
 def test_diplay_sendMessage_list_plus(monkeypatch, DB, default_Student, selection, message, expected):
     with monkeypatch.context() as m:
