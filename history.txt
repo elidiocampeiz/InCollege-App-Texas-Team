@@ -1,42 +1,42 @@
-commit acc6f9628dee70adb0b03aee95ed98b73d39422c (HEAD -> master, tag: 201025Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Sun Oct 25 22:19:52 2020 -0400
+commit 2e7ba93b992676b48cb503c72c2702a3d632bbe2 (HEAD -> master, tag: 201001Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Oct 1 17:31:56 2020 -0400
 
-    Sunday commit
+    Finish testing
 
-commit e1c166d549ff10f32bef89aa6ec751d671ef04ce (tag: 201024Texas)
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201031Texas)
 Merge: 0fed589 6395438
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Sat Oct 24 10:10:43 2020 -0400
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sat Oct 31 16:42:05 2020 -0400
 
-    Saturday commit
+    Start first test
 
-commit 083f691501022e744befa5a198f283a34bf95d10 (tag: 201023Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Fri Oct 23 17:18:47 2020 -0400
+commit 5a648e40116b968a7595f808da4477f42aa5c79f (tag: 201030Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Fri Oct 30 20:35:11 2020 -0400
 
-    Epic 6 - Testing
+    Epic 7 - Testing
 
-commit 021773e4aac7feef59841d79863257f588a3cdcc (tag: 201022Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Thu Oct 22 20:31:51 2020 -0400
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201029Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Thu Oct 29 17:05:26 2020 -0400
 
     Thursday commit
 
-commit 1eadf193bb49fbfecd36d694a82987bfc803714e (tag: 201021Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Wed Oct 21 22:57:33 2020 -0400
+commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (tag: 201028Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Wed Oct 28 22:57:33 2020 -0400
 
-    Wednesday commit
+    Finished Replies For Messaging
 
-commit e6a0dbd1f40c05beeefc4c1afaa4603908982b57 (tag: 201020Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Tue Oct 20 21:06:36 2020 -0400
+commit e270f0e531edca8a1bcf8765d76fdb989ec05804 (tag: 201027Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Tue Oct 27 15:23:51 2020 -0400
 
     Tuesday commit
 
-commit a2610f2c7972e25716dd39aede359389d03c488d (tag: 201019Texas)
-Author: Ali Bayatpoor <alizbay94@gmail.com>
-Date:   Mon Oct 19 14:45:33 2020 -0400
+commit 0556ee6feaf523a9bf5da79dec2ee55276b98e34 (tag: 201026Texas)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Mon Oct 26 13:44:54 2020 -0400
 
     Monday commit
