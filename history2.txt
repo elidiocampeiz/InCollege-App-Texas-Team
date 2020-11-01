@@ -1,0 +1,111 @@
+commit 2e7ba93b992676b48cb503c72c2702a3d632bbe2 (HEAD -> master, InCollege-App-Texas-Team/master)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 17:35:17 2020 -0500
+
+    master challenge 7
+
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (InCollege-App-Texas-Team/Challenge-6, Challenge-6)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 17:31:56 2020 -0500
+
+    Finish testing
+
+:...skipping...
+commit 2e7ba93b992676b48cb503c72c2702a3d632bbe2 (HEAD -> master, InCollege-App-Texas-Team/master)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 17:35:17 2020 -0500
+
+    master challenge 7
+
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (InCollege-App-Texas-Team/Challenge-6, Challenge-6)
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 17:31:56 2020 -0500
+
+    Finish testing
+
+commit 0556ee6feaf523a9bf5da79dec2ee55276b98e34
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 16:42:05 2020 -0500
+
+    Start first test
+
+commit 5a648e40116b968a7595f808da4477f42aa5c79f
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Sun Nov 1 16:24:11 2020 -0500
+
+    Working version Challenge 7
+
+commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (InCollege-App-Texas-Team/Ali, Ali)
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 17:05:26 2020 -0400
+
+    Finished Spring
+
+commit e270f0e531edca8a1bcf8765d76fdb989ec05804
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 15:23:51 2020 -0400
+
+    ..
+
+commit ca6ee1fd7f261ed86a43da7bb35667699567c190
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 13:44:54 2020 -0400
+
+    Finished Replies For Messaging
+
+commit b51d5d97cb71fbc6e543e12e8dad4cd377594622
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 12:39:50 2020 -0400
+
+    updates
+
+Date:   Sat Oct 31 15:23:51 2020 -0400
+
+    ..
+
+commit ca6ee1fd7f261ed86a43da7bb35667699567c190
+commit e270f0e531edca8a1bcf8765d76fdb989ec05804
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 15:23:51 2020 -0400
+
+    ..
+
+commit ca6ee1fd7f261ed86a43da7bb35667699567c190
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 13:44:54 2020 -0400
+
+    Finished Replies For Messaging
+
+commit b51d5d97cb71fbc6e543e12e8dad4cd377594622
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Sat Oct 31 12:39:50 2020 -0400
+
+    updates
+
+commit 6f98008e315ebe0ffbdd883427edff5816c6d289
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Wed Oct 28 17:50:21 2020 -0400
+
+    Inbox / Message sending works
+
+commit c454a30ec725391883ff03cbb59632a3a01e2156
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Wed Oct 28 13:56:38 2020 -0400
+
+    message updates
+
+commit 3cf51dcbcc8e09564e87b51ef58afdb95c3f8a1e
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Wed Oct 28 13:52:07 2020 -0400
+
+    Messaging
+
+commit 0e94fc22d97024a770473e15a801f9e45ae88110
+Author: Ali Bayatpoor <alizbay94@gmail.com>
+Date:   Wed Oct 28 10:11:02 2020 -0400
+
+    test
+
+commit 70f854f490f9c640eb24177ad6a21ee3e39b01f3
+Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
+Date:   Mon Oct 26 00:20:48 2020 -0400
