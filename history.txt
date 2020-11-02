@@ -11,7 +11,7 @@ Date:   Sat Oct 31 16:42:05 2020 -0400
 
     Start first test
 
-commit 5a648e40116b968a7595f808da4477f42aa5c79f (tag: 201030Texas)
+commit 5a648e40116b968a7595f808da4477f42aa5c79f (HEAD -> master, tag: 201030Texas)
 Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
 Date:   Fri Oct 30 20:35:11 2020 -0400
 
