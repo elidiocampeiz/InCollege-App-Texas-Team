@@ -81,7 +81,7 @@ def main():
     # theUser = user.User()
     while (sel != 'x'):
 
-        # This menu is displayed to non-logged in user
+        # non-logged in user
         if (loginStatus == False):
 
             # in this case we navigated from somewhere else to create a new account
@@ -536,15 +536,23 @@ def main():
         # if User is logged in
         else:
 
-            #Displaying friend requests
+            #NOTIFICATION: Friend Request
             while(accnt.diplay_friend_request_list(db, theStudent)):
                 pass
 
-            #Printing out how many messages are in the users inbox    
+            #NOTIFICATION: Messages in inbox    
             isMessage = accnt.display_number_in_inbox(theStudent)
 
+            #NOTIFICATION: create a profile
             if theStudent.finished_profile == False:
                 print("\nNOTIFICATION: Don't forget to create a profile!\n")
+                time.sleep(1)
+                
+            #NOTIFICATION: If user has not applied in 7 days
+            hasApplied = accnt.check_last_seven_days_app(theStudent)
+            
+            #NOTIFICATION: Checking if any new users since last time logged in
+            newUsers = accnt.check_new_users(theStudent, db)
 
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
@@ -562,8 +570,9 @@ def main():
             print(" +------------------------------+")
             print("")
 
-            theStudent.date_recently_accessed = datetime.datetime.now() #updating most recent access to account everytime main menu is visited
-            
+            theStudent.date_recently_accessed = datetime.datetime.now() # updating most recent access to account everytime main menu is visited
+            db.set_student(theStudent)# saving updates in database
+
             sel = input("Enter Your Selection: ")
 
             # Jobs
@@ -634,7 +643,7 @@ def main():
                                     if sel == "1":
                                         # returns true if applied successfully, false otherwise
                                         hasApplied = accnt.apply_for_job(
-                                            db, jobTitle, theStudent.username)
+                                            db, jobTitle, theStudent.username, theStudent)
 
                                         if hasApplied is True:
                                             print("Successfully Applied!")
@@ -1385,9 +1394,11 @@ def main():
                 # print("Students in database: ", db.data["Students"])
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
-                print("\n", theStudent.date_recently_accessed)
-
                 theStudent.date_recently_accessed = datetime.datetime.now() #updating most recent access
+                db.set_student(theStudent) #saving changes to database
+                #Prints date time when logging out
+                #print("\n", theStudent.date_recently_accessed)
+
                 return 0
             elif sel == "-100":
                 db.clear()

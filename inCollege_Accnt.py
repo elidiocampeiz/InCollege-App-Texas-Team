@@ -4,6 +4,7 @@ from inCollege_Student import *
 import time
 # This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)
 import textwrap
+import datetime
 
 
 # function that validates a secure password
@@ -73,8 +74,8 @@ def login(DB):
 
     # theUser = user.User(username, DB)
     # return theUser
-    theStudent = DB.get_student_by_username(username)
-    return theStudent
+    student = DB.get_student_by_username(username)
+    return student
 
 # Function for create an account UI
 
@@ -277,7 +278,7 @@ def date_checker(date_input):
 # This function returns true upon successful completion of whole application
 # returns false if only part of the application is filled
 # if they already applied for the job it returns false
-def apply_for_job(DB, jobTitle, username):
+def apply_for_job(DB, jobTitle, username, student):
 
     # Checking if user has already applied
     for job in DB.data["Jobs"]:
@@ -301,6 +302,7 @@ def apply_for_job(DB, jobTitle, username):
     print()
     grad_date = input("Enter Graduation Date: ")
     valid_date = date_checker(grad_date)
+    
 
     if grad_date == "x":
         return False
@@ -337,7 +339,9 @@ def apply_for_job(DB, jobTitle, username):
             job['users_applied'].append(users_application)
             # print("TEST: User Appended")
             hasApplied = True
-
+    
+    student.date_last_app_sent = datetime.datetime.now() #saving most recent time an application was sent
+    DB.set_student(student)
     DB.save()
     return hasApplied
 
@@ -989,27 +993,27 @@ def diplay_job_list(student, DB):
     time.sleep(1)
     return True
 
-    # above is the new
+#returns false if student has not applied in more than 7 days, returns true otherwise
+def check_last_seven_days_app(student):
+    todays_date = datetime.datetime.now() #Getting todays date time info
+    seven_days = days = datetime.timedelta(7) #this is used to subtract seven days in next step
+    seven_days_ago = todays_date - seven_days #figuring out what the datetime was exactly 7 days ago
+    #below is a test statement that shows when the last app was submitted (automatically set to date account was created if no apps have been sent)
+    #print("Last Application sent: ", student.date_last_app_sent, "\n")
+    if(student.date_last_app_sent < seven_days_ago):
+        print("\nNOTIFICATION: Remember – you're going to want to have a job when you graduate. \nMake sure that you start to apply for jobs today!\n")
+        time.sleep(1)
+        return False
+    return True
 
-#    for index, friend in enumerate(student.friends):
-#        fullname = friend.firstname.capitalize() + ' ' + friend.lastname.capitalize()
-#        sel_index = str(index+1)+'.'
-#        # Chars:   2        3            40                  2
-#        print(" |", sel_index, fullname.ljust(40-5, ' '), "| ")
+def check_new_users(myStudent, DB):
+    #Getting dictionary of students from databaseß
+    dictOfUsers = DB.data["Students"]
+    #Iterating through dictionary
+    for k in dictOfUsers.keys():
+        stuObj =  dictOfUsers[k]
+        #If anyone has joined since we were last logged in...
+        if myStudent.date_recently_accessed < stuObj.date_joined:
+            print(stuObj.firstname, " ", stuObj.lastname, " has joined InCollege.\n")
+            time.sleep(1)
 
-#    print(" | x. Go Back                             |")
-#    print(" +----------------------------------------+ ")
-#    index = input("Enter Your Selection: ")
-#    if index == 'x':
-#        return False
-    # if index is a string of a number in range of the student.friends List
-
-#    if index.isnumeric():
-#        idx = int(index) - 1
-#        if idx < len(student.friends):
-#            while display_friend_profile(student.friends[idx]):
-#                pass
-#            return True
-
-#    print("...Invalid Input")
-#

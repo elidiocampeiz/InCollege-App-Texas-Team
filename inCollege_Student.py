@@ -15,8 +15,9 @@ class Student():
         self.education={} # Dict school name, degree, and years attended.
         self.friends = []
         self.messages = []
-        self.date_recently_accessed = datetime.datetime.now() #Used last known activity instead of last time logged out since someone could exit without logging out
-        
+        self.date_joined = datetime.datetime.now()
+        self.date_recently_accessed = datetime.datetime.now() #last known activity initialized to now
+        self.date_last_app_sent = datetime.datetime.now() #timer begins when student makes an account, in 7 days if no application is sent the student will be reminded upon logging in
     #self.__dict__ classes in python have dictionaries underneath their variables
     #Takes the key args 
     # print(aStudent.__dict__) would give {'i_var': 2}
