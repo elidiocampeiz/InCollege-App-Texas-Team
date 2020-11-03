@@ -1,3 +1,4 @@
+import datetime
 
 #Call whatever you believe student should have
 # Either get a value or an empty string and this is accomplished by 
@@ -14,6 +15,7 @@ class Student():
         self.education={} # Dict school name, degree, and years attended.
         self.friends = []
         self.messages = []
+        self.date_recently_accessed = datetime.datetime.now() #Used last known activity instead of last time logged out since someone could exit without logging out
         
     #self.__dict__ classes in python have dictionaries underneath their variables
     #Takes the key args 

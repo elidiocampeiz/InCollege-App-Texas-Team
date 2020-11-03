@@ -5,6 +5,7 @@ import inCollege_Accnt as accnt
 import inCollege_Database as database
 #import inCollege_CurrentUser as user
 import time
+import datetime
 
 # Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
 #     - The @ symbol means we are navigating back through menu to create a new account
@@ -560,6 +561,9 @@ def main():
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
+
+            theStudent.date_recently_accessed = datetime.datetime.now() #updating most recent access to account everytime main menu is visited
+            
             sel = input("Enter Your Selection: ")
 
             # Jobs
@@ -1381,6 +1385,9 @@ def main():
                 # print("Students in database: ", db.data["Students"])
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
+                print("\n", theStudent.date_recently_accessed)
+
+                theStudent.date_recently_accessed = datetime.datetime.now() #updating most recent access
                 return 0
             elif sel == "-100":
                 db.clear()
