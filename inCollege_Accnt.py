@@ -187,9 +187,10 @@ def post_job(fullname, username, DB):
     salary = str(input("Enter Job Salary: "))
     if salary == 'x':
         return False
-
+    # This should add a datetime date to the job posting. Meant for comparison's sake to see if the job has been recently posted.
+    date = datetime.datetime.now()
     create_job_posting = DB.create_job_posting(
-        title, description, employer, location, salary, fullname, username)
+        title, description, employer, location, salary, fullname, username, date)
 
     if (create_job_posting == False):
         print("\n|*| Create Job Posting Error |*|")
@@ -227,6 +228,8 @@ def display_number_in_inbox(student):
 # It will return true if the job title entered
 # by the user results in an existing match, and false otherwise
 # It then prints out the details of the Job
+
+
 def display_job_info(DB, jobTitle):
 
     # will be true if there is a match
@@ -245,13 +248,15 @@ def display_job_info(DB, jobTitle):
 
     return isFound
 
+
 def data_format(date_input):
-    if len(date_input) < 10 or not date_input[0].isnumeric or not date_input[1].isnumeric or not date_input[2] =='/' \
-        or not date_input[3].isnumeric or not date_input[4].isnumeric or not date_input[5] =='/' \
-            or not date_input[6].isnumeric or not date_input[7].isnumeric or not date_input[8].isnumeric \
-                or not date_input[9].isnumeric:
+    if len(date_input) < 10 or not date_input[0].isnumeric or not date_input[1].isnumeric or not date_input[2] == '/' \
+            or not date_input[3].isnumeric or not date_input[4].isnumeric or not date_input[5] == '/' \
+        or not date_input[6].isnumeric or not date_input[7].isnumeric or not date_input[8].isnumeric \
+            or not date_input[9].isnumeric:
         return False
     return True
+
 
 def date_checker(date_input):
     if not data_format(date_input):
@@ -302,7 +307,6 @@ def apply_for_job(DB, jobTitle, username, student):
     print()
     grad_date = input("Enter Graduation Date: ")
     valid_date = date_checker(grad_date)
-    
 
     if grad_date == "x":
         return False
@@ -339,8 +343,10 @@ def apply_for_job(DB, jobTitle, username, student):
             job['users_applied'].append(users_application)
             # print("TEST: User Appended")
             hasApplied = True
-    
-    student.date_last_app_sent = datetime.datetime.now() #saving most recent time an application was sent
+
+    # saving most recent time an application was sent
+    student.date_last_app_sent = datetime.datetime.now()
+    Student.add_applied_job(student, jobTitle)
     DB.set_student(student)
     DB.save()
     return hasApplied
@@ -442,10 +448,11 @@ def update_education_info(DB, student):
     # Captilize each starting letter
     for word in words.split():
         major += word.capitalize() + ' '
-    
+
     print()
     # Get year input
-    words = input("Enter Your Status Year (Freshman, Sophomore, Junior, Senior): ")
+    words = input(
+        "Enter Your Status Year (Freshman, Sophomore, Junior, Senior): ")
     if words == 'x':
         return False
     # Captilize each starting letter
@@ -491,7 +498,8 @@ def update_experience_info(DB, student):
         if end_date == 'x':
             return False
         # Add new job experience to Student
-        result = student.add_job_experience(title, employer, start_date, end_date, location, description)
+        result = student.add_job_experience(
+            title, employer, start_date, end_date, location, description)
         # If add_job_experience not success
         if not result:
             print("\n|*| Maximum Number of Jobs |*|")
@@ -505,6 +513,7 @@ def update_experience_info(DB, student):
 
 def clear_accounts():
     database.Database
+
 
 def display_profile(student):
     # if student.username=='':
@@ -558,20 +567,26 @@ def display_profile(student):
     print(" +----------------------------------------+")
     print(" |             Job Experience             |")
 
-    
     for job_experience in list_of_jobs:
         print(" +----------------------------------------+")
-        print(" | Job Title:  ", job_experience['title'].ljust(40-13-2, ' '), '| ')
-        print(" | Employer:   ", job_experience['employer'].ljust(40-13-2, ' '), '| ')
-        print(" | Start Date: ", job_experience['start_date'].ljust(40-13-2, ' '), '| ')
-        print(" | End Date:   ", job_experience['end_date'].ljust(40-13-2, ' '), '| ')
-        print(" | Location:   ", job_experience['location'].ljust(40-13-2, ' '), '| ')
-        print(" | Description:", job_experience['description'].ljust(40-13-2, ' '), '| ')
+        print(" | Job Title:  ", job_experience['title'].ljust(
+            40-13-2, ' '), '| ')
+        print(" | Employer:   ", job_experience['employer'].ljust(
+            40-13-2, ' '), '| ')
+        print(" | Start Date: ", job_experience['start_date'].ljust(
+            40-13-2, ' '), '| ')
+        print(" | End Date:   ", job_experience['end_date'].ljust(
+            40-13-2, ' '), '| ')
+        print(" | Location:   ", job_experience['location'].ljust(
+            40-13-2, ' '), '| ')
+        print(" | Description:", job_experience['description'].ljust(
+            40-13-2, ' '), '| ')
         # print(' |', job_experience['description'].ljust(40-2, ' '), '| ')
-    
+
     print(" +----------------------------------------+ ")
     print()
-    
+
+
 def edit_profile_menu(student):
     print(" +----------------------------------------+ ")
     print(" |            Edit Profile?               |")
@@ -580,7 +595,6 @@ def edit_profile_menu(student):
     print(" | x. Go Back                             |")
     print(" +----------------------------------------+ ")
 
-    
     edit_selection = input('Enter Your Selection: ')
     if edit_selection == '1':
         print("+=====================================+")
@@ -615,6 +629,7 @@ def display_friend_profile(student):
         time.sleep(1)
         return True
 
+
 def diplay_friend_list(student):
     print(" +----------------------------------------+ ")
     print(" |            List of Friends             | ")
@@ -641,12 +656,14 @@ def diplay_friend_list(student):
             while display_friend_profile(student.friends[idx]):
                 pass
             return True
-    
+
     print("...Invalid Input")
     time.sleep(1)
-    return True 
+    return True
 
-def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCON1
+
+# Needs Plus functionality DEFCON1
+def diplay_sendMessage_list_plus(DB, student):
     print(" +----------------------------------------+ ")
     print(" |             Send Message               | ")
     print(" +----------------------------------------+ ")
@@ -657,14 +674,14 @@ def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCO
     username = []
     index = 0
 
-    #this references which user to send message to
+    # this references which user to send message to
     dictOfUsers = DB.data["Students"]
     for k in dictOfUsers.keys():
         username.append(k)
         index += 1
     index = 0
 
-    #iterating through dictionary
+    # iterating through dictionary
     for index, stud in enumerate(dictOfUsers):
         fname = dictOfUsers[stud].firstname.capitalize()
         lname = dictOfUsers[stud].lastname.capitalize()
@@ -688,7 +705,7 @@ def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCO
             recipient = DB.get_student_by_username(recipient_un)
             print("|*| NOTE - Enter 'x' to cancel message |*|\n")
             print("Sending message to ", recipient.firstname,
-                    " ", recipient.lastname, "\n\n")
+                  " ", recipient.lastname, "\n\n")
 
             # get user's message
             message_body = input("Enter Message Here: ")
@@ -708,8 +725,8 @@ def diplay_sendMessage_list_plus(DB, student):  # Needs Plus functionality DEFCO
     return True
 
 
-#Prints the student's friends and asks which one's he would like to send a message to
-#TODO make a conditional statement in this function that takes care of plus members who can message anyone
+# Prints the student's friends and asks which one's he would like to send a message to
+# TODO make a conditional statement in this function that takes care of plus members who can message anyone
 def diplay_sendMessage_list(DB, student):
     print(" +----------------------------------------+ ")
     print(" |             Send Message               | ")
@@ -733,34 +750,39 @@ def diplay_sendMessage_list(DB, student):
     if index.isnumeric():
         idx = int(index) - 1
 
-        #Sending Message....
+        # Sending Message....
         if idx < len(student.friends):
             isSent = send_message(student, student.friends[idx], DB)
             if isSent == "x":
                 return False
             else:
                 return True
-            
+
     print("...Invalid Input")
     time.sleep(1)
-    return True 
+    return True
 
-#returns true if message is successfully sent, false otherwise
+# returns true if message is successfully sent, false otherwise
+
+
 def send_message(student, recipient, DB):
     print("\n|*| NOTE - Enter 'x' to cancel message |*|\n")
-    print("|*|Sending message to ", recipient.firstname, " ", recipient.lastname, "|*|\n")
+    print("|*|Sending message to ", recipient.firstname,
+          " ", recipient.lastname, "|*|\n")
 
-    message_body = input("Enter Message Here: ")# get user's message
+    message_body = input("Enter Message Here: ")  # get user's message
     if message_body == "x":
         return False
     else:
-        message = [student, message_body]           
-        recipient.add_message(message)              # Add to recipient's messages
-        DB.set_student(recipient)           #saving student's method info in database
+        message = [student, message_body]
+        # Add to recipient's messages
+        recipient.add_message(message)
+        DB.set_student(recipient)  # saving student's method info in database
         print("\n... message sent successfully!\n")
         time.sleep(1)
         return True
-        
+
+
 def diplay_inbox(student, DB):
     print(" +----------------------------------------+ ")
     print(" |                Inbox                   | ")
@@ -770,9 +792,10 @@ def diplay_inbox(student, DB):
     # 2(' |') + 40('-') + 2('| ) chars
     print(" +----------------------------------------+ ")
 
-    for index, message in enumerate(student.messages): #each message is a dict
-        sender = message[0] #arg at 0 is a student object
-        sender_fullname = sender.firstname.capitalize() + ' ' + sender.lastname.capitalize()
+    for index, message in enumerate(student.messages):  # each message is a dict
+        sender = message[0]  # arg at 0 is a student object
+        sender_fullname = sender.firstname.capitalize() + ' ' + \
+            sender.lastname.capitalize()
         sel_index = str(index+1)+'.'
         # Chars:   2        3            40                  2
         print(" |", sel_index, sender_fullname.ljust(40-5, ' '), "| ")
@@ -786,7 +809,7 @@ def diplay_inbox(student, DB):
     if index.isnumeric():
         idx = int(index) - 1
         if idx < len(student.messages):
-            
+
             msgContainer = student.messages[idx]
             sender = msgContainer[0]
             messageBody = msgContainer[1]
@@ -812,53 +835,53 @@ def diplay_inbox(student, DB):
                 if isSent:
                     return True
                 else:
-                    return False #if message was not sent
-                
+                    return False  # if message was not sent
+
             elif selection == "x":
-                return False #user wants to go back to message menu
-
-
-
+                return False  # user wants to go back to message menu
 
 
 def display_accept_request_menu(DB, student, student_req):
-        fullname = student_req.firstname.capitalize() + ' ' + student_req.lastname.capitalize()
-        print(" +------------------------------------------------+ ")        
-        print(" {}'s Friend Requests".format(fullname))
-        print(" +------------------------------------------------+ ")
-        print(" | 1. Accept                                      |")
-        print(" | 2. Deny                                        |")
-        print(" | x. Go Back                                     |")
-        print(" +------------------------------------------------+ ")
-        selection = input("Enter Your Selection: ")
-        if selection == 'x':
-            return False # Returns to the previous menu
-        elif selection == '1':
-            # add student1 as friend of student2 and vice versa
-            student.add_friend(student_req)
-            student_req.add_friend(student)
-            # save them in DB
-            DB.set_student(student_req)
-            DB.set_student(student)
-            DB.remove_friend_request(student.username, student_req.username)
-        elif selection == '2':
-            DB.remove_friend_request(student.username, student_req.username)
-        else:
-            print("...Invalid Input")
-            time.sleep(1)
-            return True # run again invalid input
-        return False 
+    fullname = student_req.firstname.capitalize(
+    ) + ' ' + student_req.lastname.capitalize()
+    print(" +------------------------------------------------+ ")
+    print(" {}'s Friend Requests".format(fullname))
+    print(" +------------------------------------------------+ ")
+    print(" | 1. Accept                                      |")
+    print(" | 2. Deny                                        |")
+    print(" | x. Go Back                                     |")
+    print(" +------------------------------------------------+ ")
+    selection = input("Enter Your Selection: ")
+    if selection == 'x':
+        return False  # Returns to the previous menu
+    elif selection == '1':
+        # add student1 as friend of student2 and vice versa
+        student.add_friend(student_req)
+        student_req.add_friend(student)
+        # save them in DB
+        DB.set_student(student_req)
+        DB.set_student(student)
+        DB.remove_friend_request(student.username, student_req.username)
+    elif selection == '2':
+        DB.remove_friend_request(student.username, student_req.username)
+    else:
+        print("...Invalid Input")
+        time.sleep(1)
+        return True  # run again invalid input
+    return False
+
 
 def diplay_friend_request_list(DB, student):
-    username_list = DB.data['Friend Requests'].get(student.username) #gets 
+    username_list = DB.data['Friend Requests'].get(student.username)  # gets
     if username_list == None or len(username_list) < 1:
         return False
     print(" +----------------------------------------------+ ")
     print(" |           Pending Friend Requests            | ")
     print(" +----------------------------------------------+ ")
     print(" | Select Friend Request to accept or delete it | ")
-    print(" +----------------------------------------------+ ") # 2(' |') + 46('-') + 2('| ) chars
-    
+    # 2(' |') + 46('-') + 2('| ) chars
+    print(" +----------------------------------------------+ ")
+
     students_list = []
     for username in username_list:
         user = DB.get_student_by_username(username)
@@ -867,10 +890,11 @@ def diplay_friend_request_list(DB, student):
         # Else means the from_username of the request belongs to a user that is not part of the DB anymore
     for index, student_request in enumerate(students_list):
 
-        fullname = student_request.firstname.capitalize() + ' ' + student_request.lastname.capitalize()
+        fullname = student_request.firstname.capitalize(
+        ) + ' ' + student_request.lastname.capitalize()
         sel_index = str(index+1)+'.'
         # Chars:   2        3            40                  2
-        print(   " |", sel_index, fullname.ljust(46-5, ' '),"| ")
+        print(" |", sel_index, fullname.ljust(46-5, ' '), "| ")
 
     print(" | x. To Quit                                   |")
     print(" +----------------------------------------------+ ")
@@ -878,28 +902,28 @@ def diplay_friend_request_list(DB, student):
     if index == 'x':
         return False
     # if index is a string of a number in range of the student.friends List
-    
+
     if index.isnumeric():
         idx = int(index) - 1
         if idx < len(students_list):
             while display_accept_request_menu(DB, student, students_list[idx]):
                 pass
             return True
-    
+
     print("...Invalid Input")
     time.sleep(1)
-    return True 
-    
-     
-#This function allows user to search for friends by last name, university, or major.
-#If there is a match the user is given to send a friend request. 
-#If they send a friend request the function returns true.
-#If they do not senf a friend request the funct    
+    return True
+
+
+# This function allows user to search for friends by last name, university, or major.
+# If there is a match the user is given to send a friend request.
+# If they send a friend request the function returns true.
+# If they do not senf a friend request the funct
 
 def send_friend_request_menu(DB, mystudent):
     print("|*| NOTE - Enter 'x' at any time to go back |*|\n")
     search_value = input("\nType Here: ")
-    
+
     if search_value == 'x':
         return False
 
@@ -907,16 +931,18 @@ def send_friend_request_menu(DB, mystudent):
     found = False
 
     print("\nSearch Results:")
-    #for students in the database
+    # for students in the database
     for username, student in DB.data["Students"].items():
         # If lastname, university, or major matches then print the student's information. (Concatenated space to account for space at end of 'university' and 'major'))
         if student.username != mystudent.username and (student.lastname == search_value.capitalize() or student.lastname == search_value or student.get_education()['university'] == search_value.capitalize()+" " or student.get_education()['major'] == search_value.capitalize()+" "):
             found = True
-            print("Username: ", student.username, " | Name: ", student.firstname, " ", student.lastname)
+            print("Username: ", student.username, " | Name: ",
+                  student.firstname, " ", student.lastname)
             print("University: ", student.get_education()['university'])
             print("Major: ", student.get_education()['major'])
-            
-            print("\nEnter \'y\' to send a request to ", student.username, " \nor anything else to continue...")
+
+            print("\nEnter \'y\' to send a request to ",
+                  student.username, " \nor anything else to continue...")
             isRequest = input("Type Here: ")
             # Check if students are already frieneds
             is_friend = False
@@ -927,16 +953,16 @@ def send_friend_request_menu(DB, mystudent):
                     is_friend = True
                     break
 
-                    
             if isRequest == "y" and not is_friend:
-                adding_friend = DB.add_friend_request(student.username, mystudent.username)
+                adding_friend = DB.add_friend_request(
+                    student.username, mystudent.username)
                 if adding_friend == True:
                     print("Request Sent!\n")
                     time.sleep(1)
                 else:
                     print("Request was already sent...\n")
                     time.sleep(1)
-            
+
     if found == False:
         print("...")
         time.sleep(1)
@@ -945,7 +971,6 @@ def send_friend_request_menu(DB, mystudent):
         return False
     else:
         return True
-
 
     print("...Invalid Input")
     time.sleep(1)
@@ -993,12 +1018,16 @@ def diplay_job_list(student, DB):
     time.sleep(1)
     return True
 
-#returns false if student has not applied in more than 7 days, returns true otherwise
+# returns false if student has not applied in more than 7 days, returns true otherwise
+
+
 def check_last_seven_days_app(student):
-    todays_date = datetime.datetime.now() #Getting todays date time info
-    seven_days = days = datetime.timedelta(7) #this is used to subtract seven days in next step
-    seven_days_ago = todays_date - seven_days #figuring out what the datetime was exactly 7 days ago
-    #below is a test statement that shows when the last app was submitted (automatically set to date account was created if no apps have been sent)
+    todays_date = datetime.datetime.now()  # Getting todays date time info
+    # this is used to subtract seven days in next step
+    seven_days = days = datetime.timedelta(7)
+    # figuring out what the datetime was exactly 7 days ago
+    seven_days_ago = todays_date - seven_days
+    # below is a test statement that shows when the last app was submitted (automatically set to date account was created if no apps have been sent)
     #print("Last Application sent: ", student.date_last_app_sent, "\n")
     if(student.date_last_app_sent < seven_days_ago):
         print("\nNOTIFICATION: Remember – you're going to want to have a job when you graduate. \nMake sure that you start to apply for jobs today!\n")
@@ -1006,14 +1035,33 @@ def check_last_seven_days_app(student):
         return False
     return True
 
+
 def check_new_users(myStudent, DB):
-    #Getting dictionary of students from databaseß
+    # Getting dictionary of students from databaseß
     dictOfUsers = DB.data["Students"]
-    #Iterating through dictionary
+    # Iterating through dictionary
     for k in dictOfUsers.keys():
-        stuObj =  dictOfUsers[k]
-        #If anyone has joined since we were last logged in...
+        stuObj = dictOfUsers[k]
+        # If anyone has joined since we were last logged in...
         if myStudent.date_recently_accessed < stuObj.date_joined:
-            print(stuObj.firstname, " ", stuObj.lastname, " has joined InCollege.\n")
+            print(stuObj.firstname, " ", stuObj.lastname,
+                  " has joined InCollege.\n")
             time.sleep(1)
 
+# Nicholas's Additions: Checks if jobs have been posted/removed.
+
+
+def check_job_posts(myStudent, DB):
+    t = myStudent.date_recently_accessed
+    for job in DB.data["Jobs"]:
+        if (t < job['date_posted']):
+            print("A new job " + job['title'] + " has been posted!")
+            time.sleep(1)
+    for jobApps in myStudent.applied_jobs:
+        found = False
+        for job in DB.data["Jobs"]:
+            if jobApps == job['title']:
+                found = True
+        if (found == False):
+            print("The job " + jobApps + " has been removed.")
+            Student.remove_applied_job(myStudent, jobApps)

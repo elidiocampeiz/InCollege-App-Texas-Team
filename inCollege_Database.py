@@ -117,9 +117,9 @@ class Database():
         time.sleep(1)
         return True
 
-    def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username):
+    def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username, date):
 
-        if title == '' or description == '' or employer == '' or location == '' or salary == '' or name_of_poster == '' or poster_username == '':
+        if title == '' or description == '' or employer == '' or location == '' or salary == '' or name_of_poster == '' or poster_username == '' or date == '':
             return False
         # loading data from file
         self.load()
@@ -136,7 +136,8 @@ class Database():
                    'location': location, 'salary': salary, 'name_of_poster': name_of_poster,
                    'users_applied': [],
                    'users_saved': [],
-                   'poster_id': poster_username}
+                   'poster_id': poster_username,
+                   'date_posted': date}
         # users applied, and saved above will be users who applied to or saved the job posting
 
         # Appending new job to list
@@ -165,7 +166,7 @@ class Database():
         # if there is no student section there is not student account
         if "Students" not in self.data:
             return False
-        
+
         # # Iterate through each student in "Students" section
         # for student in self.data["Students"]:
         #     # If username and password match, login succesful return True
@@ -293,12 +294,12 @@ class Database():
         elif from_username in self.data['Friend Requests'][to_username]:
             # Request already exists return false
             return False
-        else: # add request to DB
+        else:  # add request to DB
             self.data['Friend Requests'][to_username].add(from_username)
         # Save DB
         self.save()
         return True
-    
+
     # Removes a reqest sent to to_username from from_username
     def remove_friend_request(self, to_username, from_username):
         if to_username == from_username:
@@ -307,7 +308,7 @@ class Database():
         if self.data['Friend Requests'].get(to_username) == None or from_username not in self.data['Friend Requests'][to_username]:
             # Nothing to remove
             return False
-        elif len( self.data['Friend Requests'][to_username]) > 1: # Remove request from DB
+        elif len(self.data['Friend Requests'][to_username]) > 1:  # Remove request from DB
             self.data['Friend Requests'][to_username].remove(from_username)
         else:
             self.data['Friend Requests'].pop(to_username)
@@ -320,9 +321,9 @@ class Database():
 #     print(" +----------------------------------------+")
 #     print(" |          Enter 'x' to go back          |")
 #     print(" +----------------------------------------+")
-    
+
 #     print("Sending message to ", recipient.firstname, " ", recipient.lastname, "\n\n")
-    
+
 #     message_body = input("Enter Message Here: ")# get user message
 #     if message_body == "x":
 #         return False
@@ -331,7 +332,7 @@ class Database():
 #         isAdded = recipient.add_message( message)
 #         if isAdded:
 #             print("Message sent successfully!")
-            
+
 #             return True
 #         else:
 #             return False
