@@ -99,7 +99,7 @@ class Database():
         #         print('Username already in use')
         #         time.sleep(1)
         #         return False
-
+        my_student.update(finished_profile=False)
         if new_username in self.data["Students"].keys():
             print('Username already in use...')
             time.sleep(1)

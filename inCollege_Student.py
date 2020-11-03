@@ -4,7 +4,7 @@
 class Student():
     # def __init__(self, username, password, firstname='', lastname=''):
     def __init__(self, **kwargs):
-        self.update(**kwargs)
+        self.update(**kwargs) #
         # Class params
         # self.student_data['username']=username
         # self.student_data['password']=password

@@ -542,6 +542,8 @@ def main():
             #Printing out how many messages are in the users inbox    
             isMessage = accnt.display_number_in_inbox(theStudent)
 
+            if theStudent.finished_profile == False:
+                print("\nNOTIFICATION: Don't forget to create a profile!\n")
 
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
