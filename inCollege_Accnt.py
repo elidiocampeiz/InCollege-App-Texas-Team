@@ -1,5 +1,5 @@
 import inCollege_Database as database
-import inCollege_CurrentUser as user
+# import inCollege_CurrentUser as user
 from inCollege_Student import *
 import time
 # This will be used for formatting tex (ensuring lines do not exceed a certain amount for ex)

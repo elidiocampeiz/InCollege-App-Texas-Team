@@ -1,9 +1,7 @@
 import pytest
 import inCollege_Accnt as accnt
 import inCollege_Home as home
-import inCollege_CurrentUser as user
 import inCollege_Database as database
-import inCollege_CurrentUser as user
 from inCollege_Student import *
 import time
 time.sleep=lambda x:None
