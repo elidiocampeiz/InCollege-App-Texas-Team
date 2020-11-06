@@ -6,6 +6,9 @@ import inCollege_Database as database
 import inCollege_CurrentUser as user
 from inCollege_Student import *
 import time
+import datetime
+
+
 time.sleep=lambda x:None
 
 # Test function that asserts whether the passwordChecker() function returned the correct value
@@ -275,7 +278,8 @@ def test_login(DB, username, password, expected):
 ])
 
 def test_create_job_posting(DB, title, description, employer, location, salary, name_of_poster, poster_username, expected):
-    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username)
+    date = datetime.datetime.now()
+    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username,date)
     assert result == expected
 
 ############ TEST REMOVE JOB POSTING ############
@@ -1611,11 +1615,12 @@ def apply_for_job_fake_inputs(key, graduation_date, graduation_date2, start_date
         False,
     ),
 ])
-def test_apply_for_job(monkeypatch, DB, jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected):
+def test_apply_for_job(monkeypatch,default_Student, DB, jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected):
     with monkeypatch.context() as m:
         m.setattr('builtins.input', lambda x: apply_for_job_fake_inputs(x, graduation_date, graduation_date2, start_date, start_date2, why_me))
-        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
-        result = accnt.apply_for_job(DB, jobTitle, username)
+        date = datetime.datetime.now()
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username,date)
+        result = accnt.apply_for_job(DB, jobTitle, username, default_Student)
         
         assert result == expected
 
@@ -1637,7 +1642,8 @@ def test_apply_for_job(monkeypatch, DB, jobTitle, username, graduation_date, gra
 def test_save_job(DB, jobTitle, username, expected):
     
     if expected:
-        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
+        date = datetime.datetime.now()
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username,date)
     result = accnt.save_job(DB, jobTitle, username)
     
     assert result == expected
