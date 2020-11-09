@@ -346,6 +346,13 @@ new_lastname='word'
 new_university = 'USF'
 new_major = 'CS'
 
+new_username2='word2'
+new_password2='word'
+new_firstname2='word'
+new_lastname2='word'
+new_university2 = 'USF'
+new_major2 = 'CS'
 
+DB.add_friend_requenst(new_username2, new_username)
+print(DB.data["Friend Request"])
 
-DB.search_by_field(new_university, new_major)
