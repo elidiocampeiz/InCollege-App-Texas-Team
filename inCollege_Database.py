@@ -152,10 +152,12 @@ class Database():
         return True
 
     def remove_job_posting(self, job):
-        self.data["Jobs"].remove(job)
-        print("Job removed?")
-        self.save()
-        return True
+        if job in self.data["Jobs"]:
+            self.data["Jobs"].remove(job)
+            print("Job removed")
+            self.save()
+            return True
+        return False
 
     # Login function
     def login(self, username, password):

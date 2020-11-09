@@ -175,7 +175,8 @@ class Student():
         self.applied_jobs.append(jobTitle)
 
     def remove_applied_job(self, jobTitle):
-        self.applied_jobs.remove(jobTitle)
+        if jobTitle in self.applied_jobs:
+            self.applied_jobs.remove(jobTitle)
 
     def get_job_count(self):
         count = 0

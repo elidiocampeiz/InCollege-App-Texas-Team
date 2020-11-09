@@ -279,7 +279,8 @@ def test_login(DB, username, password, expected):
 
 def test_create_job_posting(DB, title, description, employer, location, salary, name_of_poster, poster_username, expected):
     date = datetime.datetime.now()
-    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username,date)
+    
+    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username, date)
     assert result == expected
 
 ############ TEST REMOVE JOB POSTING ############
@@ -1861,9 +1862,77 @@ def test_diplay_inbox(monkeypatch, DB, default_Student, default_Student2, select
         result = accnt.diplay_inbox(default_Student2, DB)
         assert result == expected
 
+def test_check_job_posts(capsys, default_Student, DB):
+    
+    # Test if the student logs in and there is no new job 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    # check job post
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # the function should not output anything 
+    assert captured.out == ''
+    
+    # change the login date of the student to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_recently_accessed = date
+    # post a job with posting date equals to now 
+    jobTitle = '1_title'
+    # job = {jobTitle, 'description', 'employer', 'location', 'salary', 'name_of_poster', 'poster_username', date}
+    DB.create_job_posting(jobTitle, 'description', 'employer', 'location', 'salary', 'name_of_poster', 'poster_username', date)
+    default_Student.add_applied_job(jobTitle)
+    DB.set_student(default_Student)
+    # check job post
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # function should have printed the new job notification
+    assert captured.out != ''
+
+    # if we log in again there is no notification 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # the function should not output anything 
+    assert captured.out == ''
+    
+    # if a job the student applyed for gets removed 
+    # he should get a notification
+    # Search and delete a job
+    for jobs in DB.data["Jobs"]:
+        if jobs['title'] == jobTitle:
+            # print('succes')
+            DB.remove_job_posting(jobs)
+    # check job post notifications
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # function should have printed the new job notification
+    assert captured.out != ''
+
+def test_check_new_users(capsys, default_Student, default_Student2, DB):
+    # Test if the student logs in and there is no new Student 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    accnt.check_new_users(default_Student, DB)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out == ''
+
+    # Channge joined date of Student 2 to now
+    default_Student2.date_recently_accessed = date
+    DB.set_student(default_Student2)
+    # Change last logged in date to 2018
+    accnt.check_new_users(default_Student, DB)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out != ''
+
 # TODO: Epic 8
-# TODO: test_check_job_posts                (ACCT) 
+# DONE: test_check_job_posts                (ACCT) 
 # TODO: test_check_new_users                (ACCT)
 # TODO: test_check_last_seven_days_app      (ACCT) 
 # TODO: test_get_job_count                  (ACCT)
-# TODO: test_add_message                    (Student)
+# DONE: test_add_applied_job                (Student)
+# TODO: test_remove_applied_job             (Student)
+# 
