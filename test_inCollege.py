@@ -1923,15 +1923,85 @@ def test_check_new_users(capsys, default_Student, default_Student2, DB):
     default_Student2.date_recently_accessed = date
     DB.set_student(default_Student2)
     # Change last logged in date to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date_past = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_recently_accessed = date_past
     accnt.check_new_users(default_Student, DB)
     captured = capsys.readouterr()
     # Function should not have print anything
     assert captured.out != ''
 
+def test_check_last_seven_days_app(capsys, default_Student):
+    # Simulate the default student have just applyed to a job
+    date_now = datetime.datetime.now()
+    default_Student.date_last_app_sent = date_now
+    accnt.check_last_seven_days_app(default_Student)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out == ''
+
+    # Change last logged in date to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date_past = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_last_app_sent = date_past
+    accnt.check_last_seven_days_app(default_Student)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out != ''
+
+def test_get_job_count(default_Student):
+    applied_jobs_len = len(default_Student.applied_jobs)
+    assert applied_jobs_len == default_Student.get_job_count()
+
+
+@pytest.mark.parametrize("jobTitle",
+                         [
+                             (
+                                 "MESSAGE1",
+                             ),
+                             (
+                                 "MESSAGE2",
+                             ),
+                             (
+                                 "MESSAGE3",
+                             ),
+                             (
+                                 "MESSAGE4",
+                             ),
+                             (
+                                 "",
+                             ),
+                         ])
+def test_add_applied_job(default_Student, jobTitle):
+    default_Student.add_applied_job(jobTitle)
+    assert jobTitle in default_Student.applied_jobs
+    
+
+@pytest.mark.parametrize("jobTitle",
+                         [
+                             (
+                                 "MESSAGE1",
+                             ),
+                             (
+                                 "MESSAGE2",
+                             ),
+                             (
+                                 "MESSAGE3",
+                             ),
+                             (
+                                 "MESSAGE4",
+                             ),
+                             (
+                                 "",
+                             ),
+                         ])
+def test_remove_applied_job(default_Student, jobTitle):
+    default_Student.remove_applied_job(jobTitle)
+    assert jobTitle not in default_Student.applied_jobs
 # TODO: Epic 8
 # DONE: test_check_job_posts                (ACCT) 
-# TODO: test_check_new_users                (ACCT)
-# TODO: test_check_last_seven_days_app      (ACCT) 
+# DONE: test_check_new_users                (ACCT)
+# DONE: test_check_last_seven_days_app      (ACCT) 
 # TODO: test_get_job_count                  (ACCT)
 # DONE: test_add_applied_job                (Student)
 # TODO: test_remove_applied_job             (Student)
