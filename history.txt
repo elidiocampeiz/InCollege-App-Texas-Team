@@ -1,43 +1,49 @@
-commit b4ba75b2553a46d108540769d763934608212376 (HEAD -> master, tag: 201011Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Sun Oct 11 23:17:36 2020 -0400
+commit df2aeb6aa2f36acfb4cf45ed677c6d24241a9a69 (HEAD -> master, tag: 201108Texas)
+Merge: df2aeb6 6395438
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 22:31:56 2020 -0400
 
-    Sunday commit
+    Finish testing Challenge_8
 
-commit b018e371246415297f9cd14e54840856eed039e9 (tag: 201010Texas)
-Merge: 0fed589 6395438
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Sat Oct 10 23:17:20 2020 -0400
+commit c890db6bcb74971faecd11c2744c3f54615779bd (tag: 201108Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 19:12:15 2020 -0400
 
-    Saturday commit
+    Done (for real this time)
 
-commit 0fed589c8d02f261a8ed7740752087c64639054f (tag: 201009Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Fri Oct 9 22:56:09 2020 -0400
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201108Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 16:52:25 2020 -0400
 
-    Friday commit
+    Sunday Commit Test Done
 
-commit 6395438c725ab9bc1caf7209101a1904d67056cf (tag: 201008Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Thu Oct 8 22:54:14 2020 -0400
+commit bb217588e180617a4d58cacced831d564ef8c05a (tag: 201105Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Thu Nov 5 19:55:26 2020 -0500
 
-    Thursday commit
+    Thursday Commit Test Fixed
 
-commit 1eadf193bb49fbfecd36d694a82987bfc803714e (tag: 201007Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Wed Oct 7 13:22:32 2020 -0400
+commit 065c0480eb2481e1344c9447a793b3ae35b2c8d0 (tag: 201104Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Wed Nov 4 20:35:11 2020 -0400
+
+    Project Done
+
+commit cfdaa8bac486c0c2faf0d17022316fadb0a6a831 (tag: 201104Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Wed Nov 4 13:05:26 2020 -0400
 
     Wednesday commit
 
-commit e52e921d2596ce112a799afe32574a55fe590456 (tag: 201006Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Tue Oct 6 13:13:56 2020 -0400
+commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (tag: 201103Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Tue Nov 3 20:50:33 2020 -0400
+
+    Job Section for Challenge 8
+
+
+commit e270f0e531edca8a1bcf8765d76fdb989ec05804 (tag: 201103Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Tue Nov 3 11:43:51 2020 -0400
 
     Tuesday commit
-
-commit 0ec9b604b616eed8bf812afa37b8f260c3baf427 (tag: 201005Texas)
-Author: Dariia Bulhakova <dariia@usf.edu>
-Date:   Mon Oct 5 11:38:33 2020 -0400
-
-    Monday commit
-

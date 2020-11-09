@@ -1,36 +1,35 @@
-#Front page
-#Displays the selected options (and sub-options, if applies)
-#calls the relevant functions correlating to user input
+# Front page
+# Displays the selected options (and sub-options, if applies)
+# calls the relevant functions correlating to user input
 import inCollege_Accnt as accnt
 import inCollege_Database as database
-import inCollege_CurrentUser as user
+#import inCollege_CurrentUser as user
 import time
+import datetime
 
-#Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
+# Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
 #     - The @ symbol means we are navigating back through menu to create a new account
-
-
 
 
 def mainMenuIntroMessage():
     print("\n\n\n")
-    print("                  +/ ==================== \+")
-    print("                  |   inCOLLEGE: The App   |")
-    print("                  +\ ==================== /+")
-    print("+-------------------------------------------------------------+")
-    print("|A User Testimonial:                                          |")
-    print("|When I was in college, I didn't know what to do with myself. |")
-    print("|I was well on my way to graduation, but I had no experience. |")
-    print("|Then a friend pointed me to inCollege and it changed my life |")
-    print("|InCollege is a wonderful tool.                               |")
-    print("|It's easy to use and it gave me results in no time at all.   |")
-    print("|I went from nothing to an internship in a matter of weeks!   |")
-    print("|I can't recommend it enough.                                 |")
-    print("|Give it a chance and it will change your life for the better!|")
-    print("|--Dick Tracey, Chief Software Engineer at Microsoft.         |")
-    print("+-------------------------------------------------------------+\n")
+    print("                   +/ ==================== \+")
+    print("                   |   inCOLLEGE: The App   |")
+    print("                   +\ ==================== /+")
+    print("+--------------------------------------------------------------+")
+    print("| A User Testimonial:                                          |")
+    print("| When I was in college, I didn't know what to do with myself. |")
+    print("| I was well on my way to graduation, but I had no experience. |")
+    print("| Then a friend pointed me to inCollege and it changed my life |")
+    print("| InCollege is a wonderful tool.                               |")
+    print("| It's easy to use and it gave me results in no time at all.   |")
+    print("| I went from nothing to an internship in a matter of weeks!   |")
+    print("| I can't recommend it enough.                                 |")
+    print("| Give it a chance and it will change your life for the better!|")
+    print("|     --Dick Tracey, Chief Software Engineer at Microsoft.     |")
+    print("+--------------------------------------------------------------+\n")
     print("\n     Want to watch a video to find out more?                       ")
-    #test
+    # test
     print("       +-------------------+")
     print("       |  0. Skip Video    |")
     print("       |  1. Watch a Video |")
@@ -43,7 +42,6 @@ def mainMenuIntroMessage():
         print("... Invalid Entry")
         time.sleep(1)
         sel = input("Enter Your Selection: ")
-
 
     if (sel == '1'):
         print("\n\n")
@@ -65,17 +63,17 @@ def mainMenuIntroMessage():
     return played
 
 
-def main ():
+def main():
     # This is the database object
     # maintaining the database for our program
     db = database.Database()
 
     # Default Settings
     # guest control is a dict {guest_control_type : boolean}
-    guest_control = {"Email" : True, "SMS" : True,  "Targeted Advertising" : True}
+    guest_control = {"Email": True, "SMS": True,  "Targeted Advertising": True}
     # laguage settings
     language = "English"
-    settings = {'guest control' : guest_control, "language" : language} 
+    settings = {'guest control': guest_control, "language": language}
 
     mainMenuIntroMessage()
     loginStatus = False
@@ -83,11 +81,11 @@ def main ():
     # theUser = user.User()
     while (sel != 'x'):
 
-        #This menu is displayed to non-logged in user
+        # non-logged in user
         if (loginStatus == False):
 
-            #in this case we navigated from somewhere else to create a new account
-            if sel == "@": 
+            # in this case we navigated from somewhere else to create a new account
+            if sel == "@":
                 sel = "2"
             else:
                 print("\n")
@@ -105,7 +103,6 @@ def main ():
                 sel = input("\nEnter your selection: ")
                 print("")
 
-
             if (sel == 'x' or sel == '0'):
                 print("       + --------- +")
                 print("       | GOOD BYE! |")
@@ -117,32 +114,33 @@ def main ():
                 # print("Students in database: ", db.data["Students"])
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
-                return 0    
+                return 0
 
-            elif sel == '1': #Log In. if log in is successful, the user object is returned. Otherwise, false is returned.
+            # Log In. if log in is successful, the user object is returned. Otherwise, false is returned.
+            elif sel == '1':
                 # theUser = accnt.login(db)
                 theStudent = accnt.login(db)
                 if theStudent is False:
                     loginStatus = False
                 else:
-                    # Update global settings 
+                    # Update global settings
                     # settings = theUser.student_data['settings']
                     settings = theStudent.settings
                     loginStatus = True
 
-            #Create an account
-            elif sel == '2': 
+            # Create an account
+            elif sel == '2':
                 accnt.create_account(db)
-            #Find Someone You Know
-            elif sel == '3': 
-                foundUser = db.search_users() #returns t / f
+            # Find Someone You Know
+            elif sel == '3':
+                foundUser = db.search_users()  # returns t / f
                 isStudentLoggedIn = False
                 if foundUser == True:
                     print("\nThey are a part of the InCollege system!")
                     print("Why don't you join them?\n")
                     time.sleep(1)
 
-                    while sel != 'x': 
+                    while sel != 'x':
                         print("+-------------------------+")
                         print("| 1. Login                |")
                         print("| 2. Create New Account   |")
@@ -161,7 +159,7 @@ def main ():
                         elif sel == '2':
                             isAccount = accnt.create_account(db)
 
-                            #If the account was made without the use selecting to go back
+                            # If the account was made without the use selecting to go back
                             if isAccount is True:
                                 print("Log in from the Main Menu")
                                 break
@@ -177,7 +175,7 @@ def main ():
                             print("... Invalid Input")
                             time.sleep(1)
 
-                    sel = '' #resetting from 'x' to fix problem where programming was exitting 
+                    sel = ''  # resetting from 'x' to fix problem where programming was exitting
                 if isStudentLoggedin is False:
                     loginStatus = False
                 else:
@@ -185,11 +183,11 @@ def main ():
 
             # Useful Links
             elif sel == '4':
-                #This will control the loop for Useul Links, when we want to exit the loop the flag will be flipped
+                # This will control the loop for Useul Links, when we want to exit the loop the flag will be flipped
                 flag = True
                 while flag is True:
 
-                    if sel == "@": # in this case we are going back to main menu
+                    if sel == "@":  # in this case we are going back to main menu
                         sel = "@"
 
                     else:
@@ -207,13 +205,13 @@ def main ():
 
                     if sel == "@":
                         flag = False
-                    
-                    #General
+
+                    # General
                     elif sel == '1':
                         flag2 = True
                         while flag2 is True:
 
-                            if sel == "@": #in this case we are navigating back to main
+                            if sel == "@":  # in this case we are navigating back to main
                                 sel = "@"
                             else:
                                 print("    + --------- +")
@@ -228,9 +226,8 @@ def main ():
                                 print(" | 7. Developers    |")
                                 print(" | x. Go Back       |")
                                 print(" +------------------+")
-                                
-                                sel = input("\nEnter Your Selection: ")
 
+                                sel = input("\nEnter Your Selection: ")
 
                             if sel == "@":
                                 flag2 = False
@@ -246,7 +243,7 @@ def main ():
                                     print("+----------------------------+\n\n")
                                     sel = input("Enter Your Selection: ")
                                     if sel == "1":
-                                        #Whenever "@" shows up in this program it is in reference to accessing another spot in menu
+                                        # Whenever "@" shows up in this program it is in reference to accessing another spot in menu
                                         sel = "@"
                                         flag3 = False
                                     elif sel == "x":
@@ -256,28 +253,33 @@ def main ():
                                     else:
                                         print("...Invalid Input")
                                         time.sleep(1)
-                                if sel == "@": #"@" indicates we are going back to main to sign in
-                                    sel="@"
+                                if sel == "@":  # "@" indicates we are going back to main to sign in
+                                    sel = "@"
                                 else:
-                                    sel = "" #resetting
-
+                                    sel = ""  # resetting
 
                             elif sel == "2":
                                 print("\n                 + ----------- +")
                                 print("                 | HELP CENTER |")
-                                print("+-------------------------------------------------+")
-                                print("|              Welcome to In College,             |")
-                                print("| the world's largest college student network     |")
-                                print("| with users in several countries and territories |")
-                                print("|                    World Wide                   |")
-                                print("+-------------------------------------------------+\n")
+                                print(
+                                    "+-------------------------------------------------+")
+                                print(
+                                    "|              Welcome to In College,             |")
+                                print(
+                                    "| the world's largest college student network     |")
+                                print(
+                                    "| with users in several countries and territories |")
+                                print(
+                                    "|                    World Wide                   |")
+                                print(
+                                    "+-------------------------------------------------+\n")
                             elif sel == "3":
                                 print()
                                 print("+========================+")
                                 print("|*| Our About Goes Here |*|")
                                 print("+========================+\n")
 
-                            elif sel == "4": 
+                            elif sel == "4":
                                 print()
                                 print("+---------------------------+")
                                 print("|  In College Pressroom:    |")
@@ -312,31 +314,30 @@ def main ():
                                 print("...Invalid Input")
                                 time.sleep(1)
 
-                        if sel == "@": #This means we are navigating back to create an account
+                        if sel == "@":  # This means we are navigating back to create an account
                             print()
                         else:
-                            sel = "" #resetting sel
+                            sel = ""  # resetting sel
 
-
-                    #Browse inCollege
+                    # Browse inCollege
                     elif sel == '2':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
                         print("+========================+\n")
-                    #Business Solutions
-                    elif sel == '3': 
+                    # Business Solutions
+                    elif sel == '3':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n")                    
-                    #Directories
+                        print("+========================+\n")
+                    # Directories
                     elif sel == '4':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n")                    
-                    #Go Back
+                        print("+========================+\n")
+                    # Go Back
                     elif sel == 'x':
                         flag = False
                         print("... Going Back")
@@ -345,11 +346,11 @@ def main ():
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                
+
                 if sel == "@":
                     sel = "@"
                 else:
-                    sel = "" #resetting sel
+                    sel = ""  # resetting sel
 
             # inCollege Important Links
             elif sel == '5':
@@ -433,19 +434,22 @@ def main ():
                         print(" +-------------------------+")
                         print(" |     Privacy Policy      |")
                         print(" +-------------------------+\n")
-                        print("For policy in Pirvacy, please refer back to the User agreement \n")
+                        print(
+                            "For policy in Pirvacy, please refer back to the User agreement \n")
                         flag2 = True
                         while flag2 is True:
-                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            targeted_advertising = "ON" if settings['guest control'][
+                                'Targeted Advertising'] == True else "OFF"
                             SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
                             email = "ON" if settings['guest control']['Email'] == True else "OFF"
                             print("+--------------------------+")
                             print("| Default Guest Controls:  |")
                             print("+--------------------------+")
-                            # the Menu is Aligned 
+                            # the Menu is Aligned
                             print(f"| Email:       {email}          |")
                             print(f"| SMS:         {SMS}          |")
-                            print(f"| Advertising: {targeted_advertising}          |")
+                            print(
+                                f"| Advertising: {targeted_advertising}          |")
                             print("| x. Go Back               |")
                             print("+--------------------------+\n")
                             sel = input("Enter Your Selection: ")
@@ -462,7 +466,7 @@ def main ():
                                 print("... Invalid Input")
                                 time.sleep(1)
 
-                        sel = "" #resetting
+                        sel = ""  # resetting
 
                     elif sel == "6":
                         cookieprivacy = """
@@ -487,9 +491,9 @@ def main ():
                         """
                         print(cookieprivacy)
 
-
                     elif sel == "7":
-                        print("For policy in brands, please refer back to the User agreement ")
+                        print(
+                            "For policy in brands, please refer back to the User agreement ")
 
                     elif sel == "8":
                         flag2 = True
@@ -500,7 +504,7 @@ def main ():
                             print("+----------------------------+")
                             #"English" or "Spanish"
                             print(f"| Language:     {language}      |")
-                            print( "| x. Go Back                 |")
+                            print("| x. Go Back                 |")
                             print("+----------------------------+\n")
                             sel = input("Enter Your Selection: ")
 
@@ -511,7 +515,7 @@ def main ():
                                 print("... Going Back\n")
                                 time.sleep(1)
 
-                        sel = "" #resetting sel
+                        sel = ""  # resetting sel
 
                     elif sel == "x":
                         flag = False
@@ -521,9 +525,9 @@ def main ():
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                sel = "" #resetting
+                sel = ""  # resetting
 
-            #Erases the database
+            # Erases the database
             elif sel == "-100":
                 db.clear()
             else:
@@ -535,36 +539,414 @@ def main ():
         # if User is logged in
         else:
 
+            # NOTIFICATION: Friend Request
+            while(accnt.diplay_friend_request_list(db, theStudent)):
+                pass
+
+            #NOTIFICATION: Messages in inbox
+            isMessage = accnt.display_number_in_inbox(theStudent)
+
+            # NOTIFICATION: create a profile
+            if theStudent.finished_profile == False:
+                print("\nNOTIFICATION: Don't forget to create a profile!\n")
+                time.sleep(1)
+
+            # NOTIFICATION: If user has not applied in 7 days
+            hasApplied = accnt.check_last_seven_days_app(theStudent)
+
+            # NOTIFICATION: Checking if any new users since last time logged in
+            #newUsers = accnt.check_new_users(theStudent, db)
+            accnt.check_new_users(theStudent, db)
+
+            # Checks if the job you applied for is still there and checks if a new job was posted
+            accnt.check_job_posts(theStudent, db)
+
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
             print(" +------------------------------+")
-            print(" | 1. Post a New Job            |")
+            print(" | 1. Jobs                      |")
             print(" | 2. Find Someone You Know     |")
             print(" | 3. Skill Screen              |")
             print(" | 4. Useful Links              |")
             print(" | 5. InCollege Important Links |")
             print(" | 6. View Profile              |")
             print(" | 7. View Friends              |")
+<<<<<<< HEAD
             print(" | 8. View Friends Requests     |")
+=======
+            print(" | 8. Find Friends              |")
+            print(" | 9. Messaging                 |")
+>>>>>>> 42794fa3953240cbb5f7457ff3c1720d4ec790db
             print(" | x. Quit                      |")
             print(" +------------------------------+")
             print("")
+
+            # updating most recent access to account everytime main menu is visited
+            theStudent.date_recently_accessed = datetime.datetime.now()
+            db.set_student(theStudent)  # saving updates in database
+
             sel = input("Enter Your Selection: ")
-            
-            # Post A Job
-            if sel == '1': 
-                accnt.post_job(theStudent.name, db)
+
+            # Jobs
+            if sel == '1':
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                applied_count = theStudent.get_job_count()  # Gets the number of jobs
+                flag = True
+                while flag is True:
+                    print("            +--------+")
+                    print("            |  Jobs  |         ")
+                    print(" +------------------------------+")
+                    print(" | 1. Post a Job                |")
+                    print(" | 2. See Job Listing           |")
+                    print(" | 3. Jobs Already Applied For  |")
+                    print(" | 4. Jobs Not Yet Applied For  |")
+                    print(" | 5. Saved (Maybe Apply Later) |")
+                    print(" | 6. Remove a Job You Posted   |")
+                    print(" | x. Go Back                   |")
+                    print(" +------------------------------+")
+                    print("")
+                    print("+----------------------------------+")
+                    print("| You have applied for ",
+                          applied_count, " job(s). |")
+                    print("+----------------------------------+")
+                    print("")
+                    sel = input("Make a selection: ")
+
+                    # Post a job
+                    if sel == '1':
+                        accnt.post_job(
+                            theStudent.firstname+" "+theStudent.lastname, theStudent.username, db)
+
+                    # See Job Listing
+                    elif sel == "2":
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+
+                        flag2 = True
+                        while flag2 is True:
+                            print("          +---------------+")
+                            print("          |  Job Listing  |         ")
+                            print("+----------------------------------+")
+                            print("|      Job Titles Listed Below     |")
+                            print("+----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                indication = ""
+                                for vals in jobs['users_applied']:
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        indication = "(Applied)"
+                                print("|----> ", jobs['title'], indication)
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username, theStudent)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Jobs Already Applied For
+                    elif sel == "3":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # Need to show jobs
+                        # Press Job to expand it
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("   +---------------------------+")
+                            print("   |  Job Already Applied For  |   ")
+                            print("+----------------------------------+")
+                            print("|      Job Titles Listed Below     |")
+                            print("+----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                for vals in jobs['users_applied']:
+                                    # if the user saved the job
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username, theStudent)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Jobs Not Yet Applied For
+                    elif sel == "4":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # expand
+                        # option to save / apply
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("   +-----------------------------+")
+                            print("   |  Jobs: Not Yet Applied For  | ")
+                            print("+-----------------------------------+")
+                            print("|      Job Titles Listed Below      |")
+                            print("+-----------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                theFlag = True
+                                for vals in jobs['users_applied']:
+                                    # if the user saved the job
+                                    # means user has already applied
+                                    if vals['username'] == theStudent.username:
+                                        theFlag = False
+                                if theFlag:
+                                    print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a specific job,|")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|2. Save the job for later    |")
+                                    print("|x. Niether                   |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username, theStudent)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+                                    elif sel == "2":
+                                        # returns true if saved succesfully, false otherwise
+                                        hasSaved = accnt.save_job(
+                                            db, jobTitle, theStudent.username)
+
+                                        if hasSaved:
+                                            print("Successfully Saved!")
+                                        else:
+                                            print("Error saving job...")
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    # Saved Jobs
+                    elif sel == "5":
+                        print("+========================+")
+                        print("|*| Under Construction |*|")
+                        print("+========================+\n")
+                        # expand
+                        # option to apply for the job
+                        print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                        flag2 = True
+                        while flag2 is True:
+                            print("          +---------------+")
+                            print("          |  Jobs Saved  |         ")
+                            print("+---------------------------------------+")
+                            print("|     Saved Job Titles Listed Below     |")
+                            print("+---------------------------------------+")
+                            for jobs in db.data["Jobs"]:
+                                for val in jobs['users_saved']:
+                                    # if the user saved the job
+                                    if val == theStudent.username:
+                                        print("|----> ", jobs['title'])
+
+                            print("+----------------------------------+")
+                            print("| To see more about a saved job,   |")
+                            print("| type out the Job Title below;    |")
+                            print("| or type x to go back.            |")
+                            print("+----------------------------------+")
+                            jobTitle = input("Type Here: ")
+
+                            # If user doesn't enter
+                            if jobTitle == "x":
+                                flag2 = False
+                            else:
+                                # displays info, return true if job is real false if not found
+                                isFound = accnt.display_job_info(db, jobTitle)
+                                if isFound:
+                                    print("+-----------------------------+")
+                                    print("|1. Apply for the job         |")
+                                    print("|x. Continue without applying |")
+                                    print("+-----------------------------+")
+
+                                    sel = input("Make a selection: ")
+
+                                    # Apply for job
+                                    if sel == "1":
+                                        # returns true if applied successfully, false otherwise
+                                        hasApplied = accnt.apply_for_job(
+                                            db, jobTitle, theStudent.username, theStudent)
+
+                                        if hasApplied is True:
+                                            print("Successfully Applied!")
+                                        else:
+                                            print("Application Error")
+
+                                    # Save Job
+
+                                # Job was not found
+                                else:
+                                    print(
+                                        "Job title does not exist in the database.")
+
+                        sel = ""  # resetting
+
+                    elif sel == "6":
+                        print("          +---------------+")
+                        print("          |  Job Listing  |         ")
+                        print("+----------------------------------+")
+                        print("|      Job Titles Listed Below     |")
+                        print("+----------------------------------+")
+                        for jobs in db.data["Jobs"]:
+                            indication = ""
+                            for vals in jobs['users_applied']:
+                                # means user has already applied
+                                if vals['username'] == theStudent.username:
+                                    indication = "(Applied)"
+                            print("|----> ", jobs['title'], indication)
+
+                        print("+----------------------------------+")
+                        print("| To see more about a specific job,|")
+                        print("| type out the Job Title below;    |")
+                        print("| or type x to go back.            |")
+                        print("+----------------------------------+")
+                        print("")
+                        jobTitle = input(
+                            "Please select a job to remove by inputting its full title: ")
+                        accnt.remove_job(theStudent.username, jobTitle, db)
+
+                    elif sel == 'x':
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+                sel = ""  # resetting
 
             # Find someone you know
-            elif sel == '2': 
+            elif sel == '2':
                 db = database.Database()
                 foundUser = db.search_users()
                 if foundUser is True:
+<<<<<<< HEAD
                     print("... User found in the inCollege System!")  
                 time.sleep(1)
                     
             # Learn a New Skill        
             elif sel == '3': 
+=======
+                    print("... User found in the inCollege System!")
+                    time.sleep(1)
+
+            # Learn a New Skill
+            elif sel == '3':
+>>>>>>> 42794fa3953240cbb5f7457ff3c1720d4ec790db
                 print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
                 flag = True
                 while flag is True:
@@ -581,38 +963,38 @@ def main ():
                     print("+-------------------+\n")
 
                     sel = input("Make a selection: ")
-                    
+
                     if sel == "1":
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n") 
+                        print("+========================+\n")
                     elif sel == "2":
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n") 
+                        print("+========================+\n")
                     elif sel == "3":
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n") 
+                        print("+========================+\n")
                     elif sel == "4":
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n") 
+                        print("+========================+\n")
                     elif sel == "5":
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n") 
-                    elif sel == 'x': 
+                        print("+========================+\n")
+                    elif sel == 'x':
                         flag = False
                         print("... Going Back")
                         time.sleep(1)
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                sel = "" #resetting
+                sel = ""  # resetting
 
             elif sel == '4':
-                #This will control the loop for Useul Links, when we want to exit the loop the flag will be flipped
+                # This will control the loop for Useul Links, when we want to exit the loop the flag will be flipped
                 flag = True
                 while flag is True:
 
@@ -627,8 +1009,8 @@ def main ():
                     print(" +------------------------------+")
 
                     sel = input("\nEnter Your Selection: ")
-                    
-                    #General
+
+                    # General
                     if sel == '1':
                         flag2 = True
                         while flag2 is True:
@@ -644,25 +1026,31 @@ def main ():
                             print(" | 6. Developers    |")
                             print(" | x. Go Back       |")
                             print(" +------------------+")
-                            
+
                             sel = input("\nEnter Your Selection: ")
 
                             if sel == "1":
                                 print("\n                 + ----------- +")
                                 print("                 | HELP CENTER |")
-                                print("+-------------------------------------------------+")
-                                print("|              Welcome to In College,             |")
-                                print("| the world's largest college student network     |")
-                                print("| with users in several countries and territories |")
-                                print("|                    World Wide                   |")
-                                print("+-------------------------------------------------+\n")
+                                print(
+                                    "+-------------------------------------------------+")
+                                print(
+                                    "|              Welcome to In College,             |")
+                                print(
+                                    "| the world's largest college student network     |")
+                                print(
+                                    "| with users in several countries and territories |")
+                                print(
+                                    "|                    World Wide                   |")
+                                print(
+                                    "+-------------------------------------------------+\n")
                             elif sel == "2":
                                 print()
                                 print("+========================+")
                                 print("|*| Our About Goes Here |*|")
                                 print("+========================+\n")
 
-                            elif sel == "3": 
+                            elif sel == "3":
                                 print("\n+---------------------------+")
                                 print("|  In College Pressroom:    |")
                                 print("| Stay on top of the latest |")
@@ -696,28 +1084,27 @@ def main ():
                                 print("...Invalid Input")
                                 time.sleep(1)
 
-                        sel = "" #resetting sel
+                        sel = ""  # resetting sel
 
-
-                    #Browse inCollege
+                    # Browse inCollege
                     elif sel == '2':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
                         print("+========================+\n")
-                    #Business Solutions
-                    elif sel == '3': 
+                    # Business Solutions
+                    elif sel == '3':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n")                    
-                    #Directories
+                        print("+========================+\n")
+                    # Directories
                     elif sel == '4':
                         print()
                         print("+========================+")
                         print("|*| Under Construction |*|")
-                        print("+========================+\n")                    
-                    #Go Back
+                        print("+========================+\n")
+                    # Go Back
                     elif sel == 'x':
                         flag = False
                         print("... Going Back")
@@ -726,8 +1113,8 @@ def main ():
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                
-                sel = "" #resetting sel
+
+                sel = ""  # resetting sel
 
             elif sel == '5':
                 flag = True
@@ -765,17 +1152,19 @@ def main ():
                         print(" +-------------------------+\n")
                         print("Our Privacy Policy is written here...\n")
                         flag2 = True
-                        
+
                         while flag2 is True:
-                            targeted_advertising = "ON" if settings['guest control']['Targeted Advertising'] == True else "OFF"
+                            targeted_advertising = "ON" if settings['guest control'][
+                                'Targeted Advertising'] == True else "OFF"
                             SMS = "ON" if settings['guest control']['SMS'] == True else "OFF"
                             email = "ON" if settings['guest control']['Email'] == True else "OFF"
-                            # the Menu is Aligned 
+                            # the Menu is Aligned
                             print("+------------------------------+")
                             print("|    Current Guest Controls:   |")
                             print(f"| Email:       {email}              |")
                             print(f"| SMS:         {SMS}              |")
-                            print(f"| Advertising: {targeted_advertising}              |")
+                            print(
+                                f"| Advertising: {targeted_advertising}              |")
                             print("+------------------------------+")
                             print("|     Edit Guest Controls?     |")
                             print("+------------------------------+")
@@ -789,7 +1178,7 @@ def main ():
                                 guest_control_flag = True
                                 while guest_control_flag:
                                     print("+-----------------------------------+")
-                                    print("|    Choose Which Guest Control     |") 
+                                    print("|    Choose Which Guest Control     |")
                                     print("+-----------------------------------+")
                                     print("| 1. Email                          |")
                                     print("| 2. SMS                            |")
@@ -805,10 +1194,10 @@ def main ():
                                         break
                                     elif selection == '1':
                                         guest_control_field = 'Email'
-                                    
+
                                     elif selection == '2':
                                         guest_control_field = 'SMS'
-                                        
+
                                     elif selection == '3':
                                         guest_control_field = 'Targeted Advertising'
 
@@ -818,14 +1207,22 @@ def main ():
                                         continue
                                     value_update_flag = True
                                     while value_update_flag:
-                                        print("+------------------------------------+")
-                                        print("|   Choose New Guest Control Value   |")
-                                        print("+------------------------------------+")
-                                        print("| 1. ON                              |")
-                                        print("| 2. OFF                             |")
-                                        print("| x. Go Back                         |")
-                                        print("+------------------------------------+")
-                                        new_selected_value = input("Enter Your Selection: ")
+                                        print(
+                                            "+------------------------------------+")
+                                        print(
+                                            "|   Choose New Guest Control Value   |")
+                                        print(
+                                            "+------------------------------------+")
+                                        print(
+                                            "| 1. ON                              |")
+                                        print(
+                                            "| 2. OFF                             |")
+                                        print(
+                                            "| x. Go Back                         |")
+                                        print(
+                                            "+------------------------------------+")
+                                        new_selected_value = input(
+                                            "Enter Your Selection: ")
                                         new_value = True
                                         if new_selected_value == 'x':
                                             value_update_flag = False
@@ -844,27 +1241,28 @@ def main ():
                                             new_value = False
                                         # Get shallow copy of current settings
                                         new_settings = settings.copy()
-                                        # Get new guest controls 
+                                        # Get new guest controls
                                         new_guest_control = new_settings['guest control']
                                         # Update new guest controls
                                         new_guest_control[guest_control_field] = new_value
                                         # Update new settings
                                         new_settings['guest control'] = new_guest_control
                                         # Update user object
-                                        theStudent.update(settings=new_settings)
+                                        theStudent.update(
+                                            settings=new_settings)
                                         # Update Student in DB
                                         db.set_student(theStudent)
                                         # Update Stundet Object
-                                        theStudent = db.get_student_by_username(theStudent.username)
+                                        theStudent = db.get_student_by_username(
+                                            theStudent.username)
                                         # Update settings
                                         settings = theStudent.settings
-                                        # Update Global Setings 
+                                        # Update Global Setings
                                         # print(settings)
                                         # set flags to false
                                         value_update_flag = False
                                         guest_control_flag = False
 
-                                    
                             elif sel == "x":
                                 flag2 = False
                                 print("... Going Back")
@@ -874,11 +1272,10 @@ def main ():
                                 print("... Invalid Input")
                                 time.sleep(1)
 
-                        sel = "" #resetting
+                        sel = ""  # resetting
 
                     elif sel == "6":
                         print("Our Cookie Policy goes here")
-
 
                     elif sel == "7":
                         print("Our Brand Policy goes here")
@@ -909,7 +1306,8 @@ def main ():
                                     print("| 2. Spanish                      |")
                                     print("| x. Go Back                      |")
                                     print("+---------------------------------+")
-                                    new_language_selection = input("Enter Your Selection: ")
+                                    new_language_selection = input(
+                                        "Enter Your Selection: ")
                                     if new_language_selection == 'x':
                                         print("... Going Back")
                                         time.sleep(1)
@@ -924,20 +1322,21 @@ def main ():
                                         print("... Invalid Input")
                                         time.sleep(1)
                                         continue
-                                    # Get shallow copy of current settings 
+                                    # Get shallow copy of current settings
                                     new_settings = settings.copy()
-                                    # Update new settings 
+                                    # Update new settings
                                     new_settings['language'] = new_language
-                                    # Update Student Object 
+                                    # Update Student Object
                                     theStudent.update(settings=new_settings)
                                     # Update Student in DB
                                     db.set_student(theStudent)
                                     # Update Stundet Object
-                                    theStudent = db.get_student_by_username(theStudent.username)
+                                    theStudent = db.get_student_by_username(
+                                        theStudent.username)
                                     # Update settings
                                     settings = theStudent.settings
                                     # updated_user = user.User(theUser.username)
-                                    # Update Global Setings 
+                                    # Update Global Setings
                                     language_update_flag = False
                             elif sel == "x":
                                 flag2 = False
@@ -948,7 +1347,7 @@ def main ():
                                 time.sleep(1)
                                 continue
 
-                        sel = "" #resetting sel
+                        sel = ""  # resetting sel
 
                     elif sel == "x":
                         flag = False
@@ -958,21 +1357,72 @@ def main ():
                     else:
                         print("...Invalid Input")
                         time.sleep(1)
-                sel = "" #resetting
+                sel = ""  # resetting
             elif sel == "6":
-                # loop while 
+                # loop while
                 accnt.display_profile(theStudent)
 
                 while accnt.edit_profile_menu(theStudent):
                     accnt.display_profile(theStudent)
                     pass
-                
 
             elif sel == "7":
-                
                 while accnt.diplay_friend_list(theStudent):
                     pass
-                  
+
+            elif sel == "8":
+                print("          + ------------ +")
+                print("          | FIND FRIENDS |         ")
+                print(" +----------------------------------+")
+                print(" | Search For friends by            |")
+                print(" | last name, university, or major  |")
+                print(" +----------------------------------+")
+                # search DB for student by various fields (calls search_by_field)
+                # check if student is not already in friend list
+                # call add student request
+                # display success or fail message
+                # db = database.Database()
+                foundFriend = accnt.send_friend_request_menu(db, theStudent)
+                if foundFriend is True:
+                    print("... User found in the inCollege System!")
+                    time.sleep(1)
+
+            # Messaging
+            elif sel == "9":
+                print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
+                flag = True
+                while flag is True:
+                    print("          +-------------+")
+                    print("          |  Messaging  |         ")
+                    print(" +------------------------------+")
+                    print(" | 1. Send Message              |")
+                    print(" | 2. Inbox                     |")
+                    print(" | x. Go Back                   |")
+                    print(" +------------------------------+")
+
+                    sel = input("Make a selection: ")
+
+                    # Send Message
+                    if sel == '1':
+                        if theStudent.status == True:
+                            accnt.diplay_sendMessage_list_plus(db, theStudent)
+                        else:
+                            accnt.diplay_sendMessage_list(db, theStudent)
+
+                    # Inbox
+                    elif sel == "2":
+                        while accnt.diplay_inbox(theStudent, db):
+                            pass
+                    elif sel == 'x':
+                        flag = False
+                        print("... Going Back")
+                        time.sleep(1)
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+
+                sel = ""  # resetting
+
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")
@@ -985,6 +1435,12 @@ def main ():
                 # print("Students in database: ", db.data["Students"])
                 # print("Jobs in database: ", db.data["Jobs"])
                 # =========================================================
+                # updating most recent access
+                theStudent.date_recently_accessed = datetime.datetime.now()
+                db.set_student(theStudent)  # saving changes to database
+                # Prints date time when logging out
+                #print("\n", theStudent.date_recently_accessed)
+
                 return 0
             elif sel == "-100":
                 db.clear()
@@ -993,7 +1449,5 @@ def main ():
                 time.sleep(1)
 
 
-
-
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
