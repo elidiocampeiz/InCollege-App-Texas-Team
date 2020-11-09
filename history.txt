@@ -1,42 +1,49 @@
-commit 2e7ba93b992676b48cb503c72c2702a3d632bbe2 (HEAD -> master, tag: 201001Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Sun Oct 1 17:31:56 2020 -0400
-
-    Finish testing
-
-commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201031Texas)
+commit df2aeb6aa2f36acfb4cf45ed677c6d24241a9a69 (HEAD -> master, tag: 201108Texas)
 Merge: 0fed589 6395438
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Sat Oct 31 16:42:05 2020 -0400
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 22:31:56 2020 -0400
 
-    Start first test
+    Finish testing Challenge_8
 
-commit 5a648e40116b968a7595f808da4477f42aa5c79f (HEAD -> master, tag: 201030Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Fri Oct 30 20:35:11 2020 -0400
+commit c890db6bcb74971faecd11c2744c3f54615779bd (tag: 201108Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 19:12:15 2020 -0400
 
-    Epic 7 - Testing
+    Done (for real this time)
 
-commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201029Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Thu Oct 29 17:05:26 2020 -0400
+commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201108Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Sun Nov 8 16:52:25 2020 -0400
 
-    Thursday commit
+    Sunday Commit Test Done
 
-commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (tag: 201028Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Wed Oct 28 22:57:33 2020 -0400
+commit bb217588e180617a4d58cacced831d564ef8c05a (tag: 201105Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Thu Nov 5 19:55:26 2020 -0500
 
-    Finished Replies For Messaging
+    Thursday Commit Test Fixed
 
-commit e270f0e531edca8a1bcf8765d76fdb989ec05804 (tag: 201027Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Tue Oct 27 15:23:51 2020 -0400
+commit 065c0480eb2481e1344c9447a793b3ae35b2c8d0 (tag: 201104Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Wed Nov 4 20:35:11 2020 -0400
+
+    Project Done
+
+commit cfdaa8bac486c0c2faf0d17022316fadb0a6a831 (tag: 201104Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Wed Nov 4 13:05:26 2020 -0400
+
+    Wednesday commit
+
+commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (tag: 201103Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Tue Nov 3 20:50:33 2020 -0400
+
+    Job Section for Challenge 8
+
+
+commit e270f0e531edca8a1bcf8765d76fdb989ec05804 (tag: 201103Texas)
+Author: Lordan Cala <lordan.cala@gmail.com>
+Date:   Tue Nov 3 11:43:51 2020 -0400
 
     Tuesday commit
-
-commit 0556ee6feaf523a9bf5da79dec2ee55276b98e34 (tag: 201026Texas)
-Author: Jose Elidio Campeiz Neto <joseelidiocampeizneto@Joses-MacBook-Pro.local>
-Date:   Mon Oct 26 13:44:54 2020 -0400
-
-    Monday commit
