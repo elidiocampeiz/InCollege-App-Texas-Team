@@ -1955,54 +1955,56 @@ def test_get_job_count(default_Student):
 
 
 @pytest.mark.parametrize("jobTitle",
-                         [
-                             (
-                                 "MESSAGE1",
-                             ),
-                             (
-                                 "MESSAGE2",
-                             ),
-                             (
-                                 "MESSAGE3",
-                             ),
-                             (
-                                 "MESSAGE4",
-                             ),
-                             (
-                                 "",
-                             ),
-                         ])
+[
+    (
+        "jobTitle1",
+    ),
+    (
+        "jobTitle2",
+    ),
+    (
+        "jobTitle3",
+    ),
+    (
+        "jobTitle4",
+    ),
+    (
+        "",
+    ),
+])
 def test_add_applied_job(default_Student, jobTitle):
     default_Student.add_applied_job(jobTitle)
     assert jobTitle in default_Student.applied_jobs
     
 
 @pytest.mark.parametrize("jobTitle",
-                         [
-                             (
-                                 "MESSAGE1",
-                             ),
-                             (
-                                 "MESSAGE2",
-                             ),
-                             (
-                                 "MESSAGE3",
-                             ),
-                             (
-                                 "MESSAGE4",
-                             ),
-                             (
-                                 "",
-                             ),
-                         ])
+[
+    (
+        "jobTitle1",
+    ),
+    (
+        "jobTitle2",
+    ),
+    (
+        "jobTitle3",
+    ),
+    (
+        "jobTitle4",
+    ),
+    (
+        "",
+    ),
+])
 def test_remove_applied_job(default_Student, jobTitle):
     default_Student.remove_applied_job(jobTitle)
     assert jobTitle not in default_Student.applied_jobs
-# TODO: Epic 8
+
+
+# DONE: Epic 8
 # DONE: test_check_job_posts                (ACCT) 
 # DONE: test_check_new_users                (ACCT)
 # DONE: test_check_last_seven_days_app      (ACCT) 
-# TODO: test_get_job_count                  (ACCT)
+# DONE: test_get_job_count                  (ACCT)
 # DONE: test_add_applied_job                (Student)
-# TODO: test_remove_applied_job             (Student)
+# DONE: test_remove_applied_job             (Student)
 # 
