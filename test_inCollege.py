@@ -4,6 +4,9 @@ import inCollege_Home as home
 import inCollege_Database as database
 from inCollege_Student import *
 import time
+import datetime
+
+
 time.sleep=lambda x:None
 
 # Test function that asserts whether the passwordChecker() function returned the correct value
@@ -273,7 +276,9 @@ def test_login(DB, username, password, expected):
 ])
 
 def test_create_job_posting(DB, title, description, employer, location, salary, name_of_poster, poster_username, expected):
-    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username)
+    date = datetime.datetime.now()
+    
+    result = DB.create_job_posting(title, description, employer, location, salary, name_of_poster, poster_username, date)
     assert result == expected
 
 ############ TEST REMOVE JOB POSTING ############
@@ -1609,11 +1614,12 @@ def apply_for_job_fake_inputs(key, graduation_date, graduation_date2, start_date
         False,
     ),
 ])
-def test_apply_for_job(monkeypatch, DB, jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected):
+def test_apply_for_job(monkeypatch,default_Student, DB, jobTitle, username, graduation_date, graduation_date2, start_date, start_date2, why_me, expected):
     with monkeypatch.context() as m:
         m.setattr('builtins.input', lambda x: apply_for_job_fake_inputs(x, graduation_date, graduation_date2, start_date, start_date2, why_me))
-        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
-        result = accnt.apply_for_job(DB, jobTitle, username)
+        date = datetime.datetime.now()
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username,date)
+        result = accnt.apply_for_job(DB, jobTitle, username, default_Student)
         
         assert result == expected
 
@@ -1635,7 +1641,8 @@ def test_apply_for_job(monkeypatch, DB, jobTitle, username, graduation_date, gra
 def test_save_job(DB, jobTitle, username, expected):
     
     if expected:
-        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username)
+        date = datetime.datetime.now()
+        DB.create_job_posting(jobTitle,"10_description", "10_employer","10_location","10_salary","10_name_of_poster",username,date)
     result = accnt.save_job(DB, jobTitle, username)
     
     assert result == expected
@@ -1853,8 +1860,147 @@ def test_diplay_inbox(monkeypatch, DB, default_Student, default_Student2, select
         result = accnt.diplay_inbox(default_Student2, DB)
         assert result == expected
 
-# DONE: test_diplay_sendMessage_list_plus   (ACCT) 
-# TODO: test_diplay_sendMessage_list        (ACCT)(Daria)
-# DONE: test_send_message                   (ACCT)(Daria)
-# DONE: test_diplay_inbox                   (ACCT)
-# DONE: test_add_message                    (Student)
+def test_check_job_posts(capsys, default_Student, DB):
+    
+    # Test if the student logs in and there is no new job 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    # check job post
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # the function should not output anything 
+    assert captured.out == ''
+    
+    # change the login date of the student to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_recently_accessed = date
+    # post a job with posting date equals to now 
+    jobTitle = '1_title'
+    # job = {jobTitle, 'description', 'employer', 'location', 'salary', 'name_of_poster', 'poster_username', date}
+    DB.create_job_posting(jobTitle, 'description', 'employer', 'location', 'salary', 'name_of_poster', 'poster_username', date)
+    default_Student.add_applied_job(jobTitle)
+    DB.set_student(default_Student)
+    # check job post
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # function should have printed the new job notification
+    assert captured.out != ''
+
+    # if we log in again there is no notification 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # the function should not output anything 
+    assert captured.out == ''
+    
+    # if a job the student applyed for gets removed 
+    # he should get a notification
+    # Search and delete a job
+    for jobs in DB.data["Jobs"]:
+        if jobs['title'] == jobTitle:
+            # print('succes')
+            DB.remove_job_posting(jobs)
+    # check job post notifications
+    accnt.check_job_posts(default_Student, DB)
+    captured = capsys.readouterr()
+    # function should have printed the new job notification
+    assert captured.out != ''
+
+def test_check_new_users(capsys, default_Student, default_Student2, DB):
+    # Test if the student logs in and there is no new Student 
+    date = datetime.datetime.now()
+    default_Student.date_recently_accessed = date
+    accnt.check_new_users(default_Student, DB)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out == ''
+
+    # Channge joined date of Student 2 to now
+    default_Student2.date_recently_accessed = date
+    DB.set_student(default_Student2)
+    # Change last logged in date to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date_past = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_recently_accessed = date_past
+    accnt.check_new_users(default_Student, DB)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out != ''
+
+def test_check_last_seven_days_app(capsys, default_Student):
+    # Simulate the default student have just applyed to a job
+    date_now = datetime.datetime.now()
+    default_Student.date_last_app_sent = date_now
+    accnt.check_last_seven_days_app(default_Student)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out == ''
+
+    # Change last logged in date to 2018
+    date_time_str = '2018-06-29 17:08:00'
+    date_past = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+    default_Student.date_last_app_sent = date_past
+    accnt.check_last_seven_days_app(default_Student)
+    captured = capsys.readouterr()
+    # Function should not have print anything
+    assert captured.out != ''
+
+def test_get_job_count(default_Student):
+    applied_jobs_len = len(default_Student.applied_jobs)
+    assert applied_jobs_len == default_Student.get_job_count()
+
+
+@pytest.mark.parametrize("jobTitle",
+                         [
+                             (
+                                 "MESSAGE1",
+                             ),
+                             (
+                                 "MESSAGE2",
+                             ),
+                             (
+                                 "MESSAGE3",
+                             ),
+                             (
+                                 "MESSAGE4",
+                             ),
+                             (
+                                 "",
+                             ),
+                         ])
+def test_add_applied_job(default_Student, jobTitle):
+    default_Student.add_applied_job(jobTitle)
+    assert jobTitle in default_Student.applied_jobs
+    
+
+@pytest.mark.parametrize("jobTitle",
+                         [
+                             (
+                                 "MESSAGE1",
+                             ),
+                             (
+                                 "MESSAGE2",
+                             ),
+                             (
+                                 "MESSAGE3",
+                             ),
+                             (
+                                 "MESSAGE4",
+                             ),
+                             (
+                                 "",
+                             ),
+                         ])
+def test_remove_applied_job(default_Student, jobTitle):
+    default_Student.remove_applied_job(jobTitle)
+    assert jobTitle not in default_Student.applied_jobs
+# TODO: Epic 8
+# DONE: test_check_job_posts                (ACCT) 
+# DONE: test_check_new_users                (ACCT)
+# DONE: test_check_last_seven_days_app      (ACCT) 
+# TODO: test_get_job_count                  (ACCT)
+# DONE: test_add_applied_job                (Student)
+# TODO: test_remove_applied_job             (Student)
+# 
