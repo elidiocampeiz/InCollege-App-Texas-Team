@@ -87,6 +87,10 @@ def main():
             # in this case we navigated from somewhere else to create a new account
             if sel == "@":
                 sel = "2"
+
+            # in this case we navigated from somewhere else to Log in
+            elif sel == "%":
+                sel = "1"
             else:
                 print("\n")
                 print("         + ----------- +")
@@ -97,6 +101,7 @@ def main():
                 print(" | 3. Find Someone You Know     |")
                 print(" | 4. Useful Links              |")
                 print(" | 5. InCollege Important Links |")
+                print(" | 6. Training                  |")
                 print(" | x. Quit                      |")
                 print(" +------------------------------+")
 
@@ -527,6 +532,115 @@ def main():
                         time.sleep(1)
                 sel = ""  # resetting
 
+            elif sel == '6':
+                flag = True
+                while flag is True:
+
+                    if sel == "%":  # in this case we are going back to main menu to log in
+                        sel = "%"
+
+                    else:
+                        print("+-----------------------------------+")
+                        print("|             Training              |")
+                        print("+-----------------------------------+")
+                        print("| 1. Training and Education         |")
+                        print("| 2. IT Helpdesk                    |")
+                        print("| 3. Business Analysis and Strategy |")
+                        print("| 4. Security                       |")
+                        print("| x. Go Back                        |")
+                        print("+-----------------------------------+\n")
+
+                        sel = input("Enter Your Selection: ")
+
+                    # means we are going back
+                    if sel == "%":
+                        flag = False
+
+                    #Training and Education
+                    elif sel == "1":
+                        flag2 = True
+                        while flag2 is True:
+                            print("+-----------------------------------+")
+                            print("|      Training and Education       |")
+                            print("+-----------------------------------+")
+                            print("| 1. Software Testing               |")
+                            print("| 2. Brain Computer Interfaces      |")
+                            print("| 3. Artificial Intelligence        |")
+                            print("| 4. Cybersecurity                  |")
+                            print("| x. Go Back                        |")
+                            print("+-----------------------------------+\n")
+
+                            sel = input("Enter Your Selection: ")
+
+                            if (sel == "1") or (sel == "2") or (sel == "3") or (sel == "4"):
+                                print("+========================+")
+                                print("|*| Under Construction |*|")
+                                print("+========================+\n")
+                                time.sleep(1)
+
+                            elif sel == "x":
+                                flag2 = False
+                                print("... Going Back\n")
+                                time.sleep(1)
+
+                            else:
+                                print("...Invalid Input")
+                                time.sleep(1)
+                        sel = ""  # resetting
+
+                    # IT-Helpdesk / Security
+                    elif (sel == "2") or (sel == "4"):
+                        print("Coming Soon!\n")
+
+                    # Business Analysis and Strategy
+                    elif sel == "3":
+                        flag2 = True
+                        while flag2 is True:
+                            print("+----------------------------------------+")
+                            print("|            Trending Courses            |")
+                            print("+----------------------------------------+")
+                            print("| 1. How to use InCollege Learning       |")
+                            print("| 2. Train the Trainer                   |")
+                            print("| 3. Gamification of Learning            |")
+                            print("| 4. Not seeing what you're looking for? |")
+                            print("|    Sign in to see all 7,609 results.   |")
+                            print("| x. Go Back                             |")
+                            print("+----------------------------------------+\n")
+
+                            sel = input("Enter Your Selection: ")
+
+                            if (sel == "1") or (sel == "2") or (sel == "3") or (sel == "4"):
+                                sel = "%"
+                                flag2 = False
+
+                            elif sel == "x":
+                                flag2 = False
+                                print("... Going Back\n")
+                                time.sleep(1)
+
+                            else:
+                                print("...Invalid Input")
+                                time.sleep(1)
+
+                        if sel == "%":
+                            sel = "%"
+                        else:
+                            sel = ""  # resetting
+
+                    elif sel == "x":
+                        flag = False
+                        print("... Going Back\n")
+                        time.sleep(1)
+
+                    else:
+                        print("...Invalid Input")
+                        time.sleep(1)
+
+                if sel == "%":
+                    sel == "%"
+                else:
+                    sel = ""  # resetting
+
             # Erases the database
             elif sel == "-100":
                 db.clear()
@@ -563,18 +677,19 @@ def main():
 
             print("         + ----------- +")
             print("         |  MAIN MENU  |         ")
-            print(" +------------------------------+")
-            print(" | 1. Jobs                      |")
-            print(" | 2. Find Someone You Know     |")
-            print(" | 3. Skill Screen              |")
-            print(" | 4. Useful Links              |")
-            print(" | 5. InCollege Important Links |")
-            print(" | 6. View Profile              |")
-            print(" | 7. View Friends              |")
-            print(" | 8. Find Friends              |")
-            print(" | 9. Messaging                 |")
-            print(" | x. Quit                      |")
-            print(" +------------------------------+")
+            print(" +-------------------------------+")
+            print(" |  1. Jobs                      |")
+            print(" |  2. Find Someone You Know     |")
+            print(" |  3. Skill Screen              |")
+            print(" |  4. Useful Links              |")
+            print(" |  5. InCollege Important Links |")
+            print(" |  6. View Profile              |")
+            print(" |  7. View Friends              |")
+            print(" |  8. Find Friends              |")
+            print(" |  9. Messaging                 |")
+            print(" | 10. In College Learning       |")
+            print(" |  x. Quit                      |")
+            print(" +-------------------------------+")
             print("")
 
             # updating most recent access to account everytime main menu is visited
@@ -1410,6 +1525,11 @@ def main():
                         time.sleep(1)
 
                 sel = ""  # resetting
+
+            elif sel == "10":
+                cont = True
+                while(cont == True):
+                    cont = accnt.display_course_list(db, theStudent)
 
             elif sel == 'x':
                 print("       + --------- +")

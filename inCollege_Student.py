@@ -170,7 +170,6 @@ class Student():
     def add_message(self, message):
         self.messages.append(message)
 
-    
     def add_applied_job(self, jobTitle):
         self.applied_jobs.append(jobTitle)
 
