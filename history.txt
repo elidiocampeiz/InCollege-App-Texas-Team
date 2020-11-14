@@ -1,49 +1,47 @@
-commit df2aeb6aa2f36acfb4cf45ed677c6d24241a9a69 (HEAD -> master, tag: 201108Texas)
-Merge: df2aeb6 6395438
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Sun Nov 8 22:31:56 2020 -0400
+commit df18be2481ceba2615e8b5406f39896728dae8ef (tag: 201114Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Sat Nov 14 15:04:02 2020 -0500
 
-    Finish testing Challenge_8
+    Git history
 
-commit c890db6bcb74971faecd11c2744c3f54615779bd (tag: 201108Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Sun Nov 8 19:12:15 2020 -0400
+commit 06d99dadfd725e03509aaa4509a6c64d5372f285 (tag: 201114Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Sat Nov 14 15:02:15 2020 -0500
 
-    Done (for real this time)
+    Saturday Commit, reports fix test
 
-commit 8006600062de5cc2035584dbcf3cfeb787cd32d4 (tag: 201108Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Sun Nov 8 16:52:25 2020 -0400
-
-    Sunday Commit Test Done
-
-commit bb217588e180617a4d58cacced831d564ef8c05a (tag: 201105Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Thu Nov 5 19:55:26 2020 -0500
-
-    Thursday Commit Test Fixed
-
-commit 065c0480eb2481e1344c9447a793b3ae35b2c8d0 (tag: 201104Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Wed Nov 4 20:35:11 2020 -0400
+commit cdaa75137b61c7f54db959478ddcbcd89f89d9d8 (tag: 201113Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Fri Nov 13 18:17:22 2020 -0500
 
     Project Done
 
-commit cfdaa8bac486c0c2faf0d17022316fadb0a6a831 (tag: 201104Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Wed Nov 4 13:05:26 2020 -0400
+commit 13b10715f98dac9129bfc3bb22134b9321337b22 (tag: 201113Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Fri Nov 13 13:50:35 2020 -0500
 
-    Wednesday commit
+    FridayCommit
 
-commit e1d8ec5c81096c61a69ae7864e3bdb2255201d33 (tag: 201103Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Tue Nov 3 20:50:33 2020 -0400
+commit cad628d0afd5b22db07729ee174e0d95f81e0189 (tag: 201112Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Thu Nov 12 19:16:42 2020 -0500
 
-    Job Section for Challenge 8
+    Thursday Commit
 
+commit 097a5a691d36a9bab8dce3a5c08fdc2f7b6ab3b0 (tag: 201111Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Wed Nov 11 11:44:19 2020 -0500
 
-commit e270f0e531edca8a1bcf8765d76fdb989ec05804 (tag: 201103Texas)
-Author: Lordan Cala <lordan.cala@gmail.com>
-Date:   Tue Nov 3 11:43:51 2020 -0400
+    Wednesday Commit
 
-    Tuesday commit
+commit 74edbfd940cc614f57c6606e9e5c9c579b61961c (tag: 201110Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Tue Nov 10 17:39:41 2020 -0500
+
+    Tuesday Commit
+
+commit 1f9646bc99d82e4813e10c39b083cb83602afe1c (tag: 201109Texas)
+Author: Dasha Bulgakova <dashabull@Dashas-MacBook-Pro.local>
+Date:   Mon Nov 9 15:45:02 2020 -0500
+
+    Monday Commit

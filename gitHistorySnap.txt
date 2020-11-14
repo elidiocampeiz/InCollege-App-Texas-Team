@@ -1,12 +1,7 @@
-*   df2aeb6 (HEAD -> master) Finish testing Challenge_8
-|\  
-* | c890db6 Done (for real this time)
-| | * 9366f79 (Sunday-Branch) Sunday Commit Test Done
-| |/
-| * bb21758 (Thursday-Branch) Thursday Commit Test Fixed
-| * cfdaa8b Project Done
-| * 1bf70d2 (Wednesday-Branch) Wednesday commit
-| * da14b5d Job Section for Challenge 8
-| * 6886229 (Tuesday-Branch) Tuesday Commit
-|/  
-*   df2aeb6 (HEAD -> master) Merge branch 'Challenge_8'
+* 06d99da (HEAD -> Challenge-9, SaturdayBranch) Saturday Commit, reports fix test
+* cdaa751 (SundayBranch, FridayBranch) Project Done
+* 13b1071 FridayCommit
+* cad628d (ThursdayBranch) Thursday Commit
+* 097a5a6 (WednesdayBranch) Wednesday Commit
+* 74edbfd (TuesdayBranch) Tuesday Commit
+* 1f9646b (MondayBranch) Monday Commit
