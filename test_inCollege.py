@@ -368,17 +368,22 @@ def test_search_users(DB, monkeypatch, firstname, lastname, expected):
         assert result == expected
 
 def test_clear(DB):
+    DB.data['state'] = 'currupt data'
+    DB.save()
+    past_data = DB.data.copy()
     DB.clear()
-    reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
     DB.load()
-    assert DB.data == reset_DB_data
+    assert DB.data != past_data
     assert DB.accFull == False
     assert DB.jobFull == False
 
 def test_reset(DB):
+    
+    DB.data['state'] = 'currupt data'
+    past_data = DB.data.copy()
     DB.reset()
-    reset_DB_data = {"Students":{}, "Jobs":[], 'Friend Requests': {}}
-    assert DB.data == reset_DB_data
+    DB.load()
+    assert DB.data != past_data
     assert DB.accFull == False
     assert DB.jobFull == False
 
@@ -1997,12 +2002,66 @@ def test_remove_applied_job(default_Student, jobTitle):
     default_Student.remove_applied_job(jobTitle)
     assert jobTitle not in default_Student.applied_jobs
 
+def test_populate_course_list(DB):
+    # eraise courses
+    courses = []
+    newCourse1 = {'name': "How to use In College Learning", 'users_completed': []}
+    newCourse2 = {'name': "Train the Trainer", 'users_completed': []}
+    newCourse3 = {'name': "Gamification of Learning", 'users_completed': []}
+    newCourse4 = {'name': "Understanding the Architectual Design Process", 'users_completed': []}
+    newCourse5 = {'name': "Project Management Simplified", 'users_completed': []}
 
-# DONE: Epic 8
-# DONE: test_check_job_posts                (ACCT) 
-# DONE: test_check_new_users                (ACCT)
-# DONE: test_check_last_seven_days_app      (ACCT) 
-# DONE: test_get_job_count                  (ACCT)
-# DONE: test_add_applied_job                (Student)
-# DONE: test_remove_applied_job             (Student)
-# 
+    courses.append(newCourse1)
+    courses.append(newCourse2)
+    courses.append(newCourse3)
+    courses.append(newCourse4)
+    courses.append(newCourse5)
+    # Eraise courses from DB
+    DB.data["Courses"] = []
+    # populate courses 
+    DB.populate_course_list()
+    # assert they have been populated
+    assert DB.data["Courses"] == courses
+
+# def course_list_fake_inputs(key, selection1, selection2):
+#     key_map = {
+#         "Enter Your Course Selection: ": selection1,
+#         "Enter your selection: ": selection2
+#     }
+#     return key_map[key]
+@pytest.mark.parametrize("course_selection, expected",
+[
+    (
+        "x", False # quit 1 menu option
+    ),
+    (
+        "", True # invalid 1 menu option 
+    ),
+    (
+        "1", True # valid valid
+    ),
+    (
+        "2", True # valid valid
+    ),
+    (
+        "3", True # valid valid
+    ),
+    (
+        "4", True # valid valid
+    ),
+    (
+        "5", True # valid valid
+    ),
+])
+# valid values of corse_selection are {1, 2, 3, 4, 5, x}, where x is quit option, other valid values may call the taken selection, other values are invalid
+# valid values of taken_selection are {1, x}, where x is quit option, valid values prints to screen and 
+def test_display_course_list(monkeypatch, DB, default_Student, course_selection, expected):
+    with monkeypatch.context() as m:
+        m.setattr('builtins.input', lambda x: course_selection)
+        result = accnt.display_course_list(DB, default_Student)
+        assert result == expected
+
+# TODO: Epic 9
+# DONE: test_populate_course_list           (DB) 
+# DONE: test_display_course_list            (ACCT)
+
