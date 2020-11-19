@@ -14,6 +14,7 @@ class Database():
     # Reset data
     def reset(self):
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.data = {"Students":{}, "Jobs":[], "Friend Request":{}}
         self.isFull = False
 =======
@@ -21,6 +22,12 @@ class Database():
         self.accFull = False
         self.jobFull = False
 >>>>>>> 42794fa3953240cbb5f7457ff3c1720d4ec790db
+=======
+        self.data = {"Students": {}, "Jobs": [], 'Friend Requests': {}, "Courses": []}
+        self.accFull = False
+        self.jobFull = False
+        self.populate_course_list()
+>>>>>>> 06be17d1e48b739bd5d453d006045dd54220ccad
         # if the database file doesn't exist uncomment the next line
         # self.save()
 
@@ -47,12 +54,20 @@ class Database():
         if "Jobs" not in self.data:
             self.data["Jobs"] = []
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         # If there are 10 or more student accounts, the DB is full
         if len(self.data["Students"]) > 9:
                 self.isFull = True
         
 =======
+=======
+        
+        # If DB is empty create a "Courses" section
+        if "Jobs" not in self.data:
+            self.data["Courses"] = []
+            self.populate_course_list() # this will fill the course list with the requested courses from the professor
+>>>>>>> 06be17d1e48b739bd5d453d006045dd54220ccad
 
         # If there are 10 or more student accounts, the acc DB is full
         if len(self.data["Students"]) > 9:
@@ -75,7 +90,7 @@ class Database():
     #     return self.data
 
     # Create new student account COMIT
-    def create_account(self, new_username, new_password, new_firstname, new_lastname, plus):
+    def create_account(self, new_username, new_password, new_firstname='default_firstname', new_lastname='default_lastname', plus=False, sleep_time=1):
 
         # Load data from file
         self.load()
@@ -83,9 +98,9 @@ class Database():
         # If DB is full return False
         if self.accFull == True:
             print("...")
-            time.sleep(1)
+            time.sleep(sleep_time)
             print('|*| Error: Maximum Number of Accounts Already Taken |*|')
-            time.sleep(1)
+            time.sleep(sleep_time)
             return False
 
         # New accounts have all guest control turned on
@@ -115,7 +130,7 @@ class Database():
         my_student.update(finished_profile=False)
         if new_username in self.data["Students"].keys():
             print('Username already in use...')
-            time.sleep(1)
+            time.sleep(sleep_time)
             return False
 
         # Else append new student to the list
@@ -125,9 +140,9 @@ class Database():
         self.save()
         print("\n... \n")
         # added this for effect, makes program wait for second then tells user account was created.
-        time.sleep(1)
+        time.sleep(sleep_time)
         print("Account Succesfully Created!\n")
-        time.sleep(1)
+        time.sleep(sleep_time)
         return True
 
     def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username, date):
@@ -360,6 +375,7 @@ class Database():
         self.save()
         return True
 
+<<<<<<< HEAD
 # def send_message(sender, recipient):
 
 #     print(" +----------------------------------------+")
@@ -457,3 +473,20 @@ print(DB.data["Friend Request"])
 
 =======
 >>>>>>> 42794fa3953240cbb5f7457ff3c1720d4ec790db
+=======
+    def populate_course_list(self):
+        #users_completed will hold usernames of students who have finished the course
+        newCourse1 = {'name': "How to use In College Learning", 'users_completed': []}
+        newCourse2 = {'name': "Train the Trainer", 'users_completed': []}
+        newCourse3 = {'name': "Gamification of Learning", 'users_completed': []}
+        newCourse4 = {'name': "Understanding the Architectual Design Process", 'users_completed': []}
+        newCourse5 = {'name': "Project Management Simplified", 'users_completed': []}
+
+        self.data["Courses"].append(newCourse1)
+        self.data["Courses"].append(newCourse2)
+        self.data["Courses"].append(newCourse3)
+        self.data["Courses"].append(newCourse4)
+        self.data["Courses"].append(newCourse5)
+        #self.save()
+        return True
+>>>>>>> 06be17d1e48b739bd5d453d006045dd54220ccad

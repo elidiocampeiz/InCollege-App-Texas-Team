@@ -1065,3 +1065,73 @@ def check_job_posts(myStudent, DB):
         if (found == False):
             print("The job " + jobApps + " has been removed.")
             Student.remove_applied_job(myStudent, jobApps)
+
+
+def display_course_list(DB, student):
+    listOfCourses = DB.data["Courses"]
+    # add 8 -shes or spaces
+    print(" +----------------------------------------------------------+ ")
+    print(" |                     List of Courses                      | ")
+    print(" +----------------------------------------------------------+ ")
+    print(" |                 Select a Course to Take                  | ")
+    # 2(' |') + 40('-') + 2('| ) chars
+    print(" +----------------------------------------------------------+ ")
+
+    for index, course in enumerate(listOfCourses):
+        coursename = course['name']
+        sel_index = str(index+1)+'.'
+        taken = False
+        for gradUsername in listOfCourses[index]["users_completed"]:
+            if gradUsername == student.username:
+                indication = "(Taken)"
+                taken = True
+        # Chars:   2        3            40                  2
+        if (taken == False):
+            print(" |", sel_index, coursename.ljust(58-5, ' '), "| ")
+        elif (taken == True):
+            print(" |", sel_index, coursename.ljust(
+                50-5, ' '), indication, "| ")
+
+    print(" | x. Go Back                                               |")
+    print(" +----------------------------------------------------------+ ")
+    index = input("Enter Your Selection: ")
+    if index == 'x':
+        return False
+    # if index is a string of a number in range of the student.friends List
+    if index.isnumeric():
+        idx = int(index) - 1
+        # Taking the course below...
+        if idx < len(listOfCourses):
+
+            # checking if user already took the course
+            for gradUsername in listOfCourses[idx]["users_completed"]:
+                if gradUsername == student.username:
+                    print(" +----------------------------------------+ ")
+                    print(" | You have already taken this course,    | ")
+                    print(" | do you want to take it again?          | ")
+                    print(" +----------------------------------------+ ")
+                    print(" | 1. Take Again                          | ")
+                    print(" | x. Go Back                             | ")
+                    print(" +----------------------------------------+ ")
+                    sel = input("Enter your selection: ")
+
+                    if sel == "1":
+                        print("You have now completed this training!\n")
+                        time.sleep(1)
+                        return True
+                    elif sel == "x":
+                        print("Course Cancelled\n")
+                        time.sleep(1)
+                        return True
+
+            # If the user has not yet completed the training
+            listOfCourses[idx]["users_completed"].append(student.username)
+            # Saving the database
+            DB.save()
+            print("You have now completed this training!\n")
+            time.sleep(1)
+            return True
+
+    print("...Invalid Input")
+    time.sleep(1)
+    return True
