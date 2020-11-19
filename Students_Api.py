@@ -57,5 +57,8 @@ class StudentAccountsApi:
                     fp.write(line)
                 fp.write(sep)
                 
+    def output_users(self, filename = 'MyCollege_users.txt'):
+        
+        
 api = StudentAccountsApi()
 api.output_student_accounts()
