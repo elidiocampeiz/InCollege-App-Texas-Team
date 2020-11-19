@@ -68,7 +68,7 @@ class Database():
     #     return self.data
 
     # Create new student account COMIT
-    def create_account(self, new_username, new_password, new_firstname, new_lastname, plus):
+    def create_account(self, new_username, new_password, new_firstname='default_firstname', new_lastname='default_lastname', plus=False, sleep_time=1):
 
         # Load data from file
         self.load()
@@ -76,9 +76,9 @@ class Database():
         # If DB is full return False
         if self.accFull == True:
             print("...")
-            time.sleep(1)
+            time.sleep(sleep_time)
             print('|*| Error: Maximum Number of Accounts Already Taken |*|')
-            time.sleep(1)
+            time.sleep(sleep_time)
             return False
 
         # New accounts have all guest control turned on
@@ -108,7 +108,7 @@ class Database():
         my_student.update(finished_profile=False)
         if new_username in self.data["Students"].keys():
             print('Username already in use...')
-            time.sleep(1)
+            time.sleep(sleep_time)
             return False
 
         # Else append new student to the list
@@ -118,9 +118,9 @@ class Database():
         self.save()
         print("\n... \n")
         # added this for effect, makes program wait for second then tells user account was created.
-        time.sleep(1)
+        time.sleep(sleep_time)
         print("Account Succesfully Created!\n")
-        time.sleep(1)
+        time.sleep(sleep_time)
         return True
 
     def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username, date):
