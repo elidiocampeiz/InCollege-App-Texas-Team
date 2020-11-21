@@ -335,12 +335,12 @@ def apply_for_job(DB, jobTitle, username, student):
 
     # Creating dictionary with values
     users_application = {'username': username,
-                         'graduationdate': grad_date, 'startdate': strt_date, 'whyme': why_me}
+                         'graduation_date': grad_date, 'start_date': strt_date, 'why_me': why_me}
     # locating job
     for job in DB.data["Jobs"]:
         if job['title'] == jobTitle:
             print("Job found")
-            job['users_applied'].append(users_application)
+            job['user_applications'].append(users_application)
             # print("TEST: User Appended")
             hasApplied = True
 

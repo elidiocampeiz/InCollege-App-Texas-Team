@@ -17,7 +17,7 @@ class Database():
         self.accFull = False
         self.jobFull = False
         # self.populate_course_list()
-        
+
         # if the database file doesn't exist uncomment the next line
         # self.save()
 
@@ -124,7 +124,7 @@ class Database():
         time.sleep(sleep_time)
         return True
 
-    def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username, date):
+    def create_job_posting(self, title, description, employer, location, salary, name_of_poster, poster_username, date, sleep_time=1):
 
         if title == '' or description == '' or employer == '' or location == '' or salary == '' or name_of_poster == '' or poster_username == '' or date == '':
             return False
@@ -133,15 +133,15 @@ class Database():
 
         if self.jobFull == True:  # If there's already ten jobs posted, it won't let them post more
             print("...")
-            time.sleep(1)
+            time.sleep(sleep_time)
             print('|*| Error: Maximum Number of Jobs Already Posted |*|')
-            time.sleep(1)
+            time.sleep(sleep_time)
             return False
 
         # Init new job posting
         new_job = {'title': title, 'description': description, 'employer': employer,
                    'location': location, 'salary': salary, 'name_of_poster': name_of_poster,
-                   'users_applied': [],
+                   'user_applications': [],
                    'users_saved': [],
                    'poster_id': poster_username,
                    'date_posted': date}
@@ -153,9 +153,9 @@ class Database():
         # Save data to file
         self.save()
         print("...")
-        time.sleep(1)
+        time.sleep(sleep_time)
         print("Job Posted Successfully!")
-        time.sleep(1)
+        time.sleep(sleep_time)
         return True
 
     def remove_job_posting(self, job):
