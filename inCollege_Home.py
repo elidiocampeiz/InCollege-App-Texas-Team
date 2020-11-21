@@ -6,7 +6,7 @@ import inCollege_Database as database
 #import inCollege_CurrentUser as user
 import time
 import datetime
-
+import inCollege_API
 # Note - When going back, and when an error occurs, the program sleeps for 1 second for added effecT
 #     - The @ symbol means we are navigating back through menu to create a new account
 
@@ -67,6 +67,14 @@ def main():
     # This is the database object
     # maintaining the database for our program
     db = database.Database()
+    
+    # API Calls
+    api = inCollege_API.API(db)
+    # Add student accounts inputs 
+    # Add training inputs
+    # Add jobs inputs 
+    api.load_data()
+
 
     # Default Settings
     # guest control is a dict {guest_control_type : boolean}

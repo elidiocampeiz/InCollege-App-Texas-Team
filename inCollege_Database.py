@@ -16,7 +16,8 @@ class Database():
         self.data = {"Students": {}, "Jobs": [], 'Friend Requests': {}, "Courses": []}
         self.accFull = False
         self.jobFull = False
-        self.populate_course_list()
+        # self.populate_course_list()
+        
         # if the database file doesn't exist uncomment the next line
         # self.save()
 
@@ -44,9 +45,9 @@ class Database():
             self.data["Jobs"] = []
         
         # If DB is empty create a "Courses" section
-        if "Jobs" not in self.data:
+        if "Courses" not in self.data:
             self.data["Courses"] = []
-            self.populate_course_list() # this will fill the course list with the requested courses from the professor
+            # self.populate_course_list() # this will fill the course list with the requested courses from the professor
 
         # If there are 10 or more student accounts, the acc DB is full
         if len(self.data["Students"]) > 9:
@@ -324,7 +325,7 @@ class Database():
         self.save()
         return True
 
-    def populate_course_list(self):
+    def populate_course_list(self, newCourses=[]):
         #users_completed will hold usernames of students who have finished the course
         newCourse1 = {'name': "How to use In College Learning", 'users_completed': []}
         newCourse2 = {'name': "Train the Trainer", 'users_completed': []}
@@ -337,5 +338,7 @@ class Database():
         self.data["Courses"].append(newCourse3)
         self.data["Courses"].append(newCourse4)
         self.data["Courses"].append(newCourse5)
+        # extend a list of new courses
+        self.data["Courses"].extend(newCourses)
         #self.save()
         return True
