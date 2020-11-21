@@ -49,14 +49,32 @@ class API:
             
     # TODO:
     def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
-        pass
+
+        all_jobs = self.db.data['Jobs']
+        print(all_jobs)
+        data = []
+
+        with open(filename, "w") as fp:
+            sep = '=====\n'
+            for jobs in all_jobs:
+                jobs_list = {
+                'title': jobs['title'], 
+                'description': jobs['description'], 
+                'employer': jobs['employer'],
+                'location': jobs['location'], 
+                'salary': jobs['salary'],
+                    }
+
+                for key, val in jobs_list.items():
+                    line = val+'\n'
+                    # print(line)
+                    fp.write(line)
+                fp.write(sep)
+        
     
     def output_applied_jobs(self, filename = 'MyCollege_appliedJobs.txt'):
         all_jobs = self.db.data['Jobs']
         # print('all_jobs\n', all_jobs)
-        training_data = {}
-        # group training by users who have completed each course
-        
         
         with open(filename, "w") as fp:
             sep = '=====\n'
@@ -171,7 +189,30 @@ class API:
                     fp.write(course + '\n') 
                 # Write separator
                 fp.write(sep) 
-                
+
+    def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
+
+        all_jobs = self.db.data['Jobs']
+        print(all_jobs)
+        data = []
+
+        with open(filename, "w") as fp:
+            sep = '=====\n'
+            for jobs in all_jobs:
+                jobs_list = {
+                'title': jobs['title'], 
+                'description': jobs['description'], 
+                'employer': jobs['employer'],
+                'location': jobs['location'], 
+                'salary': jobs['salary'],
+                    }
+
+                for key, val in jobs_list.items():
+                    line = val+'\n'
+                    # print(line)
+                    fp.write(line)
+                fp.write(sep)
+        
 # Testing
 api = API()
 api.db.clear()
