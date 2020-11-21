@@ -1,5 +1,15 @@
 import inCollege_Database as Database
 
+import sys, os
+
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
+
 class API:
     def __init__(self, db=Database.Database()):
         self.db = db
@@ -24,7 +34,7 @@ class API:
         with open('./studentAccouts.txt') as fp:
             student_accounts = []
             file_data = fp.read()
-            print(file_data)
+            # print(file_data)
             # split acc data 
             accounts = file_data.split('=====')
             # split into list of lists with student data 
@@ -36,12 +46,16 @@ class API:
             # print(student_accounts)
             # reference to main Database
             for account in student_accounts:
+                # Block print statements here 
+                blockPrint()
                 # sleep_time is the time in which the time.sleep() is called (wainint time between function print statements), for the api it should be 0
                 self.db.create_account(account[0], account[1], sleep_time=0)
-    
+                # Enable print statements here 
+                enablePrint()
     def output_student_accounts(self, filename='MyCollege_profiles.txt'):
+        
         all_students = self.db.data['Students']
-        print(all_students)
+        # print(all_students)
         data = []
         for username, student in all_students.items():
             student_data = {
@@ -80,9 +94,11 @@ class API:
             trainings = file_data.split('\n')
             
             for title in trainings:
+                # This should be a database function
                 course = {'Name':title, 'users_completed': []}
-                self.db.data["Courses"].append(course)
+                self.db.data["Courses"].append(course) 
             self.db.save()
+
     def output_training(self, filename='MyCollege_training.txt'):
 
         all_courses = self.db.data['Courses']
@@ -110,6 +126,7 @@ class API:
                 fp.write(sep) 
                 
 # Testing
-# api = API()
+api = API()
+api.load_data()
 # api.input_training()
 # api.output_training()
