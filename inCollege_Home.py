@@ -749,7 +749,7 @@ def main():
                             print("+----------------------------------+")
                             for jobs in db.data["Jobs"]:
                                 indication = ""
-                                for vals in jobs['users_applied']:
+                                for vals in jobs['user_applications']:
                                     # means user has already applied
                                     if vals['username'] == theStudent.username:
                                         indication = "(Applied)"
@@ -822,7 +822,7 @@ def main():
                             print("|      Job Titles Listed Below     |")
                             print("+----------------------------------+")
                             for jobs in db.data["Jobs"]:
-                                for vals in jobs['users_applied']:
+                                for vals in jobs['user_applications']:
                                     # if the user saved the job
                                     # means user has already applied
                                     if vals['username'] == theStudent.username:
@@ -895,7 +895,7 @@ def main():
                             print("+-----------------------------------+")
                             for jobs in db.data["Jobs"]:
                                 theFlag = True
-                                for vals in jobs['users_applied']:
+                                for vals in jobs['user_applications']:
                                     # if the user saved the job
                                     # means user has already applied
                                     if vals['username'] == theStudent.username:
@@ -1023,7 +1023,7 @@ def main():
                         print("+----------------------------------+")
                         for jobs in db.data["Jobs"]:
                             indication = ""
-                            for vals in jobs['users_applied']:
+                            for vals in jobs['user_applications']:
                                 # means user has already applied
                                 if vals['username'] == theStudent.username:
                                     indication = "(Applied)"

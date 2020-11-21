@@ -290,7 +290,7 @@ def apply_for_job(DB, jobTitle, username, student):
         if job['title'] == jobTitle:
             # testing, prints all users who have applied
             # print(job['users_applications'])
-            for vals in job['users_applied']:
+            for vals in job['user_applications']:
                 if vals['username'] == username:
                     print("Application Denied - Already Applied")
                     return False
@@ -993,7 +993,7 @@ def diplay_job_list(student, DB):
     for index, jobs in enumerate(DB.data["Jobs"]):
         indication = ""
         sel_index = str(index+1)+'.'
-        for vals in jobs['users_applied']:
+        for vals in jobs['user_applications']:
             # means user has already applied
             if vals['username'] == student.username:
                 indication = "(Applied)"

@@ -18,8 +18,16 @@ class API:
         self.input_training()
         self.input_student_accounts()
         self.input_job_postings()
+        self.output_student_accounts()
+        self.output_training()
+        self.output_job_postings()
+        self.output_applied_jobs()
+        self.output_saved_jobs()
+        
     
     def input_job_postings(self, filename = 'newJobs.txt'):
+        
+        
         with open(filename) as fp:
             job_postings = []
             file_data = fp.read()
@@ -31,6 +39,10 @@ class API:
 
             job_postings = []#[ re.split("&&&|\n",job) for job in job_postings_data if job != '' ]
             
+            # NOTE: Not sure about this requirement 
+            # Don't allow jobs with same title and same employer (duplicates)
+            existing_jobs = set([job['title'] for job in self.db.data["Jobs"]])
+            
             for job_posting in job_postings_data:
                 if job_posting != '':
                     job_post = job_posting.split('\n')
@@ -41,18 +53,19 @@ class API:
                     employer = job_post[desc_dx+1]
                     location = job_post[desc_dx+2]
                     salary = job_post[desc_dx+3]
-                    # Block print statements here 
-                    blockPrint()
-                    self.db.create_job_posting(title, description, employer, location, salary, 'inCollenge_admin', 'inCollenge_admin', datetime.datetime.now(), 0)
-                    # Enable print statements here 
-                    enablePrint()
+                    if not title in existing_jobs:
+                        # Block print statements here 
+                        blockPrint()
+                        self.db.create_job_posting(title, description, employer, location, salary, 'inCollenge_admin', 'inCollenge_admin', datetime.datetime.now(), 0)
+                        # Enable print statements here 
+                        enablePrint()
+                        existing_jobs.add(title)
             
     # TODO:
     def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
 
         all_jobs = self.db.data['Jobs']
-        print(all_jobs)
-        data = []
+        # print(all_jobs)
 
         with open(filename, "w") as fp:
             sep = '=====\n'
@@ -63,7 +76,7 @@ class API:
                 'employer': jobs['employer'],
                 'location': jobs['location'], 
                 'salary': jobs['salary'],
-                    }
+                }
 
                 for key, val in jobs_list.items():
                     line = val+'\n'
@@ -93,7 +106,27 @@ class API:
             
     # TODO
     def output_saved_jobs(self, filename = 'MyCollege_savedJobs.txt'):
-        pass
+        all_jobs = self.db.data['Jobs']
+        # print('all_jobs\n', all_jobs)
+        job_saved_data = {}
+        # group training by users who have completed each course
+        for job in all_jobs:
+            for username in job['users_saved']:
+            # for username in ['usr1', 'user2']:
+                if not username in job_saved_data:
+                    job_saved_data[username] = set()
+                job_saved_data[username].add(job['title'])
+        
+        with open(filename, "w") as fp:
+            sep = '=====\n'
+            for username in job_saved_data:
+                # Write username
+                fp.write(username + '\n') 
+                for course in job_saved_data[username]:
+                    # Write courses completed by the respective username
+                    fp.write(course + '\n') 
+                # Write separator
+                fp.write(sep) 
 
     def input_student_accounts(self, filename='./studentAccouts.txt'):
         with open(filename) as fp:
@@ -121,17 +154,6 @@ class API:
         
         all_students = self.db.data['Students']
         # print(all_students)
-        data = []
-        for username, student in all_students.items():
-            student_data = {
-            'title':student.title,
-            'major':student.major,
-            'university':student.university,
-            'about':student.about,
-            'experience':student.experience,
-            'education':student.education,
-            }
-
         with open(filename, "w") as fp:
             sep = '=====\n'
             for username, student in all_students.items():
@@ -157,11 +179,12 @@ class API:
             # print(file_data)
             # split jobs data by '\n'
             trainings = file_data.split('\n')
-            
+            existing_courses = set(course['name'] for course in self.db.data["Courses"])
             for title in trainings:
                 # This should be a database function
-                course = {'Name':title, 'users_completed': []}
-                self.db.data["Courses"].append(course) 
+                if not title in existing_courses:
+                    course = {'name':title, 'users_completed': []}
+                    self.db.data["Courses"].append(course) 
             self.db.save()
 
     def output_training(self, filename='MyCollege_training.txt'):
@@ -193,7 +216,7 @@ class API:
     def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
 
         all_jobs = self.db.data['Jobs']
-        print(all_jobs)
+        # print(all_jobs)
         data = []
 
         with open(filename, "w") as fp:
@@ -205,7 +228,7 @@ class API:
                 'employer': jobs['employer'],
                 'location': jobs['location'], 
                 'salary': jobs['salary'],
-                    }
+                }
 
                 for key, val in jobs_list.items():
                     line = val+'\n'
@@ -213,9 +236,9 @@ class API:
                     fp.write(line)
                 fp.write(sep)
         
-# Testing
-api = API()
-api.db.clear()
-api.load_data()
+# # Testing
+# api = API()
+# api.db.clear()
+# api.load_data()
 # api.input_job_postings()
-api.output_applied_jobs()
+# api.output_applied_jobs()

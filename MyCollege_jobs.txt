@@ -1,18 +1,12 @@
-Software engineer
-Whatever description
-Some employer
-Tampa
-10000000000
+title1
+description1_line1description1_line2
+employer1
+location1
+salary1
 =====
-Software engineer
-Whatever description
-Some employer
-Tampa
-10000000000
-=====
-Software engineer
-Whatever description
-Some employer
-Tampa
-10000000000
+title2
+description2_line1
+employer2
+location2
+salary2
 =====
