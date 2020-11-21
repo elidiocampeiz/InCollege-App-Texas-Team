@@ -171,7 +171,30 @@ class API:
                     fp.write(course + '\n') 
                 # Write separator
                 fp.write(sep) 
-                
+
+    def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
+
+        all_jobs = self.db.data['Jobs']
+        print(all_jobs)
+        data = []
+
+        with open(filename, "w") as fp:
+            sep = '=====\n'
+            for jobs in all_jobs:
+                jobs_list = {
+                'title': jobs['title'], 
+                'description': jobs['description'], 
+                'employer': jobs['employer'],
+                'location': jobs['location'], 
+                'salary': jobs['salary'],
+                    }
+
+                for key, val in jobs_list.items():
+                    line = val+'\n'
+                    # print(line)
+                    fp.write(line)
+                fp.write(sep)
+        
 # Testing
 api = API()
 api.db.clear()
