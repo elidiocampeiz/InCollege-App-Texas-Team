@@ -19,7 +19,7 @@ class API:
         self.input_training()
         self.input_student_accounts()
         self.input_job_postings()
-        self.output_student_accounts()
+        self.output_profiles()
         self.output_training()
         self.output_job_postings()
         self.output_applied_jobs()
@@ -146,7 +146,7 @@ class API:
             student_accounts = [acc.split() for acc in accounts]
             # for acc in accounts:
             #     student_accounts.append(acc.split())
-            
+            created_accounts = []
             # print(accounts)
             # print(student_accounts)
             # reference to main Database
@@ -154,11 +154,13 @@ class API:
                 # Block print statements here 
                 blockPrint()
                 # sleep_time is the time in which the time.sleep() is called (wainint time between function print statements), for the api it should be 0
-                self.db.create_account(account[0], account[1], sleep_time=0)
+                result = self.db.create_account(account[0], account[1], sleep_time=0)
+                if result:
+                    created_accounts.append(account[0]) # append new username
                 # Enable print statements here 
                 enablePrint()
-    
-    def output_student_accounts(self, filename='MyCollege_profiles.txt'):
+            return created_accounts
+    def output_profiles(self, filename='MyCollege_profiles.txt'):
         
         all_students = self.db.data['Students']
         # print(all_students)
@@ -166,20 +168,44 @@ class API:
             sep = '=====\n'
             for username, student in all_students.items():
                 # print(student.experience, student.education)
+                education_string = ' '.join([student.get_education('university'), student.get_education('major'), student.get_education('year')])
+                expereince_list = []
+                for exp in student.experience:
+                    
+                    title = exp['title']
+                    employer = exp['employer']
+                    start_date = exp['start_date']
+                    end_date = exp['end_date']
+                    location = exp['location']
+                    description = exp['description']
+                    exp_listing = [ employer, start_date, end_date, location, description]
+                    string = title
+                    for s in exp_listing:
+                        if s != '':
+                            string += '-'+s 
+                    # string = title + '-' + employer + '-' + start_date + '-' + end_date + '-' + location + '-' + description 
+                    expereince_list.append(string)
+                
+                expereince_string = '\n'.join(expereince_list) 
+                # print(education_string)
                 student_data = {
                 'Title':student.title,
-                'Major':student.major,
-                'University':student.university,
+                'Major':student.get_education('major'),
+                'University':student.get_education('university'),
                 'About':student.about,
-                'Experience':student.experience or '', # TODO: check if there is an error when a list is passed
-                'Education':student.education or '', # TODO: check if there is an error when a dict is passed
+                'Experience':expereince_string or '', # TODO: check if there is an error when a list is passed
+                'Education': education_string or '', # TODO: check if there is an error when a dict is passed
                 }
-
+                line = ''
                 for key, val in student_data.items():
-                    line = key+': '+val+'\n'
-                    # print(line)
-                    fp.write(line)
+                    if val.strip() != '':
+                        line += val+'\n'
+                        # print(line)
+                fp.write(line)
+                
                 fp.write(sep)
+    # TODO: output_users 
+    
     def input_training(self, filename='./newTraining.txt'):
         
         with open(filename) as fp:

@@ -2130,7 +2130,28 @@ def test_output_saved_jobs(API, filename = 'MyCollege_savedJobs.txt'):
             username = job_data[0]
             title = job_data[1]
             assert title in job_saved_data[username]
-
+def test_input_student_accounts(API, filename='./studentAccouts.txt'):
+    student_data = API.db.data["Students"]
+    API.db.clear() # db was full
+    expected_accounts = API.input_student_accounts(filename)
+    existing_accounts = set([ username for username in API.db.data["Students"]])
+    # print(existing_accounts,'\n', expected_accounts)
+    API.db.data["Students"] = student_data # restore da
+    API.db.save()
+    # print(API.db.data["Students"])
+    for username in expected_accounts:
+        assert username in existing_accounts
+def test_output_student_accounts(API, filename='MyCollege_profiles.txt'):
+    # print(API.db.data["Students"])
+    student_count = len(API.db.data["Students"])
+    API.output_profiles(filename)
+    with open(filename) as fp:
+        file_data = fp.read()
+        data = file_data.split('=====\n')
+        # print(data)
+        if '' in data:
+            data.remove('')
+        assert student_count == len(data)
 
 # TODO: Epic 10
 # TODO: test_load_data                  (API) 
@@ -2138,8 +2159,9 @@ def test_output_saved_jobs(API, filename = 'MyCollege_savedJobs.txt'):
 # DONE: test_output_job_postings        (API)
 # DONE: test_output_applied_jobs        (API)
 # DONE: test_output_saved_jobs          (API)
-# TODO: test_input_student_accounts     (API)
-# TODO: test_output_student_accounts    (API)
+# DONE: test_input_student_accounts     (API)
+# DONE: test_output_profiles            (API)
+# TODO: test_output_users               (API)
 # TODO: test_input_training             (API)
 # TODO: test_output_training            (API)
 # TODO: test_output_job_postings        (API)
