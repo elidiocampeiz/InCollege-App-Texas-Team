@@ -3,11 +3,12 @@ import datetime
 import sys
 import os
 import re
-# Disable
+
+# Disable PRINT
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 
-# Restore
+# Restore PRINT
 def enablePrint():
     sys.stdout = sys.__stdout__
 
@@ -37,10 +38,10 @@ class API:
             # print(job_postings_data)
             # split into list of lists with student data 
 
-            job_postings = []#[ re.split("&&&|\n",job) for job in job_postings_data if job != '' ]
+            job_postings = [] 
             
             # NOTE: Not sure about this requirement 
-            # Don't allow jobs with same title and same employer (duplicates)
+            # Not allowing jobs with same title and same employer (duplicates)
             existing_jobs = set([job['title'] for job in self.db.data["Jobs"]])
             
             for job_posting in job_postings_data:
@@ -56,12 +57,18 @@ class API:
                     if not title in existing_jobs:
                         # Block print statements here 
                         blockPrint()
-                        self.db.create_job_posting(title, description, employer, location, salary, 'inCollenge_admin', 'inCollenge_admin', datetime.datetime.now(), 0)
+                        # try to create job posting 
+                        result = self.db.create_job_posting(title, description, employer, location, salary, 'inCollenge_admin', 'inCollenge_admin', datetime.datetime.now(), 0)
+                        # if success add title to job postings and to existing_jobs
+                        if result:
+                            job_postings.append(title)
+                            existing_jobs.add(title)
                         # Enable print statements here 
                         enablePrint()
-                        existing_jobs.add(title)
+                        
             
-    # TODO:
+            return job_postings
+    
     def output_job_postings(self, filename = 'MyCollege_jobs.txt'):
 
         all_jobs = self.db.data['Jobs']
@@ -150,6 +157,7 @@ class API:
                 self.db.create_account(account[0], account[1], sleep_time=0)
                 # Enable print statements here 
                 enablePrint()
+    
     def output_student_accounts(self, filename='MyCollege_profiles.txt'):
         
         all_students = self.db.data['Students']

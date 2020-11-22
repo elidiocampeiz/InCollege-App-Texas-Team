@@ -5,7 +5,7 @@ import inCollege_Database as database
 from inCollege_Student import *
 import time
 import datetime
-
+import inCollege_API
 
 time.sleep=lambda x:None
 
@@ -2061,7 +2061,87 @@ def test_display_course_list(monkeypatch, DB, default_Student, course_selection,
         result = accnt.display_course_list(DB, default_Student)
         assert result == expected
 
-# TODO: Epic 9
-# DONE: test_populate_course_list           (DB) 
-# DONE: test_display_course_list            (ACCT)
+# Test API class Fixture
+@pytest.fixture(scope="module")
+def API(DB):
+    # init API with etst db
+    API = api = inCollege_API.API(DB)
+    return API
+
+# def test_load_data():
+#     pass
+def test_input_job_postings(API, filename = 'newJobs.txt'):
+    # API.db.clear()
+    
+    expected_jobs = API.input_job_postings(filename)
+    existing_job_title = set([job['title'] for job in API.db.data["Jobs"]])
+    # print(existing_job_title)
+    for job_title in expected_jobs:
+        assert job_title in existing_job_title
+
+def test_output_job_postings(API, filename = 'MyCollege_jobs.txt'):
+    job_count = len(API.db.data["Jobs"])
+    API.output_job_postings(filename)
+    with open(filename) as fp:
+        file_data = fp.read()
+        job_postings_data = file_data.split('=====\n')
+        # print(job_postings_data)
+        if '' in job_postings_data:
+            job_postings_data.remove('')
+        assert job_count == len(job_postings_data)
+
+
+def test_output_applied_jobs(API, filename = 'MyCollege_appliedJobs.txt'):
+    job_count = len(API.db.data["Jobs"])
+    API.output_applied_jobs(filename)
+    with open(filename) as fp:
+        file_data = fp.read()
+        job_postings_data = file_data.split('=====\n')
+        # print(job_postings_data)
+        if '' in job_postings_data:
+            job_postings_data.remove('')
+        assert job_count == len(job_postings_data)
+
+def test_output_saved_jobs(API, filename = 'MyCollege_savedJobs.txt'):
+    all_jobs = API.db.data['Jobs']
+    # print('all_jobs\n', all_jobs)
+    job_saved_data = {}
+    # group training by users who have completed each course
+    for job in all_jobs:
+        for username in job['users_saved']:
+        # for username in ['usr1', 'user2']:
+            if not username in job_saved_data:
+                job_saved_data[username] = set()
+            job_saved_data[username].add(job['title'])
+    
+    saved_job_count = len(job_saved_data)
+    # Call function
+    API.output_saved_jobs(filename)
+    # read file
+    with open(filename) as fp:
+        file_data = fp.read()
+        job_postings_data = file_data.split('=====\n')
+        
+        if '' in job_postings_data:
+            job_postings_data.remove('')
+        # print(job_postings_data)
+        for job_post in job_postings_data:
+            job_data = job_post.split('\n')
+            username = job_data[0]
+            title = job_data[1]
+            assert title in job_saved_data[username]
+
+
+# TODO: Epic 10
+# TODO: test_load_data                  (API) 
+# DONE: test_input_job_postings         (API)
+# DONE: test_output_job_postings        (API)
+# DONE: test_output_applied_jobs        (API)
+# DONE: test_output_saved_jobs          (API)
+# TODO: test_input_student_accounts     (API)
+# TODO: test_output_student_accounts    (API)
+# TODO: test_input_training             (API)
+# TODO: test_output_training            (API)
+# TODO: test_output_job_postings        (API)
+# TODO: Change Test files for Api
 
