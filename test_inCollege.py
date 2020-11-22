@@ -2061,6 +2061,8 @@ def test_display_course_list(monkeypatch, DB, default_Student, course_selection,
         result = accnt.display_course_list(DB, default_Student)
         assert result == expected
 
+
+
 # Test API class Fixture
 @pytest.fixture(scope="module")
 def API(DB):
@@ -2141,17 +2143,44 @@ def test_input_student_accounts(API, filename='./studentAccouts.txt'):
     # print(API.db.data["Students"])
     for username in expected_accounts:
         assert username in existing_accounts
-def test_output_student_accounts(API, filename='MyCollege_profiles.txt'):
-    # print(API.db.data["Students"])
+
+def test_output_profiles(API, filename='MyCollege_profiles.txt'):
+    # Get student data from DB
     student_count = len(API.db.data["Students"])
+    # call the API function that writes it to the file 
     API.output_profiles(filename)
+    # access the file 
     with open(filename) as fp:
+        # parse the data 
         file_data = fp.read()
         data = file_data.split('=====\n')
         # print(data)
         if '' in data:
             data.remove('')
         assert student_count == len(data)
+
+def test_output_users(API, filename='MyCollege_user.txt'):
+    all_students = API.db.data['Students']
+    expected_data = []
+    for username, student in all_students.items():
+        account_type = 'Plus' if student.status else 'Standard'
+        expected_data.append([username, account_type])
+    API.output_users(filename)
+    with open(filename) as fp:
+        file_data = fp.read()
+        data = file_data.split('=====\n')
+        if '' in data:
+            data.remove('')
+        file_data = []
+        for acc in data:
+            acc_data = acc.split('\n')
+            username, account_type = acc_data[0], acc_data[1]
+            file_data.append([username, account_type])
+        # print(file_data)
+        # print(expected_data)
+        for expected_acc, file_acc in zip(expected_data, file_data):
+            assert expected_acc[0] == file_acc[0] # usernames
+            assert expected_acc[1] == file_acc[1] # account type
 
 # TODO: Epic 10
 # TODO: test_load_data                  (API) 
@@ -2161,9 +2190,9 @@ def test_output_student_accounts(API, filename='MyCollege_profiles.txt'):
 # DONE: test_output_saved_jobs          (API)
 # DONE: test_input_student_accounts     (API)
 # DONE: test_output_profiles            (API)
-# TODO: test_output_users               (API)
+# DONE: test_output_users               (API)
 # TODO: test_input_training             (API)
 # TODO: test_output_training            (API)
 # TODO: test_output_job_postings        (API)
-# TODO: Change Test files for Api
+# TODO: Change Test files for Api # NOTE: not required
 

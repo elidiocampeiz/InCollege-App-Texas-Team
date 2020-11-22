@@ -20,6 +20,7 @@ class API:
         self.input_student_accounts()
         self.input_job_postings()
         self.output_profiles()
+        self.output_users()
         self.output_training()
         self.output_job_postings()
         self.output_applied_jobs()
@@ -168,25 +169,26 @@ class API:
             sep = '=====\n'
             for username, student in all_students.items():
                 # print(student.experience, student.education)
-                education_string = ' '.join([student.get_education('university'), student.get_education('major'), student.get_education('year')])
+                education_list = [student.get_education('university'), student.get_education('major'), student.get_education('year')]
+                education_string = ' '.join(filter(None, education_list))
                 expereince_list = []
                 for exp in student.experience:
-                    
                     title = exp['title']
                     employer = exp['employer']
                     start_date = exp['start_date']
                     end_date = exp['end_date']
                     location = exp['location']
                     description = exp['description']
-                    exp_listing = [ employer, start_date, end_date, location, description]
-                    string = title
-                    for s in exp_listing:
-                        if s != '':
-                            string += '-'+s 
+                    job_fields = [title, employer, start_date, end_date, location, description]
+                    # string = title
+                    # for s in job_fields:
+                    #     if s != '':
+                    #         string += '-'+s 
                     # string = title + '-' + employer + '-' + start_date + '-' + end_date + '-' + location + '-' + description 
+                    string = '-'.join(filter(None, job_fields))
                     expereince_list.append(string)
                 
-                expereince_string = '\n'.join(expereince_list) 
+                expereince_string = '\n'.join(filter(None, expereince_list)) 
                 # print(education_string)
                 student_data = {
                 'Title':student.title,
@@ -205,7 +207,18 @@ class API:
                 
                 fp.write(sep)
     # TODO: output_users 
-    
+    def output_users(self, filename='MyCollege_user.txt'):
+        
+        all_students = self.db.data['Students']
+        # print(all_students)
+        with open(filename, "w") as fp:
+            sep = '=====\n'
+            for username, student in all_students.items():
+                account_type = 'Plus' if student.status else 'Standard'
+                fp.write(username+'\n')
+                fp.write(account_type+'\n')
+                fp.write(sep)
+
     def input_training(self, filename='./newTraining.txt'):
         
         with open(filename) as fp:
