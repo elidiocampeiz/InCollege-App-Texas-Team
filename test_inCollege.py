@@ -2182,8 +2182,46 @@ def test_output_users(API, filename='MyCollege_user.txt'):
             assert expected_acc[0] == file_acc[0] # usernames
             assert expected_acc[1] == file_acc[1] # account type
 
+def test_input_training(API, filename='./newTraining.txt'):
+    student_data = API.db.data["Courses"]
+    
+    expected_courses = API.input_training(filename)
+    existing_courses = set([ course['name'] for course in API.db.data["Courses"]])
+    
+    for couse_title in expected_courses:
+        assert couse_title in existing_courses
+
+def test_output_training(API, filename='MyCollege_training.txt'):
+    all_courses = API.db.data['Courses']
+    training_data = {}
+    # group training by users who have completed each course
+    for course in all_courses:
+        # print(course)
+        for username in course['users_completed']:
+        # for username in ['usr1', 'user2']:
+            if not username in training_data:
+                training_data[username] = set()
+            training_data[username].add(course['name'])
+    
+    API.output_training(filename)
+
+    with open(filename) as fp:
+        file_data = fp.read()
+        data_items = filter(None,file_data.split('=====\n')) # filter out empty strings "None"
+        # if '' in data_items:
+        #     data_items.remove('')
+        courses_by_user_file = {}
+        for item in data_items:
+            item_fields = item.split('\n')
+            courses_by_user_file[item_fields[0]] = filter(None, item_fields[1:]) # filter out empty strings "None"
+        
+        print(training_data, courses_by_user_file, sep='\n')
+        for expected_username, in_file in zip(training_data, courses_by_user_file):
+            assert expected_username == in_file
+            for course_titles in courses_by_user_file[in_file]:
+                assert course_titles in training_data[expected_username]
+
 # TODO: Epic 10
-# TODO: test_load_data                  (API) 
 # DONE: test_input_job_postings         (API)
 # DONE: test_output_job_postings        (API)
 # DONE: test_output_applied_jobs        (API)
@@ -2191,8 +2229,7 @@ def test_output_users(API, filename='MyCollege_user.txt'):
 # DONE: test_input_student_accounts     (API)
 # DONE: test_output_profiles            (API)
 # DONE: test_output_users               (API)
-# TODO: test_input_training             (API)
-# TODO: test_output_training            (API)
-# TODO: test_output_job_postings        (API)
+# DONE: test_input_training             (API)
+# DONE: test_output_training            (API)
 # TODO: Change Test files for Api # NOTE: not required
 

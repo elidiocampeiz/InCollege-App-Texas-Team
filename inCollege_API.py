@@ -227,13 +227,15 @@ class API:
             # split jobs data by '\n'
             trainings = file_data.split('\n')
             existing_courses = set(course['name'] for course in self.db.data["Courses"])
+            new_courses = []
             for title in trainings:
                 # This should be a database function
                 if not title in existing_courses:
                     course = {'name':title, 'users_completed': []}
                     self.db.data["Courses"].append(course) 
+                    new_courses.append(title)
             self.db.save()
-
+            return new_courses
     def output_training(self, filename='MyCollege_training.txt'):
 
         all_courses = self.db.data['Courses']
@@ -245,7 +247,7 @@ class API:
             # for username in ['usr1', 'user2']:
                 if not username in training_data:
                     training_data[username] = set()
-                training_data[username].add(course['Name'])
+                training_data[username].add(course['name'])
 
         # print(training_data)
         # data = []
