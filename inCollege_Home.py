@@ -144,6 +144,9 @@ def main():
             # Create an account
             elif sel == '2':
                 accnt.create_account(db)
+                api.output_profiles()
+                api.output_users()
+
             # Find Someone You Know
             elif sel == '3':
                 foundUser = db.search_users()  # returns t / f
@@ -733,8 +736,8 @@ def main():
 
                     # Post a job
                     if sel == '1':
-                        accnt.post_job(
-                            theStudent.firstname+" "+theStudent.lastname, theStudent.username, db)
+                        accnt.post_job(theStudent.firstname+" "+theStudent.lastname, theStudent.username, db)
+                        api.output_job_postings()
 
                     # See Job Listing
                     elif sel == "2":
@@ -786,6 +789,7 @@ def main():
 
                                         if hasApplied is True:
                                             print("Successfully Applied!")
+                                            api.output_applied_jobs()
                                         else:
                                             print("Application Error")
 
@@ -797,6 +801,7 @@ def main():
 
                                         if hasSaved:
                                             print("Successfully Saved!")
+                                            api.output_saved_jobs()
                                         else:
                                             print("Error saving job...")
                                 # Job was not found
@@ -805,12 +810,12 @@ def main():
                                         "Job title does not exist in the database.")
 
                         sel = ""  # resetting
-
+                        # api.output_applied_jobs()
                     # Jobs Already Applied For
                     elif sel == "3":
-                        print("+========================+")
-                        print("|*| Under Construction |*|")
-                        print("+========================+\n")
+                        # print("+========================+")
+                        # print("|*| Under Construction |*|")
+                        # print("+========================+\n")
                         # Need to show jobs
                         # Press Job to expand it
                         print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -858,6 +863,7 @@ def main():
 
                                         if hasApplied is True:
                                             print("Successfully Applied!")
+                                            api.output_applied_jobs()
                                         else:
                                             print("Application Error")
 
@@ -869,6 +875,7 @@ def main():
 
                                         if hasSaved:
                                             print("Successfully Saved!")
+                                            api.output_saved_jobs()
                                         else:
                                             print("Error saving job...")
                                 # Job was not found
@@ -880,9 +887,9 @@ def main():
 
                     # Jobs Not Yet Applied For
                     elif sel == "4":
-                        print("+========================+")
-                        print("|*| Under Construction |*|")
-                        print("+========================+\n")
+                        # print("+========================+")
+                        # print("|*| Under Construction |*|")
+                        # print("+========================+\n")
                         # expand
                         # option to save / apply
                         print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -933,6 +940,7 @@ def main():
 
                                         if hasApplied is True:
                                             print("Successfully Applied!")
+                                            api.output_applied_jobs()
                                         else:
                                             print("Application Error")
 
@@ -944,6 +952,7 @@ def main():
 
                                         if hasSaved:
                                             print("Successfully Saved!")
+                                            api.output_saved_jobs()
                                         else:
                                             print("Error saving job...")
                                 # Job was not found
@@ -955,9 +964,9 @@ def main():
 
                     # Saved Jobs
                     elif sel == "5":
-                        print("+========================+")
-                        print("|*| Under Construction |*|")
-                        print("+========================+\n")
+                        # print("+========================+")
+                        # print("|*| Under Construction |*|")
+                        # print("+========================+\n")
                         # expand
                         # option to apply for the job
                         print("\n|*| NOTE - Enter 'x' at any time to go back |*|\n")
@@ -1003,6 +1012,7 @@ def main():
 
                                         if hasApplied is True:
                                             print("Successfully Applied!")
+                                            api.output_applied_jobs()
                                         else:
                                             print("Application Error")
 
@@ -1037,8 +1047,14 @@ def main():
                         print("")
                         jobTitle = input(
                             "Please select a job to remove by inputting its full title: ")
-                        accnt.remove_job(theStudent.username, jobTitle, db)
-
+                         
+                        result = accnt.remove_job(theStudent.username, jobTitle, db)
+                        if not result:
+                            print("Invalid input...")
+                            time.sleep(1)
+                        api.output_job_postings()
+                        api.output_applied_jobs()#
+                        api.output_saved_jobs()#
                     elif sel == 'x':
                         flag = False
                         print("... Going Back")
@@ -1538,7 +1554,7 @@ def main():
                 cont = True
                 while(cont == True):
                     cont = accnt.display_course_list(db, theStudent)
-
+                    api.output_training()
             elif sel == 'x':
                 print("       + --------- +")
                 print("       | Good Bye! |")

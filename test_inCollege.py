@@ -2070,16 +2070,17 @@ def API(DB):
     API = api = inCollege_API.API(DB)
     return API
 
-# def test_load_data():
-#     pass
+
 def test_input_job_postings(API, filename = 'newJobs.txt'):
-    # API.db.clear()
-    
+    # Get copy of new jobs we expect to added to the inCollege database 
     expected_jobs = API.input_job_postings(filename)
-    existing_job_title = set([job['title'] for job in API.db.data["Jobs"]])
-    # print(existing_job_title)
-    for job_title in expected_jobs:
-        assert job_title in existing_job_title
+    # In College Jobs are indexed by title 
+    # Get a copy with the existing job title 
+    existing_job = set([job['title'] for job in API.db.data["Jobs"]])
+    # Test if each expected job was created 
+    for expected_job in expected_jobs:
+        # Assert if expected job  is in the set of existing jobs
+        assert expected_job in existing_job
 
 def test_output_job_postings(API, filename = 'MyCollege_jobs.txt'):
     job_count = len(API.db.data["Jobs"])
@@ -2132,6 +2133,7 @@ def test_output_saved_jobs(API, filename = 'MyCollege_savedJobs.txt'):
             username = job_data[0]
             title = job_data[1]
             assert title in job_saved_data[username]
+
 def test_input_student_accounts(API, filename='./studentAccouts.txt'):
     student_data = API.db.data["Students"]
     API.db.clear() # db was full

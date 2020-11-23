@@ -138,7 +138,7 @@ class API:
 
     def input_student_accounts(self, filename='./studentAccouts.txt'):
         with open(filename) as fp:
-            student_accounts = []
+            
             file_data = fp.read()
             # print(file_data)
             # split acc data 
